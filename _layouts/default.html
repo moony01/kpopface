@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="../static/css/loading.css">
         <link rel="stylesheet" href="../static/css/main.css">
         <link rel="stylesheet" href="../static/css/modal.css">
+        <link rel="stylesheet" href="../static/css/comment.css">
 
         <link rel="apple-touch-icon" href="../static/img/icon.png">
         <link rel="apple-touch-icon" sizes="152x152" href="../static/img/icon.png">
@@ -33,6 +34,7 @@
         <link rel="stylesheet" href="static/css/loading.css">
         <link rel="stylesheet" href="static/css/main.css">
         <link rel="stylesheet" href="static/css/modal.css">
+        <link rel="stylesheet" href="static/css/comment.css">
 
         <link rel="apple-touch-icon" href="static/img/icon.png">
         <link rel="apple-touch-icon" sizes="152x152" href="static/img/icon.png">
@@ -57,8 +59,10 @@
 
     {% if page.lang != "ko" %}
         <script src="../static/js/app.js"></script>
+        <script src="../static/js/comment.js"></script>
     {% else %}
         <script src="static/js/app.js"></script>
+        <script src="static/js/comment.js"></script>
     {% endif %}
 
     {% if page.title %}
@@ -176,7 +180,15 @@
         </div>
         {% endif %}
     </div>
-<!--     {% include disqus.html %} -->
+    <!-- Comment -->
+    <!-- {% include disqus.html %} -->
+    <section id="comments"></section>
+    <form id="comment-form">
+        <input id="nickname" placeholder="닉네임" required />
+        <textarea id="content" placeholder="댓글을 남겨주세요" required></textarea>
+        <button type="submit">등록</button>
+    </form>
+    
     <footer class="footer">
         <span>© kpopface 2023. ALL Rights Reserved.</span>
         <a class="privacy" href="{{ site.url }}/kpopface/privacy.html">Privacy policy</a>

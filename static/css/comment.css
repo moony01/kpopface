@@ -1,0 +1,73 @@
+/* 댓글 영역 스타일 */
+#comments {
+    margin-top: 2em;
+    border-top: 1px solid #ddd;
+    padding-top: 1em;
+    min-height: 60px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(96, 108, 56, 0.04);
+}
+
+/* 댓글 입력 폼 스타일 */
+#comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    margin: 1.5em 0 2em 0;
+    padding: 1.2em;
+    background: #fefae0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(96, 108, 56, 0.04);
+}
+
+#comment-form input#nickname {
+    font-family: 'Jua', sans-serif;
+    font-size: 1em;
+    padding: 0.7em 1em;
+    border: 1px solid #d4d4aa;
+    border-radius: 6px;
+    background: #fff;
+    color: #606c38;
+    outline: none;
+    transition: border 0.2s;
+}
+
+#comment-form input#nickname:focus {
+    border: 1.5px solid #606c38;
+}
+
+#comment-form textarea#content {
+    font-family: 'Jua', sans-serif;
+    font-size: 1em;
+    padding: 0.7em 1em;
+    border: 1px solid #d4d4aa;
+    border-radius: 6px;
+    background: #fff;
+    color: #606c38;
+    min-height: 80px;
+    resize: vertical;
+    outline: none;
+    transition: border 0.2s;
+}
+
+#comment-form textarea#content:focus {
+    border: 1.5px solid #606c38;
+}
+
+#comment-form button[type="submit"] {
+    align-self: flex-end;
+    padding: 0.6em 1.5em;
+    background: #606c38;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+#comment-form button[type="submit"]:hover {
+    background: #283618;
+}

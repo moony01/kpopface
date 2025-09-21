@@ -1,5 +1,13 @@
+# Jekyll build artifacts
 _site
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+# Ignore node modules and build files for AWS Lambda functions
+/lambda/comment/node_modules
+/lambda/comment/package-lock.json
+
+# Lambda build artifacts
+/lambda/comment/function.zip
