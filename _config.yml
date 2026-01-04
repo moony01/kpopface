@@ -7,7 +7,7 @@ google_analytics: G-J7NNCSLXY2
 url: "https://moony01.com"
 baseurl: "/kpopface" # the subpath of your site, e.g. /blog
 twitter_username: mun01180
-github_username:  moony01
+github_username: moony01
 
 # Build settings
 plugins:

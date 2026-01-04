@@ -1,4 +1,4 @@
-let URL;
+let tmURL;
 // const urlMale = "https://teachablemachine.withgoogle.com/models/OjV8A4hkV/"; //v1
 const urlMale = "https://teachablemachine.withgoogle.com/models/9yhf9-8B7/"; //v2
 // const urlFemale = "https://teachablemachine.withgoogle.com/models/VXq81IU-K/"; //v1
@@ -258,12 +258,12 @@ function fnAppDownloadPage(app) {
 //이미지 로드
 async function init() {
   if (document.getElementById("gender").checked) {
-    URL = urlMale;
+    tmURL = urlMale;
   } else {
-    URL = urlFemale;
+    tmURL = urlFemale;
   }
-  const modelURL = URL + "model.json";
-  const metadataURL = URL + "metadata.json";
+  const modelURL = tmURL + "model.json";
+  const metadataURL = tmURL + "metadata.json";
   model = await tmImage.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
   labelContainer = document.getElementById("label-container");
