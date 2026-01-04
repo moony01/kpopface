@@ -582,40 +582,31 @@
   margin: 0;
 }
 .sns-list a {
-  display: block;
-  width: 32px;
-  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(0,0,0,0.05); /* Subtle border */
+  text-decoration: none;
+  border: none;
   transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .sns-list a:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Icons Inherited */
-.sns-list .facebook { background-image: url(../img/ico-facebook.png); }
-.sns-list .twitter { background-image: url(../img/ico-twitter.png); }
-.sns-list .band { background-image: url(../img/ico-band.png); }
-.sns-list .kakaotalk { background-image: url(../img/ico-kakao.png); }
-.sns-list .kakaostory { background-image: url(../img/ico-kakaoStory.png); }
-.sns-list .copyurl { background-image: url(../img/ico-copyurl.png); }
+/* Brand Colors & Vector Icons */
+.sns-facebook { background-color: #1877F2; color: #fff; }
+.sns-twitter { background-color: #000000; color: #fff; } /* X brand color */
+.sns-band { background-color: #03C75A; color: #fff; }
+.sns-kakaotalk { background-color: #FEE500; color: #3A1D1D; } /* Brown text for Kakao */
+.sns-copy { background-color: #4b5563; color: #fff; }
 
-@media (max-width: 600px) {
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.25rem;
-  }
-  .card-share {
-    width: 100%;
-    justify-content: flex-end;
-  }
-}
+
 
 /* Vote System (Replaces Reaction) */
 .vote-wrapper {
@@ -688,6 +679,8 @@
 }
 
 /* Agency Specific Styles */
+
+/* Agency Specific Styles */
 .vote-sm {
   background: linear-gradient(135deg, #FF6B6B, #E83E8C);
   color: #fff;
@@ -699,4 +692,82 @@
 .vote-yg {
   background: #111111;
   color: #fff;
+}
+
+@media (max-width: 600px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  /* Share Section: Stack Label and Icons on Mobile */
+  .card-share {
+    width: 100%;
+    flex-direction: column; /* Stack vertically */
+    align-items: flex-start; /* Align left */
+    gap: 8px;
+  }
+  
+  .sns-list {
+      display: flex; /* Ensure flex */
+      flex-wrap: wrap;
+      justify-content: flex-start; /* Align icons to start */
+      gap: 10px; /* Consistent gap */
+      width: 100%;
+  }
+  
+  .sns-list a {
+      width: 40px; /* Good touch target */
+      height: 40px;
+  }
+    
+
+  /* Vote Section Mobile Optimization */
+  .vote-container {
+      gap: 8px; /* Reduce gap further */
+      justify-content: center;
+  }
+  
+  .vote-item {
+      min-width: 80px; /* Try to fit smaller screens */
+      padding: 12px 6px;
+      border-radius: 12px;
+      flex: 1 1 80px; /* shrinkable */
+  }
+  
+  .vote-label {
+      font-size: 1.2rem; 
+  }
+  
+  .vote-count {
+      font-size: 0.9rem;
+  }
+}
+
+/* Deep Mobile Optimization (iPhone SE, Fold, etc) */
+@media (max-width: 360px) {
+    .comment-section-wrapper {
+        padding: 0 4px;
+        margin: 1rem auto;
+    }
+    .card-header, .comment-form-container {
+        padding: 12px; /* Drastically reduce padding */
+    }
+    .input-row {
+        gap: 8px;
+    }
+    .cmt-input, .cmt-select, .cmt-textarea {
+        font-size: 0.85rem; /* Smaller text */
+        padding: 10px;
+    }
+    /* Ensure vote items fit or wrap nicely */
+    .vote-item {
+        min-width: 70px;
+        padding: 10px 4px;
+    }
+    .vote-label {
+        font-size: 1.1rem;
+    }
 }

@@ -1,8 +1,8 @@
-console.log('Comment script loaded v7 (Reaction System)');
+console.log('댓글 스크립트 로드됨 v7 (반응 시스템)');
 
 /**
  * =========================================================================================
- *  Supabase 클라이언트 설정 (Supabase Client Configuration)
+ *  Supabase 클라이언트 설정
  *  - 정적 사이트(Jekyll) 환경에서 .env 사용이 제한되므로, Anon Key를 직접 사용합니다.
  * =========================================================================================
  */
@@ -17,104 +17,140 @@ function getSupabase() {
     if (window.supabase) {
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('✅ Supabase client initialized successfully.');
+            console.log('✅ Supabase 클라이언트 초기화 완료');
         } catch (e) {
-            console.error('❌ Failed to initialize Supabase client:', e);
+            console.error('❌ Supabase 클라이언트 초기화 실패:', e);
         }
     } else {
-        console.warn('⚠️ window.supabase is not available. Check CDN script.');
+        console.warn('⚠️ window.supabase를 찾을 수 없습니다. CDN 스크립트를 확인하세요.');
     }
     return supabaseClient;
 }
 
-const commentListElement = null; // Will be retrieved on demand
+const commentListElement = null;
 const commentCountElement = null;
 
 /**
- * [Async] 앱 반응(Reaction) 통계 불러오기
- * - 'kft_app_stats' 테이블에서 id=1인 row를 조회
+ * [Async] 소속사 투표 통계 불러오기
+ * - 'kft_vote_counts' 테이블 조회 (Single Row: id=1)
  */
-async function fetchAppStats() {
+async function fetchVoteCounts() {
     getSupabase();
     if (!supabaseClient) return;
 
     try {
         const { data, error } = await supabaseClient
-            .from('kft_app_stats')
+            .from('kft_vote_counts')
             .select('*')
             .eq('id', 1)
             .single();
 
         if (error) throw error;
         if (data) {
-            updateReactionUI(data);
+            updateVoteUI(data);
         }
     } catch (err) {
-        console.error('❌ Error fetching app stats:', err);
+        console.error('❌ 투표 통계 불러오기 실패:', err);
     }
 }
 
 /**
- * 반응 UI 업데이트
+ * 투표 UI 업데이트
  */
-function updateReactionUI(stats) {
-    // stats: { like_cnt, funny, love, surprised, angry, sad, ... }
-    const types = ['like_cnt', 'funny', 'love', 'surprised', 'angry', 'sad'];
-    types.forEach(type => {
-        const el = document.getElementById(`cnt-${type}`);
-        if (el) {
-            el.innerText = stats[type] || 0;
-        }
+function updateVoteUI(counts) {
+    const agencies = ['SM', 'JYP', 'YG']; // 추후 HYBE 등 추가 가능
+    
+    agencies.forEach(Key => {
+        // DB 컬럼은 소문자(sm, jyp, yg), HTML ID는 대문자(cnt-SM)
+        const countValue = counts[Key.toLowerCase()] || 0;
+        
+        // 숫자 애니메이션 적용
+        const el = document.getElementById(`cnt-${Key}`);
+        if (el) el.innerText = countValue.toLocaleString();
     });
 }
 
 /**
- * [Async] 반응 아이콘 클릭 핸들러
- * - RPC 'increment_reaction' 호출
+ * [Async] 투표 핸들러
+ * - 1. 중복 투표 방지 (LocalStorage 체크)
+ * - 2. 낙관적 업데이트 (Optimistic UI) - 즉시 반영
+ * - 3. 디바운싱 (클릭 방지)
+ * - 4. 서버 RPC 호출
  */
-async function handleReaction(type) {
-    // 낙관적 업데이트 (Optimistic Update)
-    const el = document.getElementById(`cnt-${type}`);
-    if (el) {
-        const currentVal = parseInt(el.innerText, 10) || 0;
-        el.innerText = currentVal + 1;
+async function handleReaction(agency) {
+    // 1. 중복 투표 체크
+    const hasVoted = localStorage.getItem('kft_voted_' + agency);
+    if (hasVoted) {
+        alert('이미 투표하셨습니다!');
+        return;
+    }
+    
+    // 2. 버튼 비활성화 (일시적)
+    const btn = document.querySelector(`.vote-item.vote-${agency.toLowerCase()}`);
+    if(btn) btn.style.pointerEvents = 'none';
+
+    // 3. 낙관적 업데이트 (Optimistic UI)
+    const countEl = document.getElementById(`cnt-${agency}`);
+    let prevCount = 0;
+    if (countEl) {
+        prevCount = parseInt(countEl.innerText.replace(/,/g, ''), 10) || 0;
+        countEl.innerText = (prevCount + 1).toLocaleString();
+        
+        // 클릭 효과 (Bounce)
+        if(btn) {
+            btn.classList.add('animate-vote');
+            setTimeout(() => btn.classList.remove('animate-vote'), 500);
+        }
     }
 
     getSupabase();
-    if (!supabaseClient) return;
+    if (!supabaseClient) {
+        if(btn) btn.style.pointerEvents = 'auto';
+        return;
+    }
 
     try {
-        const { error } = await supabaseClient.rpc('increment_reaction', { reaction_type: type });
+        // 4. 서버 RPC 호출
+        const { error } = await supabaseClient.rpc('increment_vote', { agency_key: agency });
+        
         if (error) throw error;
         
-        // 서버 데이터로 재동기화 (선택적)
-        // fetchAppStats(); 
+        // 5. 투표 완료 처리 (LocalStorage 저장)
+        localStorage.setItem('kft_voted_' + agency, 'true');
+        alert(`${agency}에 한 표를 행사했습니다!`);
+
     } catch (err) {
-        console.error(`Error incrementing ${type}:`, err);
-        // 에러 시 롤백
-        if (el) {
-            el.innerText = parseInt(el.innerText, 10) - 1;
-        }
-        alert('반응을 저장하는 중 오류가 발생했습니다.');
+        console.error(`${agency} 투표 중 오류:`, err);
+        
+        // ❌ 실패 시 롤백
+        if (countEl) countEl.innerText = prevCount.toLocaleString();
+        alert('투표 처리 중 오류가 발생했습니다.');
+        
+        // LocalStorage에서도 삭제 (다시 시도 가능하게)
+        localStorage.removeItem('kft_voted_' + agency);
+    } finally {
+        // 버튼 다시 활성화
+        if(btn) btn.style.pointerEvents = 'auto';
     }
 }
 
 /**
  * [Async] 댓글 목록 불러오기
- * - password 제외하고 조회
+ * - 비밀번호 제외하고 조회
  */
 const ITEMS_PER_PAGE = 10;
 let currentPage = 1;
 
 /**
- * [Async] 댓글 목록 조회 (Fetch Comments)
+ * [Async] 댓글 목록 조회
  * - created_at 내림차순 정렬
  * - 페이징 적용 (10개씩)
  */
 async function fetchComments(page = 1) {
     
-    // [UI TEST] 더미 데이터 모드 (Dummy Data Mode)
+    // [UI TEST] 더미 데이터 모드
     // 테스트 시 아래 주석을 풀고 return을 활성화하세요.
+    /*
     const DUMMY_DATA = [
         { id: 101, nickname: '블랙핑크짱', content: '제 얼굴이 YG상이라니 너무 기뻐요! ㅋㅋㅋ 완전 신기방기\n블랙핑크 제니 느낌 있나요?', created_at: new Date().toISOString(), face_type: 'YG' },
         { id: 102, nickname: 'JYP수장', content: '공기반 소리반 느낌 아시죠? JYP 스타일 확실하네요.\n테스트 결과가 아주 흥미롭습니다.', created_at: new Date(Date.now() - 86400000).toISOString(), face_type: 'JYP' },
@@ -129,8 +165,7 @@ async function fetchComments(page = 1) {
         { id: 111, nickname: '테스트유저11', content: '다음 페이지 데이터 확인용 11', created_at: new Date().toISOString(), face_type: 'SM' }
     ];
 
-    console.log('🧪 [TEST MODE] Rendering Dummy Data');
-    // 페이징 테스트를 위해 slice 사용
+    console.log('🧪 [테스트 모드] 더미 데이터 렌더링');
     const start = (page - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
     const pagedDummy = DUMMY_DATA.slice(start, end);
@@ -138,9 +173,9 @@ async function fetchComments(page = 1) {
     renderComments(pagedDummy);
     renderPagination(DUMMY_DATA.length, page);
     return; 
-    
+    */
 
-    // getSupabase();
+    getSupabase();
     const listEl = document.getElementById('comment-list');
     if (!supabaseClient || !listEl) return;
 
@@ -157,7 +192,7 @@ async function fetchComments(page = 1) {
 
         if (error) throw error;
 
-        // 전체 댓글 수 업데이트 (페이지네이션과 별도로)
+        // 전체 댓글 수 업데이트
         const countEl = document.getElementById('comment-count');
         if (countEl) countEl.innerText = count || 0;
 
@@ -165,7 +200,7 @@ async function fetchComments(page = 1) {
         renderPagination(count, page);
         
     } catch (err) {
-        console.error('❌ Error fetching comments:', err);
+        console.error('❌ 댓글 불러오기 실패:', err);
     }
 }
 
@@ -182,9 +217,8 @@ function renderPagination(totalCount, page) {
 
     const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
     
-    // 페이지가 없거나 1페이지뿐이면 숨기거나 1만 표시 (여기서는 1페이지여도 표시)
+    // 페이지가 없거나 1페이지뿐이면 처리
     if (totalPages <= 1) {
-        // 데이터가 아예 없으면 숨김
         if (totalCount === 0) {
             paginationEl.style.display = 'none';
         } else {
@@ -202,7 +236,7 @@ function renderPagination(totalCount, page) {
     prevBtn.disabled = page === 1;
     nextBtn.disabled = page === totalPages;
     
-    // 이벤트 리스너 재할당 방지 (인라인 대신 프로퍼티 할당)
+    // 이벤트 리스너 재할당
     prevBtn.onclick = () => fetchComments(page - 1);
     nextBtn.onclick = () => fetchComments(page + 1);
 
@@ -217,7 +251,7 @@ function renderPagination(totalCount, page) {
 
     let html = '';
     
-    // 첫 페이지로 가는 버튼 (필요시)
+    // 첫 페이지로 가는 버튼
     if (startPage > 1) {
         html += `<button class="page-btn" onclick="fetchComments(1)">1</button>`;
         if (startPage > 2) html += `<span class="page-dots">...</span>`;
@@ -267,7 +301,7 @@ function renderComments(comments) {
             if (['SM', 'JYP', 'YG', 'HYBE'].includes(faceType)) {
                 className = `badge-${faceType.toLowerCase()}`;
             }
-            faceBadge = `<span class="face-badge ${className}">${faceType} Style</span>`;
+            faceBadge = `<span class="face-badge ${className}">${escapeHtml(faceType)} Style</span>`;
         }
 
         return `
@@ -304,7 +338,7 @@ function renderComments(comments) {
 }
 
 /**
- * [Async] 댓글 삭제 (Delete Comment)
+ * [Async] 댓글 삭제
  * - 사용자에게 비밀번호 입력 요구 -> RPC 'delete_comment' 호출
  */
 async function handleDelete(id) {
@@ -329,13 +363,13 @@ async function handleDelete(id) {
             alert('비밀번호가 일치하지 않습니다.');
         }
     } catch (err) {
-        console.error('Error deleting comment:', err);
+        console.error('댓글 삭제 오류:', err);
         alert('삭제 중 오류가 발생했습니다.');
     }
 }
 
 /**
- * [Async] 댓글 수정 (Edit Comment)
+ * [Async] 댓글 수정
  * - 비밀번호 및 새 내용 입력 요구 -> RPC 'update_comment' 호출
  */
 async function handleEdit(id, oldContent) {
@@ -368,7 +402,7 @@ async function handleEdit(id, oldContent) {
             alert('비밀번호가 일치하지 않습니다.');
         }
     } catch (err) {
-        console.error('Error updating comment:', err);
+        console.error('댓글 수정 오류:', err);
         alert('수정 중 오류가 발생했습니다.');
     }
 }
@@ -403,6 +437,13 @@ async function postComment() {
         document.getElementById('cmt-content').focus();
         return;
     }
+    
+    // 500자 제한 유효성 체크
+    if (content.length > 500) {
+        alert('댓글은 최대 500자까지만 작성 가능합니다.');
+        document.getElementById('cmt-content').focus();
+        return;
+    }
 
     try {
         const insertPayload = {
@@ -427,7 +468,7 @@ async function postComment() {
         fetchComments();
 
     } catch (err) {
-        console.error('Error posting comment:', err);
+        console.error('댓글 등록 실패:', err);
         alert('댓글 등록에 실패했습니다.');
     }
 }
@@ -478,22 +519,27 @@ window.handleEdit = handleEdit;
 window.handleDelete = handleDelete;
 
 /**
- * 페이지 로드 초기화 (Initial Load)
+ * 페이지 로드 초기화
  */
 function loadInitialData() {
-    console.log('🔄 Loading initial data...');
-    // 댓글 섹션이 있는 경우 댓글 로드
+    console.log('🔄 초기 데이터 로딩...');
+    
+    // 댓글 섹션 로드
     if (document.getElementById('comment-list')) {
-        console.log('Found #comment-list, fetching comments...');
         fetchComments();
-    } else {
-        console.log('No #comment-list found.');
     }
 
-    // 반응형 컨테이너가 있는 경우 리액션 로드
-    if (document.getElementById('reaction-container')) {
-        console.log('Found #reaction-container, fetching stats...');
-        fetchAppStats();
+    // 투표 섹션 로드
+    if (document.getElementById('vote-container')) {
+        console.log('투표 섹션 발견, 통계 로딩...');
+        fetchVoteCounts();
+        
+        // 내 투표 이력 체크
+        ['SM', 'JYP', 'YG'].forEach(agency => {
+            if (localStorage.getItem('kft_voted_' + agency)) {
+                // 이미 투표했다면 스타일 변경 등 처리 가능
+            }
+        });
     }
 }
 
