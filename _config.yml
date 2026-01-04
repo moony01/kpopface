@@ -14,3 +14,14 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed
   - jekyll-seo-tag
+
+exclude:
+  - GEMINI.md
+  - SECURITY_AUDIT.md
+  - node_modules
+  - package.json
+  - package-lock.json
+  - prompts
+  - README.md
+  - .gitignore
+  - .github
