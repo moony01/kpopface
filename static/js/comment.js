@@ -30,10 +30,178 @@ function getSupabase() {
 const commentListElement = null;
 const commentCountElement = null;
 
+
+// 다국어 메시지 사전
+const MESSAGES = {
+    ko: {
+        vote_success: "{agency}에 소중한 한 표 꾹! 투표가 완료되었습니다.",
+        vote_duplicate: "이미 투표하셨습니다!",
+        comment_empty: "내용을 입력해주세요.",
+        nickname_empty: "닉네임을 입력해주세요.",
+        content_empty: "댓글 내용을 입력해주세요.",
+        comment_too_long: "댓글은 500자 이내로 작성해주세요.",
+        password_prompt: "비밀번호를 입력하세요:",
+        edit_prompt: "수정할 내용을 입력해주세요:",
+        password_empty: "비밀번호를 입력해주세요.",
+        password_wrong: "비밀번호가 일치하지 않습니다.",
+        delete_success: "댓글이 삭제되었습니다.",
+        update_success: "댓글이 수정되었습니다.",
+        post_success: "댓글이 등록되었습니다!",
+        fail: "오류가 발생했습니다."
+    },
+    en: {
+        vote_success: "Voted for {agency}! Thank you.",
+        vote_duplicate: "You have already voted!",
+        comment_empty: "Please enter content.",
+        nickname_empty: "Please enter nickname.",
+        content_empty: "Please enter comment content.",
+        comment_too_long: "Comment must be within 500 characters.",
+        password_prompt: "Enter password:",
+        edit_prompt: "Enter new content:",
+        password_empty: "Please enter password.",
+        password_wrong: "Incorrect password.",
+        delete_success: "Comment deleted.",
+        update_success: "Comment updated.",
+        post_success: "Comment posted!",
+        fail: "An error occurred."
+    },
+    ja: {
+        vote_success: "{agency}に投票しました！ありがとうございます。",
+        vote_duplicate: "すでに投票済みです！",
+        comment_empty: "内容を入力してください。",
+        nickname_empty: "ニックネームを入力してください。",
+        content_empty: "コメント内容を入力してください。",
+        comment_too_long: "コメントは500文字以内で入力してください。",
+        password_prompt: "パスワードを入力してください：",
+        edit_prompt: "修正する内容を入力してください：",
+        password_empty: "パスワードを入力してください。",
+        password_wrong: "パスワードが一致しません。",
+        delete_success: "コメントが削除されました。",
+        update_success: "コメントが修正されました。",
+        post_success: "コメントが登録されました！",
+        fail: "エラーが発生しました。"
+    },
+    zh: {
+        vote_success: "已给{agency}投票！谢谢。",
+        vote_duplicate: "您已经投过票了！",
+        comment_empty: "请输入内容。",
+        nickname_empty: "请输入昵称。",
+        content_empty: "请输入评论内容。",
+        comment_too_long: "评论请控制在500字以内。",
+        password_prompt: "请输入密码：",
+        edit_prompt: "请输入修改内容：",
+        password_empty: "请输入密码。",
+        password_wrong: "密码不正确。",
+        delete_success: "评论已删除。",
+        update_success: "评论已修改。",
+        post_success: "评论已发布！",
+        fail: "发生错误。"
+    },
+    es: {
+        vote_success: "¡Votado por {agency}! Gracias.",
+        vote_duplicate: "¡Ya has votado!",
+        comment_empty: "Por favor ingresa contenido.",
+        nickname_empty: "Por favor ingresa apodo.",
+        content_empty: "Por favor ingresa contenido.",
+        comment_too_long: "Máx 500 caracteres.",
+        password_prompt: "Ingresa la contraseña:",
+        edit_prompt: "Ingresa nuevo contenido:",
+        password_empty: "Ingresa la contraseña.",
+        password_wrong: "Contraseña incorrecta.",
+        delete_success: "Eliminado.",
+        update_success: "Actualizado.",
+        post_success: "¡Publicado!",
+        fail: "Error."
+    },
+    fr: {
+        vote_success: "A voté pour {agency} !",
+        vote_duplicate: "Déjà voté !",
+        comment_empty: "Entrez du contenu.",
+        nickname_empty: "Entrez un pseudo.",
+        content_empty: "Entrez un commentaire.",
+        comment_too_long: "Max 500 caractères.",
+        password_prompt: "Mot de passe :",
+        edit_prompt: "Nouveau contenu :",
+        password_empty: "Entrez le mot de passe.",
+        password_wrong: "Mot de passe incorrect.",
+        delete_success: "Supprimé.",
+        update_success: "Mis à jour.",
+        post_success: "Publié !",
+        fail: "Erreur."
+    },
+    de: {
+        vote_success: "Für {agency} gestimmt!",
+        vote_duplicate: "Bereits abgestimmt!",
+        comment_empty: "Inhalt eingeben.",
+        nickname_empty: "Nickname eingeben.",
+        content_empty: "Kommentar eingeben.",
+        comment_too_long: "Max 500 Zeichen.",
+        password_prompt: "Passwort:",
+        edit_prompt: "Neuer Inhalt:",
+        password_empty: "Passwort eingeben.",
+        password_wrong: "Falsches Passwort.",
+        delete_success: "Gelöscht.",
+        update_success: "Aktualisiert.",
+        post_success: "Veröffentlicht!",
+        fail: "Fehler."
+    },
+    id: {
+        vote_success: "Memilih {agency}!",
+        vote_duplicate: "Sudah memilih!",
+        comment_empty: "Masukkan konten.",
+        nickname_empty: "Masukkan nama panggilan.",
+        content_empty: "Masukkan komentar.",
+        comment_too_long: "Maks 500 karakter.",
+        password_prompt: "Kata sandi:",
+        edit_prompt: "Konten baru:",
+        password_empty: "Masukkan kata sandi.",
+        password_wrong: "Kata sandi salah.",
+        delete_success: "Dihapus.",
+        update_success: "Diperbarui.",
+        post_success: "Terposting!",
+        fail: "Kesalahan."
+    },
+    vi: {
+        vote_success: "Đã chọn {agency}!",
+        vote_duplicate: "Đã chọn rồi!",
+        comment_empty: "Nhập nội dung.",
+        nickname_empty: "Nhập biệt danh.",
+        content_empty: "Nhập bình luận.",
+        comment_too_long: "Tối đa 500 ký tự.",
+        password_prompt: "Mật khẩu:",
+        edit_prompt: "Nội dung mới:",
+        password_empty: "Nhập mật khẩu.",
+        password_wrong: "Sai mật khẩu.",
+        delete_success: "Đã xóa.",
+        update_success: "Đã cập nhật.",
+        post_success: "Đã đăng!",
+        fail: "Lỗi."
+    },
+    // Fallback for others (simple English map)
+    pl: { vote_success: "Zagłosowano na {agency}!", vote_duplicate: "Już głosowałeś!", comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd." },
+    nl: { vote_success: "Gestemd op {agency}!", vote_duplicate: "Al gestemd!", comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout." },
+    pt: { vote_success: "Votou na {agency}!", vote_duplicate: "Já votou!", comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro." },
+    ru: { vote_success: "Голос за {agency}!", vote_duplicate: "Уже голосовали!", comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка." },
+    tr: { vote_success: "{agency} oylandı!", vote_duplicate: "Zaten oy verdiniz!", comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata." },
+    uk: { vote_success: "Голос за {agency}!", vote_duplicate: "Вже голосували!", comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка." }
+};
+
+// 현재 언어 감지 및 메시지 반환 함수
+function t(key, params = {}) {
+    let lang = document.documentElement.lang || 'en';
+    if (!MESSAGES[lang]) lang = 'en';
+    let msg = MESSAGES[lang][key] || MESSAGES['en'][key];
+    Object.keys(params).forEach(param => {
+        msg = msg.replace(`{${param}}`, params[param]);
+    });
+    return msg;
+}
+
 /**
  * [Async] 소속사 투표 통계 불러오기
  * - 'kft_vote_counts' 테이블 조회 (Single Row: id=1)
- */
+ *
+
 async function fetchVoteCounts() {
     getSupabase();
     if (!supabaseClient) return;
@@ -81,7 +249,7 @@ async function handleReaction(agency) {
     // 1. 중복 투표 체크
     const hasVoted = localStorage.getItem('kft_voted_' + agency);
     if (hasVoted) {
-        alert('이미 투표하셨습니다!');
+        alert(t('vote_duplicate'));
         return;
     }
     
@@ -117,14 +285,14 @@ async function handleReaction(agency) {
         
         // 5. 투표 완료 처리 (LocalStorage 저장)
         localStorage.setItem('kft_voted_' + agency, 'true');
-        alert(`${agency}에 한 표를 행사했습니다!`);
+        alert(t('vote_success', {agency: agency}));
 
     } catch (err) {
         console.error(`${agency} 투표 중 오류:`, err);
         
         // ❌ 실패 시 롤백
         if (countEl) countEl.innerText = prevCount.toLocaleString();
-        alert('투표 처리 중 오류가 발생했습니다.');
+        alert(t('fail'));
         
         // LocalStorage에서도 삭제 (다시 시도 가능하게)
         localStorage.removeItem('kft_voted_' + agency);
@@ -298,7 +466,7 @@ function renderComments(comments) {
         if (comment.face_type && comment.face_type !== 'unknown') {
             const faceType = comment.face_type;
             let className = 'badge-unknown';
-            if (['SM', 'JYP', 'YG', 'HYBE'].includes(faceType)) {
+            if (['SM', 'JYP', 'YG'].includes(faceType)) {
                 className = `badge-${faceType.toLowerCase()}`;
             }
             faceBadge = `<span class="face-badge ${className}">${escapeHtml(faceType)} Style</span>`;
@@ -342,7 +510,7 @@ function renderComments(comments) {
  * - 사용자에게 비밀번호 입력 요구 -> RPC 'delete_comment' 호출
  */
 async function handleDelete(id) {
-    const password = prompt("댓글 작성 시 설정한 비밀번호를 입력해주세요:");
+    const password = prompt(t('password_prompt'));
     if (!password) return;
 
     getSupabase();
@@ -357,14 +525,14 @@ async function handleDelete(id) {
         if (error) throw error;
 
         if (success) {
-            alert('삭제되었습니다.');
+            alert(t('delete_success'));
             fetchComments();
         } else {
-            alert('비밀번호가 일치하지 않습니다.');
+            alert(t('password_wrong'));
         }
     } catch (err) {
         console.error('댓글 삭제 오류:', err);
-        alert('삭제 중 오류가 발생했습니다.');
+        alert(t('fail'));
     }
 }
 
@@ -373,13 +541,13 @@ async function handleDelete(id) {
  * - 비밀번호 및 새 내용 입력 요구 -> RPC 'update_comment' 호출
  */
 async function handleEdit(id, oldContent) {
-    const password = prompt("댓글 수정 권한 확인: 비밀번호를 입력해주세요:");
+    const password = prompt(t('password_prompt'));
     if (!password) return;
 
-    const newContent = prompt("수정할 내용을 입력해주세요:", oldContent);
+    const newContent = prompt(t('edit_prompt'), oldContent);
     if (newContent === null) return;
     if (newContent.trim() === "") {
-        alert("내용을 입력해주세요.");
+        alert(t('comment_empty'));
         return;
     }
 
@@ -396,14 +564,14 @@ async function handleEdit(id, oldContent) {
         if (error) throw error;
 
         if (success) {
-            alert('수정되었습니다.');
+            alert(t('update_success'));
             fetchComments();
         } else {
-            alert('비밀번호가 일치하지 않습니다.');
+            alert(t('password_wrong'));
         }
     } catch (err) {
         console.error('댓글 수정 오류:', err);
-        alert('수정 중 오류가 발생했습니다.');
+        alert(t('fail'));
     }
 }
 
@@ -413,7 +581,7 @@ async function handleEdit(id, oldContent) {
 async function postComment() {
     getSupabase();
     if (!supabaseClient) {
-        alert('서비스 초기화 중입니다. 잠시 후 다시 시도해주세요.');
+        alert(t('fail'));
         return;
     }
 
@@ -423,24 +591,24 @@ async function postComment() {
     const content = document.getElementById('cmt-content').value.trim();
 
     if (!nickname) {
-        alert('닉네임을 입력해주세요.');
+        alert(t('nickname_empty'));
         document.getElementById('cmt-nickname').focus();
         return;
     }
     if (!password) {
-        alert('비밀번호를 입력해주세요.');
+        alert(t('password_empty'));
         document.getElementById('cmt-password').focus();
         return;
     }
     if (!content) {
-        alert('댓글 내용을 입력해주세요.');
+        alert(t('content_empty'));
         document.getElementById('cmt-content').focus();
         return;
     }
     
     // 500자 제한 유효성 체크
     if (content.length > 500) {
-        alert('댓글은 최대 500자까지만 작성 가능합니다.');
+        alert(t('comment_too_long'));
         document.getElementById('cmt-content').focus();
         return;
     }
@@ -464,12 +632,12 @@ async function postComment() {
         document.getElementById('cmt-content').value = '';
         document.getElementById('cmt-facetype').value = 'unknown';
 
-        alert('댓글이 등록되었습니다!');
+        alert(t('post_success'));
         fetchComments();
 
     } catch (err) {
         console.error('댓글 등록 실패:', err);
-        alert('댓글 등록에 실패했습니다.');
+        alert(t('fail'));
     }
 }
 
