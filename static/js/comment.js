@@ -200,7 +200,7 @@ function t(key, params = {}) {
 /**
  * [Async] 소속사 투표 통계 불러오기
  * - 'kft_vote_counts' 테이블 조회 (Single Row: id=1)
- *
+ */
 
 async function fetchVoteCounts() {
     getSupabase();
