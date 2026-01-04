@@ -1,54 +1,56 @@
 console.log('Comment script loaded v5');
-// Supabase Client Configuration
+
+/**
+ * =========================================================================================
+ *  Supabase 클라이언트 설정 (Supabase Client Configuration)
+ *  - 정적 사이트(Jekyll) 환경에서 .env 사용이 제한되므로, Anon Key를 직접 사용합니다.
+ *  - SUPABASE_KEY는 public(anon) 키이므로 클라이언트 코드에 노출되어도 안전합니다.
+ * =========================================================================================
+ */
 const SUPABASE_URL = "https://eevckvdicfhqxywixznt.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVldmNrdmRpY2ZocXh5d2l4em50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4NjQwMjQsImV4cCI6MjA4MjQ0MDAyNH0.idh6w8dJ-8Rjdh9aB3DuaYofnO78fNBPuSOG8QoqKqM";
 
-// Debug URL Validity explicitly
-try {
-    new URL(SUPABASE_URL);
-    console.log("Supabase URL is valid:", SUPABASE_URL);
-} catch (e) {
-    console.error("Supabase URL invalid!", e);
-    for (let i = 0; i < SUPABASE_URL.length; i++) {
-        console.log(`Char ${i}: ${SUPABASE_URL[i]} (${SUPABASE_URL.charCodeAt(i)})`);
-    }
-}
-
-// Initialize Supabase Client
-// Ensure window.supabase exists (loaded via CDN)
-// Initialize Supabase Client
+/**
+ * 전역 Supabase 클라이언트 인스턴스 (Global Supabase Client Instance)
+ * - getSupabase() 함수를 통해 지연 초기화(Lazy Initialization)됩니다.
+ */
 let supabaseClient = null;
 
+/**
+ * Supabase 클라이언트 인스턴스 반환 함수 (Singleton Pattern)
+ * - window.supabase 객체(CDN)가 로드된 후에만 클라이언트를 생성합니다.
+ * - 이미 생성된 경우 기존 인스턴스를 반환하여 중복 생성을 방지합니다.
+ * @returns {object|null} 초기화된 Supabase 클라이언트 또는 null
+ */
 function getSupabase() {
     if (supabaseClient) return supabaseClient;
     
     if (window.supabase) {
         try {
+            // URL 및 Key 공백 제거 등 안전 장치 추가 가능하나, 상단 상수 선언부에서 처리함
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('Supabase client initialized successfully.');
+            console.log('✅ Supabase client initialized successfully.');
         } catch (e) {
-            console.error('Failed to initialize Supabase client:', e);
+            console.error('❌ Failed to initialize Supabase client:', e);
         }
     } else {
-        console.warn('window.supabase is not available. Check CDN script.');
+        console.warn('⚠️ window.supabase is not available. Check CDN script.');
     }
     return supabaseClient;
 }
 
-// Initial check (optional, just for log)
-document.addEventListener('DOMContentLoaded', () => {
-   if (!window.supabase) console.warn('Supabase JS not loaded on DOMContentLoaded');
-});
-
-// Global variables
+/**
+ * 전역 변수 선언 (Global DOM Elements)
+ */
 const commentListElement = document.getElementById('comment-list');
 const commentCountElement = document.getElementById('comment-count');
 
 /**
- * Fetch and display comments
+ * [Async] 댓글 목록 불러오기 (Fetch and Display Comments)
+ * - 'kft_comments' 테이블에서 최신순으로 댓글을 조회합니다.
  */
 async function fetchComments() {
-    getSupabase();
+    getSupabase(); // 클라이언트 초기화 확인
     if (!supabaseClient || !commentListElement) return;
 
     try {
@@ -61,41 +63,45 @@ async function fetchComments() {
 
         renderComments(data);
     } catch (err) {
-        console.error('Error fetching comments:', err);
+        console.error('❌ Error fetching comments:', err);
     }
 }
 
 /**
- * Render comments to DOM
+ * 댓글 목록 DOM 렌더링 (Render Comments)
+ * @param {Array} comments 댓글 데이터 배열
  */
 function renderComments(comments) {
+    // 댓글 총 개수 업데이트
     if (commentCountElement) {
         commentCountElement.innerText = comments ? comments.length : 0;
     }
 
+    // 댓글이 없는 경우 처리
     if (!comments || comments.length === 0) {
         commentListElement.innerHTML = `
             <div class="empty-state">
                 <span class="empty-icon">💬</span>
-                <p>No comments yet.<br>Be the first to share your <strong>analysis result</strong>!</p>
+                <p>아직 댓글이 없습니다.<br>가장 먼저 <strong>분석 결과</strong>를 공유해보세요!</p>
             </div>`;
         return;
     }
 
+    // HTML 생성
     const html = comments.map(comment => {
-        // Date formatting: YYYY-MM-DD
+        // 날짜 포맷팅: YYYY.MM.DD
         const dateObj = new Date(comment.created_at);
         const year = dateObj.getFullYear();
         const month = String(dateObj.getMonth() + 1).padStart(2, '0');
         const day = String(dateObj.getDate()).padStart(2, '0');
         const dateStr = `${year}.${month}.${day}`;
 
-        // Face Badge Logic
+        // 얼굴상 뱃지 로직 (Face Badge Logic)
         let faceBadge = '';
         if (comment.face_type && comment.face_type !== 'unknown') {
-            const faceType = comment.face_type; // SM, JYP, YG, HYBE, etc
+            const faceType = comment.face_type; // SM, JYP, YG, HYBE 등
             let className = 'badge-unknown';
-            // map common types to css classes
+            // CSS 클래스 매핑
             if (['SM', 'JYP', 'YG', 'HYBE'].includes(faceType)) {
                 className = `badge-${faceType.toLowerCase()}`;
             }
@@ -118,33 +124,35 @@ function renderComments(comments) {
 }
 
 /**
- * Post a new comment
+ * [Async] 댓글 작성 (Post a New Comment)
+ * - 입력값 유효성을 검사하고 Supabase에 데이터를 저장합니다.
  */
 async function postComment() {
     getSupabase();
     if (!supabaseClient) {
-        alert('Service is unavailable (Supabase Client failed to init). See console for details.');
+        alert('서비스를 사용할 수 없습니다 (Supabase 초기화 실패).\n콘솔 로그를 확인해주세요.');
         return;
     }
 
+    // DOM 요소 가져오기
     const facetype = document.getElementById('cmt-facetype').value;
     const nickname = document.getElementById('cmt-nickname').value.trim();
     const password = document.getElementById('cmt-password').value.trim();
     const content = document.getElementById('cmt-content').value.trim();
 
-    // Validation
+    // 입력값 유효성 검사 (Validation)
     if (!nickname) {
-        alert('Please enter your Nickname.');
+        alert('닉네임을 입력해주세요.');
         document.getElementById('cmt-nickname').focus();
         return;
     }
     if (!password) {
-        alert('Please enter a Password.');
+        alert('비밀번호를 입력해주세요.');
         document.getElementById('cmt-password').focus();
         return;
     }
     if (!content) {
-        alert('Please enter your Comment.');
+        alert('댓글 내용을 입력해주세요.');
         document.getElementById('cmt-content').focus();
         return;
     }
@@ -164,23 +172,26 @@ async function postComment() {
 
         if (error) throw error;
 
-        // Reset Form
+        // 폼 초기화 (Reset Form)
         document.getElementById('cmt-nickname').value = '';
         document.getElementById('cmt-password').value = '';
         document.getElementById('cmt-content').value = '';
+        // facetype은 보통 유지하거나 'unknown'으로 되돌림 (여기서는 'unknown')
         document.getElementById('cmt-facetype').value = 'unknown';
 
-        alert('Comment submitted successfully!');
-        fetchComments(); // Reload list
+        alert('댓글이 성공적으로 등록되었습니다!');
+        fetchComments(); // 목록 새로고침
 
     } catch (err) {
-        console.error('Error posting comment:', err);
-        alert('Failed to submit comment. Please try again.');
+        console.error('❌ Error posting comment:', err);
+        alert('댓글 등록에 실패했습니다. 다시 시도해주세요.');
     }
 }
 
 /**
- * HTML Escape helper
+ * HTML 이스케이프 헬퍼 함수 (XSS 방지)
+ * @param {string} text - 이스케이프할 텍스트
+ * @returns {string} 이스케이프된 텍스트
  */
 function escapeHtml(text) {
     if (!text) return '';
@@ -192,13 +203,18 @@ function escapeHtml(text) {
         .replace(/'/g, "&#039;");
 }
 
-// Make functions available globally for HTML onclick attributes
+/**
+ * 전역 스코프 노출 (Expose to Global Scope)
+ * - HTML의 onclick 속성 등에서 접근할 수 있도록 설정합니다.
+ */
 window.postComment = postComment;
 window.fetchComments = fetchComments;
 
-// Initial Load
+/**
+ * 페이지 로드 초기화 (Initial Load)
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if we are on the page with comments
+    // 댓글 섹션이 있는 페이지인 경우에만 댓글 목록 로드
     if (document.getElementById('comment-list')) {
         fetchComments();
     }
