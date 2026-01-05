@@ -87,6 +87,7 @@
   margin-bottom: 16px;
 }
 .cmt-input {
+  width: 100%;
   flex: 1 1 140px; /* grow, shrink, min-basis */
   padding: 14px 16px;
   border: 2px solid transparent;
@@ -374,7 +375,7 @@
 /* Mobile Responsive */
 @media (max-width: 520px) {
   .comment-section-wrapper {
-    padding: 0 1rem;
+    padding: 0;
     margin: 2rem auto;
   }
   .input-row {
@@ -750,7 +751,7 @@
 /* Deep Mobile Optimization (iPhone SE, Fold, etc) */
 @media (max-width: 360px) {
     .comment-section-wrapper {
-        padding: 0 4px;
+        padding: 0;
         margin: 1rem auto;
     }
     .card-header, .comment-form-container {

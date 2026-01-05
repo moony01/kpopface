@@ -470,11 +470,7 @@ function renderPagination(totalCount, page) {
 
 function renderComments(comments) {
     const listEl = document.getElementById('comment-list');
-    const countEl = document.getElementById('comment-count');
 
-    if (countEl) {
-        countEl.innerText = comments ? comments.length : 0;
-    }
 
     if (!comments || comments.length === 0) {
         if(listEl) {
