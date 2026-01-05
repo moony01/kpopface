@@ -623,7 +623,8 @@
 .vote-subtitle {
   font-size: 1.1rem;
   color: #6b7280; /* Soft gray */
-  margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   font-weight: 600;
   animation: bounceVertical 2s infinite ease-in-out;
 }

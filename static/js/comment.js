@@ -45,7 +45,9 @@ const MESSAGES = {
         delete_success: "댓글이 삭제되었습니다.",
         update_success: "댓글이 수정되었습니다.",
         post_success: "댓글이 등록되었습니다!",
-        fail: "오류가 발생했습니다."
+        fail: "오류가 발생했습니다.",
+        vote_limit: "오늘은 이미 3번 투표하셨어요! 내일 다시 투표해주세요.",
+        vote_remain: "투표 완료! (오늘 남은 횟수: {count}회)"
     },
     en: {
         vote_success: "Voted for {agency}! Thank you.",
@@ -61,7 +63,9 @@ const MESSAGES = {
         delete_success: "Comment deleted.",
         update_success: "Comment updated.",
         post_success: "Comment posted!",
-        fail: "An error occurred."
+        fail: "An error occurred.",
+        vote_limit: "You've already voted 3 times today! Please come back tomorrow.",
+        vote_remain: "Voted! ({count} votes remaining today)"
     },
     ja: {
         vote_success: "{agency}に投票しました！ありがとうございます。",
@@ -77,7 +81,9 @@ const MESSAGES = {
         delete_success: "コメントが削除されました。",
         update_success: "コメントが修正されました。",
         post_success: "コメントが登録されました！",
-        fail: "エラーが発生しました。"
+        fail: "エラーが発生しました。",
+        vote_limit: "本日はすでに3回投票しました！明日またお願いします。",
+        vote_remain: "投票しました！（本日残り{count}回）"
     },
     zh: {
         vote_success: "已给{agency}投票！谢谢。",
@@ -93,7 +99,9 @@ const MESSAGES = {
         delete_success: "评论已删除。",
         update_success: "评论已修改。",
         post_success: "评论已发布！",
-        fail: "发生错误。"
+        fail: "发生错误。",
+        vote_limit: "您今天已经投票3次了！请明天再来。",
+        vote_remain: "投票成功！（今天还剩{count}次）"
     },
     es: {
         vote_success: "¡Votado por {agency}! Gracias.",
@@ -109,7 +117,9 @@ const MESSAGES = {
         delete_success: "Eliminado.",
         update_success: "Actualizado.",
         post_success: "¡Publicado!",
-        fail: "Error."
+        fail: "Error.",
+        vote_limit: "¡Ya has votado 3 veces hoy! Vuelve mañana.",
+        vote_remain: "¡Votado! (Quedan {count} votos hoy)"
     },
     fr: {
         vote_success: "A voté pour {agency} !",
@@ -125,7 +135,9 @@ const MESSAGES = {
         delete_success: "Supprimé.",
         update_success: "Mis à jour.",
         post_success: "Publié !",
-        fail: "Erreur."
+        fail: "Erreur.",
+        vote_limit: "Vous avez déjà voté 3 fois aujourd'hui ! Revenez demain.",
+        vote_remain: "Voté ! (Il reste {count} votes aujourd'hui)"
     },
     de: {
         vote_success: "Für {agency} gestimmt!",
@@ -141,7 +153,9 @@ const MESSAGES = {
         delete_success: "Gelöscht.",
         update_success: "Aktualisiert.",
         post_success: "Veröffentlicht!",
-        fail: "Fehler."
+        fail: "Fehler.",
+        vote_limit: "Sie haben heute bereits 3 Mal abgestimmt! Kommen Sie morgen wieder.",
+        vote_remain: "Abgestimmt! (Noch {count} Stimmen heute)"
     },
     id: {
         vote_success: "Memilih {agency}!",
@@ -157,7 +171,9 @@ const MESSAGES = {
         delete_success: "Dihapus.",
         update_success: "Diperbarui.",
         post_success: "Terposting!",
-        fail: "Kesalahan."
+        fail: "Kesalahan.",
+        vote_limit: "Anda sudah memilih 3 kali hari ini! Silakan kembali besok.",
+        vote_remain: "Sudah memilih! (Tersisa {count} suara hari ini)"
     },
     vi: {
         vote_success: "Đã chọn {agency}!",
@@ -173,15 +189,17 @@ const MESSAGES = {
         delete_success: "Đã xóa.",
         update_success: "Đã cập nhật.",
         post_success: "Đã đăng!",
-        fail: "Lỗi."
+        fail: "Lỗi.",
+        vote_limit: "Bạn đã bình chọn 3 lần hôm nay! Hãy quay lại vào ngày mai.",
+        vote_remain: "Đã bình chọn! (Còn lại {count} lần hôm nay)"
     },
     // Fallback for others (simple English map)
-    pl: { vote_success: "Zagłosowano na {agency}!", vote_duplicate: "Już głosowałeś!", comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd." },
-    nl: { vote_success: "Gestemd op {agency}!", vote_duplicate: "Al gestemd!", comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout." },
-    pt: { vote_success: "Votou na {agency}!", vote_duplicate: "Já votou!", comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro." },
-    ru: { vote_success: "Голос за {agency}!", vote_duplicate: "Уже голосовали!", comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка." },
-    tr: { vote_success: "{agency} oylandı!", vote_duplicate: "Zaten oy verdiniz!", comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata." },
-    uk: { vote_success: "Голос за {agency}!", vote_duplicate: "Вже голосували!", comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка." }
+    pl: { vote_success: "Zagłosowano na {agency}!", vote_duplicate: "Już głosowałeś!", comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd.", vote_limit: "Głosowałeś już 3 razy dzisiaj! Wróć jutro.", vote_remain: "Zagłosowano! (Pozostało {count})" },
+    nl: { vote_success: "Gestemd op {agency}!", vote_duplicate: "Al gestemd!", comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout.", vote_limit: "Je hebt vandaag al 3 keer gestemd! Kom morgen terug.", vote_remain: "Gestemd! (Nog {count} vandaag)" },
+    pt: { vote_success: "Votou na {agency}!", vote_duplicate: "Já votou!", comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro.", vote_limit: "Você já votou 3 vezes hoje! Volte amanhã.", vote_remain: "Votado! (Restam {count} votos hoje)" },
+    ru: { vote_success: "Голос за {agency}!", vote_duplicate: "Уже голосовали!", comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка.", vote_limit: "Вы уже проголосовали 3 раза сегодня! Приходите завтра.", vote_remain: "Проголосовано! (Осталось {count})" },
+    tr: { vote_success: "{agency} oylandı!", vote_duplicate: "Zaten oy verdiniz!", comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata.", vote_limit: "Bugün zaten 3 kez oy verdiniz! Yarın tekrar gelin.", vote_remain: "Oy verildi! (Bugün kalan {count})" },
+    uk: { vote_success: "Голос за {agency}!", vote_duplicate: "Вже голосували!", comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка.", vote_limit: "Ви вже проголосували 3 рази сьогодні! Приходьте завтра.", vote_remain: "Проголосовано! (Залишилось {count})" }
 };
 
 // 현재 언어 감지 및 메시지 반환 함수
@@ -244,10 +262,20 @@ function updateVoteUI(counts) {
  * - 4. 서버 RPC 호출
  */
 async function handleReaction(agency) {
-    // 1. 중복 투표 체크
-    const hasVoted = localStorage.getItem('kft_voted_' + agency);
-    if (hasVoted) {
-        alert(t('vote_duplicate'));
+    // 1. 일일 투표 제한 체크 (하루 3회)
+    const today = new Date().toDateString();
+    const lastVoteDate = localStorage.getItem('kft_last_vote_date');
+    let dailyVoteCount = parseInt(localStorage.getItem('kft_daily_vote_count') || '0');
+
+    // 날짜가 바뀌었으면 카운트 초기화
+    if (lastVoteDate !== today) {
+        dailyVoteCount = 0;
+        localStorage.setItem('kft_last_vote_date', today);
+        localStorage.setItem('kft_daily_vote_count', '0');
+    }
+
+    if (dailyVoteCount >= 3) {
+        alert(t('vote_limit'));
         return;
     }
     
@@ -282,8 +310,11 @@ async function handleReaction(agency) {
         if (error) throw error;
         
         // 5. 투표 완료 처리 (LocalStorage 저장)
-        localStorage.setItem('kft_voted_' + agency, 'true');
-        alert(t('vote_success', {agency: agency}));
+        dailyVoteCount++;
+        localStorage.setItem('kft_daily_vote_count', dailyVoteCount.toString());
+        localStorage.setItem('kft_last_vote_date', today);
+        
+        alert(t('vote_remain', {count: 3 - dailyVoteCount}));
 
     } catch (err) {
         console.error(`${agency} 투표 중 오류:`, err);
