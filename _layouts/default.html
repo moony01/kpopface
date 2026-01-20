@@ -196,23 +196,8 @@
     </title>
   </head>
   <body>
+    {% include cross-site-nav.html %}
     <div class="site-pusher">
-      <nav class="header">
-        <a href="#" class="header__icon" id="header__icon"></a>
-        {% if page.lang != "ko" %}
-        <a class="header__logo" onclick="fnMovePage()">KPOP FACE TEST</a>
-        <nav class="menu">
-          <!-- <a onclick="fnMovePage('mbtichat')">MBTI AI CHAT</a> -->
-          <a onclick="fnMovePage('blog')">BLOG</a>
-        </nav>
-        {% else %}
-        <a class="header__logo" onclick="fnMovePage()">케이팝 얼굴상 테스트</a>
-        <nav class="menu">
-          <!-- <a onclick="fnMovePage('mbtichat')">MBTI AI 채팅</a> -->
-          <a onclick="fnMovePage('blog')">블로그</a>
-        </nav>
-        {% endif %}
-      </nav>
       {{ content }}
       <div class="modal-body app-download-wrap">
         {% if page.lang != "ko" %}
