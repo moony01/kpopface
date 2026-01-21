@@ -3,10 +3,11 @@
  * 
  * @file imageGenerator.js
  * @description Canvas API로 K-POP Face Test 결과 이미지를 생성 (사용자 사진 포함)
- * @version 2.2.0
+* @version 2.3.0
  * @update T1.9 - 사용자 업로드 이미지 포함 기능 추가
  * @update T1.10 - 배경색 #fefae0 통일 + 퍼센트 바 차트 추가
  * @update T1.11 - 바 색상 CSS와 동일하게 통일 + 정렬 개선
+ * @update T1.12 - CTA 버튼 → 구글 검색창 디자인으로 변경 + 15개 언어 검색 문구
  */
 
 (function(global) {
@@ -60,7 +61,27 @@
     hybe: '\uD83D\uDC9C'   // 💜
   };
   
-  // 다국어 CTA 텍스트 (15개 언어 지원)
+// 다국어 구글 검색 문구 (15개 언어 지원)
+  var SEARCH_TEXTS = {
+    ko: '케이팝 얼굴상 테스트',
+    en: 'kpop face test',
+    ja: 'kpop 顔診断テスト',
+    zh: 'kpop 脸型测试',
+    de: 'kpop gesichtstest',
+    es: 'kpop face test',
+    fr: 'kpop test visage',
+    id: 'kpop face test',
+    nl: 'kpop gezichtstest',
+    pl: 'kpop test twarzy',
+    pt: 'kpop teste de rosto',
+    ru: 'kpop тест лица',
+    tr: 'kpop yüz testi',
+    uk: 'kpop тест обличчя',
+    vi: 'kpop kiểm tra khuôn mặt',
+    default: 'kpop face test'
+  };
+  
+  // 다국어 CTA 텍스트 (15개 언어 지원) - 더 이상 사용 안함, 검색창으로 대체
   var CTA_TEXTS = {
     ko: '\uB098\uB3C4 \uD14C\uC2A4\uD2B8 \uD558\uAE30!',  // 나도 테스트 하기!
     en: 'Try the test!',
@@ -104,7 +125,7 @@
     return AGENCY_EMOJI[key] || '\uD83C\uDFA4';  // 🎤 (기본값)
   }
   
-  /**
+/**
    * 언어별 CTA 텍스트 반환
    * @param {string} lang - 언어 코드
    * @returns {string} CTA 텍스트
@@ -112,6 +133,69 @@
   function getCTAText(lang) {
     var key = (lang || 'ko').toLowerCase();
     return CTA_TEXTS[key] || CTA_TEXTS.default;
+  }
+  
+  /**
+   * 언어별 검색 문구 반환
+   * @param {string} lang - 언어 코드
+   * @returns {string} 검색 문구
+   */
+  function getSearchText(lang) {
+    var key = (lang || 'ko').toLowerCase();
+    return SEARCH_TEXTS[key] || SEARCH_TEXTS.default;
+  }
+  
+  /**
+   * 구글 검색창 그리기
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {string} searchText - 검색 문구
+   * @param {number} y - Y 좌표
+   */
+  function drawGoogleSearchBar(ctx, searchText, y) {
+    var barWidth = 700;
+    var barHeight = 70;
+    var barX = (CANVAS_WIDTH - barWidth) / 2;
+    
+    // 검색창 배경 (흰색 + 그림자)
+    ctx.save();
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+    ctx.shadowBlur = 15;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 4;
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, barX, y, barWidth, barHeight, 35);
+    ctx.fill();
+    ctx.restore();
+    
+    // 검색창 테두리
+    ctx.strokeStyle = '#DDDDDD';
+    ctx.lineWidth = 1;
+    roundRect(ctx, barX, y, barWidth, barHeight, 35);
+    ctx.stroke();
+    
+    // 구글 로고 색상 (G)
+    var logoX = barX + 35;
+    var logoY = y + barHeight / 2;
+    ctx.font = 'bold 32px Arial, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    
+    // G 글자를 구글 색상으로
+    ctx.fillStyle = '#4285F4';  // 파랑
+    ctx.fillText('G', logoX, logoY);
+    
+    // 검색 아이콘 (돋보기) - 오른쪽
+    var iconX = barX + barWidth - 45;
+    ctx.font = '28px Arial, sans-serif';
+    ctx.fillStyle = '#9AA0A6';
+    ctx.textAlign = 'center';
+    ctx.fillText('🔍', iconX, logoY);
+    
+    // 검색 문구
+    ctx.font = '32px Pretendard, "Noto Sans KR", sans-serif';
+    ctx.fillStyle = '#333333';
+    ctx.textAlign = 'left';
+    ctx.fillText(searchText, logoX + 45, logoY);
   }
   
   /**
@@ -410,36 +494,20 @@
         drawPercentageBars(ctx, predictions, 1100);
       }
       
-      // 8. 하단 CTA 배경 (둥근 버튼)
-      ctx.fillStyle = '#FFD700';  // 금색/노란색
-      roundRect(ctx, 240, 1580, 600, 100, 50);
-      ctx.fill();
+// 8. 구글 검색창 (언어별 검색 문구)
+      drawGoogleSearchBar(ctx, getSearchText(lang), 1520);
       
-      // CTA 버튼 테두리
-      ctx.strokeStyle = '#E6C200';
-      ctx.lineWidth = 3;
-      roundRect(ctx, 240, 1580, 600, 100, 50);
-      ctx.stroke();
-      
-      // 9. 하단 CTA 텍스트
-      ctx.font = 'bold 42px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = '#333333';
+      // 9. URL 워터마크
+      ctx.font = '36px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#666666';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(getCTAText(lang), CANVAS_WIDTH / 2, 1630);
+      ctx.fillText(SITE_URL, CANVAS_WIDTH / 2, 1680);
       
-      // 10. URL 워터마크
-      ctx.font = '34px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = '#888888';
-      ctx.fillText(SITE_URL, CANVAS_WIDTH / 2, 1760);
-      
-      // 11. 하단 장식선
-      ctx.strokeStyle = '#CCCCCC';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(350, 1830);
-      ctx.lineTo(CANVAS_WIDTH - 350, 1830);
-      ctx.stroke();
+      // 10. 하단 안내 문구
+      ctx.font = '28px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#999999';
+      ctx.fillText('👆 검색해서 테스트 해보세요!', CANVAS_WIDTH / 2, 1750);
       
       // 12. PNG Blob 반환
       return new Promise(function(resolve, reject) {
@@ -465,16 +533,18 @@
   // 메인 함수
   global.generateResultImage = generateResultImage;
   
-  // 헬퍼 함수 (테스트/디버깅용)
+// 헬퍼 함수 (테스트/디버깅용)
   global.imageGeneratorUtils = {
     getAgencyColors: getAgencyColors,
     getAgencyEmoji: getAgencyEmoji,
     getCTAText: getCTAText,
+    getSearchText: getSearchText,
     wrapText: wrapText,
     truncateText: truncateText,
     loadImage: loadImage,
     drawCircularImage: drawCircularImage,
-    drawPercentageBars: drawPercentageBars
+    drawPercentageBars: drawPercentageBars,
+    drawGoogleSearchBar: drawGoogleSearchBar
   };
   
   // 버전 정보
