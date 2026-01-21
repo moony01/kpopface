@@ -9,6 +9,12 @@ let langYn = "";
 let loc = window.location.href.split("/")[0] + "//" + window.location.href.split("/")[2] + "/" + window.location.href.split("/")[3] + "/";
 var deferredPrompt;
 
+// T1.2: 결과 이미지 저장/공유를 위한 전역 변수
+var currentAgency = "";        // 현재 결과 소속사 코드 (sm, jyp, yg, hybe)
+var currentResultTitle = "";   // 결과 제목 (예: "SM얼굴상")
+var currentResultExplain = ""; // 해시태그 설명
+var currentResultCeleb = "";   // 대표 연예인
+
 document.addEventListener('DOMContentLoaded', function() {
   var headerIcon = document.getElementById('header__icon');
   var siteCache = document.getElementById('site-cache');
@@ -215,6 +221,72 @@ function fn_sendFB(sns) {
     document.body.removeChild(tmp);
     alert("URL이 복사되었습니다.");
   } 
+}
+
+/**
+ * T1.2: 결과 이미지 저장/공유 함수
+ * - 모바일: Web Share API로 공유
+ * - PC: 자동 다운로드
+ */
+async function fnSaveResultImage() {
+  // 저장 버튼 찾기 (중복 클릭 방지)
+  var saveBtn = document.querySelector('.save-result-btn');
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = '생성중...';
+  }
+  
+  try {
+    // 결과가 있는지 확인
+    if (!currentAgency || !currentResultTitle) {
+      alert('먼저 테스트를 완료해주세요!');
+      return;
+    }
+    
+    // generateResultImage 함수 호출 (imageGenerator.js)
+    var imageBlob = await generateResultImage({
+      agency: currentAgency,
+      title: currentResultTitle,
+      explain: currentResultExplain,
+      celeb: currentResultCeleb,
+      lang: langType || 'ko'
+    });
+    
+    // 파일명 생성
+    var fileName = 'kpop-face-result-' + currentAgency + '.png';
+    var imageFile = new File([imageBlob], fileName, { type: 'image/png' });
+    
+    // 모바일: Web Share API 사용
+    if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
+      await navigator.share({
+        files: [imageFile],
+        title: 'K-POP Face Test Result',
+        text: currentResultTitle
+      });
+      console.log('Image shared successfully');
+    } else {
+      // PC: 자동 다운로드
+      var downloadUrl = URL.createObjectURL(imageBlob);
+      var downloadLink = document.createElement('a');
+      downloadLink.href = downloadUrl;
+      downloadLink.download = fileName;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(downloadUrl);
+      console.log('Image downloaded:', fileName);
+    }
+    
+  } catch (error) {
+    console.error('결과 이미지 저장/공유 실패:', error);
+    alert('이미지 생성에 실패했습니다. 다시 시도해주세요.');
+  } finally {
+    // 버튼 상태 복구
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = '결과 이미지 저장';
+    }
+  }
 }
 
 //모달팝업창 닫기
@@ -852,6 +924,13 @@ async function predict() {
   var explain = "<div class='kpop-explain pt-2'>" + resultExplain + "</div>"
   var celeb = "<div class='" + prediction[0].className + "-kpop-celeb pt-2 pb-2'>" + resultCeleb + "</div>"
   $('.result-messege').html(title + explain + celeb);
+  
+  // T1.2: 결과 이미지 저장/공유를 위한 전역 변수 설정
+  currentAgency = prediction[0].className;
+  currentResultTitle = resultTitle;
+  currentResultExplain = resultExplain;
+  currentResultCeleb = resultCeleb;
+  
   var barWidth;
 
   for (let i = 0; i < maxPredictions; i++) {
