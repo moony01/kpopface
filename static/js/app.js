@@ -14,6 +14,7 @@ var currentAgency = "";        // 현재 결과 소속사 코드 (sm, jyp, yg, h
 var currentResultTitle = "";   // 결과 제목 (예: "SM얼굴상")
 var currentResultExplain = ""; // 해시태그 설명
 var currentResultCeleb = "";   // 대표 연예인
+var currentPredictions = [];   // T1.10: AI 예측 결과 배열 (퍼센트 바 차트용)
 
 document.addEventListener('DOMContentLoaded', function() {
   var headerIcon = document.getElementById('header__icon');
@@ -262,7 +263,8 @@ async function fnSaveResultImage() {
       explain: currentResultExplain,
       celeb: currentResultCeleb,
       lang: langType || 'ko',
-      userImageSrc: userImageSrc  // T1.9: 사용자 이미지 전달
+      userImageSrc: userImageSrc,  // T1.9: 사용자 이미지 전달
+      predictions: currentPredictions  // T1.10: AI 예측 결과 (퍼센트 바 차트)
     });
     
     // 파일명 생성
@@ -942,11 +944,18 @@ async function predict() {
   var celeb = "<div class='" + prediction[0].className + "-kpop-celeb pt-2 pb-2'>" + resultCeleb + "</div>"
   $('.result-messege').html(title + explain + celeb);
   
-  // T1.2: 결과 이미지 저장/공유를 위한 전역 변수 설정
+// T1.2: 결과 이미지 저장/공유를 위한 전역 변수 설정
   currentAgency = prediction[0].className;
   currentResultTitle = resultTitle;
   currentResultExplain = resultExplain;
   currentResultCeleb = resultCeleb;
+  // T1.10: AI 예측 결과 배열 저장 (퍼센트 바 차트용)
+  currentPredictions = prediction.map(function(p) {
+    return {
+      agency: p.className,
+      percent: Math.round(p.probability * 100)
+    };
+  });
   
   var barWidth;
 

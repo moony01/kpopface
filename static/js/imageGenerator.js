@@ -3,8 +3,9 @@
  * 
  * @file imageGenerator.js
  * @description Canvas API로 K-POP Face Test 결과 이미지를 생성 (사용자 사진 포함)
- * @version 2.0.0
+ * @version 2.1.0
  * @update T1.9 - 사용자 업로드 이미지 포함 기능 추가
+ * @update T1.10 - 배경색 #fefae0 통일 + 퍼센트 바 차트 추가
  */
 
 (function(global) {
@@ -18,17 +19,28 @@
   var CANVAS_HEIGHT = 1920;
   var SITE_URL = 'moony01.com/kpopface';
   
-  // 사용자 이미지 설정
-  var USER_IMAGE_SIZE = 420;       // 사용자 이미지 크기 (정사각형)
-  var USER_IMAGE_BORDER = 12;      // 테두리 두께
-  var USER_IMAGE_Y = 320;          // 이미지 Y 좌표
+  // T1.10: 배경색 통일
+  var BACKGROUND_COLOR = '#fefae0';  // 크림색 배경
   
-  // 소속사별 테마 색상
+  // 사용자 이미지 설정
+  var USER_IMAGE_SIZE = 380;       // 사용자 이미지 크기 (정사각형)
+  var USER_IMAGE_BORDER = 8;       // 테두리 두께
+  var USER_IMAGE_Y = 180;          // 이미지 Y 좌표
+  
+  // 소속사별 바 차트 색상
+  var AGENCY_BAR_COLORS = {
+    sm: '#87CEEB',    // 하늘색 (SM)
+    jyp: '#FFD700',   // 금색/노랑 (JYP)
+    yg: '#90EE90',    // 연두색 (YG)
+    hybe: '#DDA0DD'   // 연보라 (HYBE)
+  };
+  
+  // 소속사별 테두리 색상 (이미지 프레임용)
   var AGENCY_COLORS = {
-    sm: { main: '#0066FF', sub: '#00D4FF', border: '#00AAFF' },   // 파랑
-    jyp: { main: '#00C853', sub: '#69F0AE', border: '#00E676' },  // 초록
-    yg: { main: '#212121', sub: '#616161', border: '#424242' },   // 블랙
-    hybe: { main: '#6B46C1', sub: '#EC4899', border: '#9333EA' }  // 보라-핑크
+    sm: { border: '#87CEEB' },    // 하늘색
+    jyp: { border: '#9370DB' },   // 보라색 (JYP 배경색 기반)
+    yg: { border: '#90EE90' },    // 연두색
+    hybe: { border: '#DDA0DD' }   // 연보라
   };
   
   // 소속사별 이모지 (fallback용)
@@ -191,6 +203,55 @@
   }
   
   /**
+   * 퍼센트 바 차트 그리기 (T1.10)
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {Array} predictions - 예측 결과 배열 [{agency, percent}, ...]
+   * @param {number} startY - 시작 Y 좌표
+   */
+  function drawPercentageBars(ctx, predictions, startY) {
+    var barHeight = 55;
+    var barGap = 25;
+    var maxBarWidth = 600;
+    var labelWidth = 100;
+    var startX = 140;
+    
+    // 배경 박스 색상 (회색 바탕)
+    var bgBarColor = '#E0E0E0';
+    
+    for (var i = 0; i < predictions.length && i < 4; i++) {
+      var pred = predictions[i];
+      var y = startY + i * (barHeight + barGap);
+      
+      // 소속사 라벨
+      ctx.font = 'bold 36px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#333333';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(pred.agency.toUpperCase(), startX, y + barHeight / 2);
+      
+      // 배경 바 (회색)
+      var barStartX = startX + labelWidth;
+      ctx.fillStyle = bgBarColor;
+      roundRect(ctx, barStartX, y, maxBarWidth, barHeight, 8);
+      ctx.fill();
+      
+      // 퍼센트 바 (소속사별 색상)
+      var barColor = AGENCY_BAR_COLORS[pred.agency] || '#87CEEB';
+      var barWidth = Math.max((pred.percent / 100) * maxBarWidth, 60);  // 최소 60px
+      ctx.fillStyle = barColor;
+      roundRect(ctx, barStartX, y, barWidth, barHeight, 8);
+      ctx.fill();
+      
+      // 퍼센트 텍스트 (바 안에)
+      ctx.font = 'bold 32px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#333333';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(pred.percent + '%', barStartX + barWidth / 2, y + barHeight / 2);
+    }
+  }
+  
+  /**
    * 원형 클리핑으로 이미지 그리기
    * @param {CanvasRenderingContext2D} ctx
    * @param {HTMLImageElement} img - 이미지 객체
@@ -266,6 +327,7 @@
     var celeb = data.celeb || '';
     var lang = data.lang || 'ko';
     var userImageSrc = data.userImageSrc || null;
+    var predictions = data.predictions || [];  // T1.10: AI 예측 결과 배열
     
     // 폰트 로드 대기
     var fontReady = (document.fonts && document.fonts.ready) 
@@ -286,48 +348,13 @@
       canvas.height = CANVAS_HEIGHT;
       var ctx = canvas.getContext('2d');
       
-      // 2. 소속사별 배경 그라데이션
-      var colors = getAgencyColors(agency);
-      var gradient = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
-      gradient.addColorStop(0, colors.main);
-      gradient.addColorStop(0.6, colors.sub);
-      gradient.addColorStop(1, colors.main);
-      ctx.fillStyle = gradient;
+      // 2. 배경색 (크림색 통일)
+      ctx.fillStyle = BACKGROUND_COLOR;
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       
-      // 3. 배경 패턴 (미묘한 원형 패턴)
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-      for (var i = 0; i < 15; i++) {
-        var patternX = Math.random() * CANVAS_WIDTH;
-        var patternY = Math.random() * CANVAS_HEIGHT;
-        var patternR = 50 + Math.random() * 150;
-        ctx.beginPath();
-        ctx.arc(patternX, patternY, patternR, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      
-      // 4. 상단 타이틀
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 52px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('K-POP Face Test', CANVAS_WIDTH / 2, 120);
-      
-      // 5. 상단 URL
-      ctx.font = '30px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-      ctx.fillText(SITE_URL, CANVAS_WIDTH / 2, 175);
-      
-      // 6. 구분선
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(250, 230);
-      ctx.lineTo(CANVAS_WIDTH - 250, 230);
-      ctx.stroke();
-      
-      // 7. 사용자 이미지 또는 이모지
-      var imageAreaCenterY = USER_IMAGE_Y + USER_IMAGE_SIZE / 2;
+      // 3. 사용자 이미지 (상단 중앙)
+      var colors = getAgencyColors(agency);
+      var imageAreaCenterY = USER_IMAGE_Y + USER_IMAGE_SIZE / 2 + 50;
       
       if (userImage) {
         // 사용자 이미지가 있으면 원형으로 그리기
@@ -335,81 +362,77 @@
           ctx, 
           userImage, 
           CANVAS_WIDTH / 2, 
-          imageAreaCenterY + 50,
+          imageAreaCenterY,
           USER_IMAGE_SIZE, 
           colors.border,
           USER_IMAGE_BORDER
         );
       } else {
         // 이미지 없으면 이모지 표시 (fallback)
-        ctx.font = '200px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText(getAgencyEmoji(agency), CANVAS_WIDTH / 2, imageAreaCenterY + 80);
+        ctx.font = '180px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(getAgencyEmoji(agency), CANVAS_WIDTH / 2, imageAreaCenterY);
       }
       
-      // 8. 결과 제목 (사진 아래)
-      var titleY = userImage ? 880 : 850;
-      ctx.font = 'bold 95px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = '#FFFFFF';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
-      ctx.shadowBlur = 15;
-      ctx.shadowOffsetX = 3;
-      ctx.shadowOffsetY = 3;
+      // 4. 결과 제목 (사진 아래)
+      var titleY = 680;
+      ctx.font = 'bold 80px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#333333';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText(title, CANVAS_WIDTH / 2, titleY);
       
-      // 그림자 초기화
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
+      // 5. 해시태그/설명
+      var explainY = 780;
+      ctx.font = '38px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#555555';
+      wrapText(ctx, explain, CANVAS_WIDTH / 2, explainY, 900, 50);
       
-      // 9. 해시태그/설명
-      var explainY = userImage ? 1000 : 970;
-      ctx.font = '40px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-      wrapText(ctx, explain, CANVAS_WIDTH / 2, explainY, 900, 55);
+      // 6. 대표 연예인 (축약)
+      var celebY = 920;
+      var shortCeleb = truncateText(celeb, 70);
+      ctx.font = '32px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#666666';
+      wrapText(ctx, shortCeleb, CANVAS_WIDTH / 2, celebY, 950, 45);
       
-      // 10. 대표 연예인 (축약)
-      var celebY = userImage ? 1200 : 1170;
-      var shortCeleb = truncateText(celeb, 55);
-      ctx.font = '34px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-      wrapText(ctx, shortCeleb, CANVAS_WIDTH / 2, celebY, 900, 48);
+      // 7. 퍼센트 바 차트 (T1.10)
+      if (predictions && predictions.length > 0) {
+        drawPercentageBars(ctx, predictions, 1100);
+      }
       
-      // 11. 하단 CTA 배경 (둥근 버튼)
-      ctx.fillStyle = 'rgba(255, 237, 78, 0.95)';  // 노란색
-      roundRect(ctx, 240, 1550, 600, 100, 50);
+      // 8. 하단 CTA 배경 (둥근 버튼)
+      ctx.fillStyle = '#FFD700';  // 금색/노란색
+      roundRect(ctx, 240, 1580, 600, 100, 50);
       ctx.fill();
       
       // CTA 버튼 테두리
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.strokeStyle = '#E6C200';
       ctx.lineWidth = 3;
-      roundRect(ctx, 240, 1550, 600, 100, 50);
+      roundRect(ctx, 240, 1580, 600, 100, 50);
       ctx.stroke();
       
-      // 12. 하단 CTA 텍스트
-      ctx.font = 'bold 44px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = '#1A1A1A';
-      ctx.fillText(getCTAText(lang), CANVAS_WIDTH / 2, 1605);
+      // 9. 하단 CTA 텍스트
+      ctx.font = 'bold 42px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#333333';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(getCTAText(lang), CANVAS_WIDTH / 2, 1630);
       
-      // 13. URL 워터마크
-      ctx.font = '36px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-      ctx.fillText(SITE_URL, CANVAS_WIDTH / 2, 1750);
+      // 10. URL 워터마크
+      ctx.font = '34px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#888888';
+      ctx.fillText(SITE_URL, CANVAS_WIDTH / 2, 1760);
       
-      // 14. 하단 장식선
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      // 11. 하단 장식선
+      ctx.strokeStyle = '#CCCCCC';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(350, 1820);
-      ctx.lineTo(CANVAS_WIDTH - 350, 1820);
+      ctx.moveTo(350, 1830);
+      ctx.lineTo(CANVAS_WIDTH - 350, 1830);
       ctx.stroke();
       
-      // 15. 소속사 로고 느낌의 작은 아이콘 (하단)
-      ctx.font = '50px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
-      ctx.fillText(getAgencyEmoji(agency), CANVAS_WIDTH / 2, 1870);
-      
-      // 16. PNG Blob 반환
+      // 12. PNG Blob 반환
       return new Promise(function(resolve, reject) {
         try {
           canvas.toBlob(function(blob) {
@@ -441,7 +464,8 @@
     wrapText: wrapText,
     truncateText: truncateText,
     loadImage: loadImage,
-    drawCircularImage: drawCircularImage
+    drawCircularImage: drawCircularImage,
+    drawPercentageBars: drawPercentageBars
   };
   
   // 버전 정보
