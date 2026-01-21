@@ -33,12 +33,23 @@
     hybe: '\uD83D\uDC9C'   // 💜
   };
   
-  // 다국어 CTA 텍스트
+  // 다국어 CTA 텍스트 (15개 언어 지원)
   var CTA_TEXTS = {
     ko: '\uB098\uB3C4 \uD14C\uC2A4\uD2B8 \uD558\uAE30!',  // 나도 테스트 하기!
     en: 'Try the test!',
     ja: '\u30C6\u30B9\u30C8\u3057\u3066\u307F\u308B\uFF01',  // テストしてみる！
     zh: '\u6211\u4E5F\u8981\u6D4B\u8BD5\uFF01',  // 我也要测试！
+    de: 'Mach den Test!',           // 독일어
+    es: '\u00A1Haz el test!',       // 스페인어 (¡Haz el test!)
+    fr: 'Fais le test !',           // 프랑스어
+    id: 'Coba tesnya!',             // 인도네시아어
+    nl: 'Doe de test!',             // 네덜란드어
+    pl: 'Zr\u00F3b test!',          // 폴란드어 (Zrób test!)
+    pt: 'Fa\u00E7a o teste!',       // 포르투갈어 (Faça o teste!)
+    ru: '\u041F\u0440\u043E\u0439\u0434\u0438 \u0442\u0435\u0441\u0442!',  // 러시아어 (Пройди тест!)
+    tr: 'Testi yap!',               // 터키어
+    uk: '\u041F\u0440\u043E\u0439\u0434\u0438 \u0442\u0435\u0441\u0442!',  // 우크라이나어 (Пройди тест!)
+    vi: 'L\u00E0m b\u00E0i test!',  // 베트남어 (Làm bài test!)
     default: 'Try the test!'
   };
 
