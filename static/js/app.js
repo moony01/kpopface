@@ -16,6 +16,70 @@ var currentResultExplain = ""; // 해시태그 설명
 var currentResultCeleb = "";   // 대표 연예인
 var currentPredictions = [];   // T1.10: AI 예측 결과 배열 (퍼센트 바 차트용)
 
+// T1.13: 다국어 Alert 메시지 (15개 언어 지원)
+var ALERT_MESSAGES = {
+  urlCopied: {
+    ko: 'URL이 복사되었습니다.',
+    en: 'URL copied!',
+    ja: 'URLがコピーされました。',
+    zh: 'URL已复制！',
+    de: 'URL kopiert!',
+    es: '¡URL copiada!',
+    fr: 'URL copiée !',
+    id: 'URL disalin!',
+    nl: 'URL gekopieerd!',
+    pl: 'URL skopiowany!',
+    pt: 'URL copiado!',
+    ru: 'URL скопирован!',
+    tr: 'URL kopyalandı!',
+    uk: 'URL скопійовано!',
+    vi: 'Đã sao chép URL!'
+  },
+  completeTestFirst: {
+    ko: '먼저 테스트를 완료해주세요!',
+    en: 'Please complete the test first!',
+    ja: 'まずテストを完了してください！',
+    zh: '请先完成测试！',
+    de: 'Bitte zuerst den Test abschließen!',
+    es: '¡Por favor completa el test primero!',
+    fr: 'Veuillez d\'abord terminer le test !',
+    id: 'Silakan selesaikan tes terlebih dahulu!',
+    nl: 'Voltooi eerst de test!',
+    pl: 'Najpierw ukończ test!',
+    pt: 'Por favor, complete o teste primeiro!',
+    ru: 'Сначала завершите тест!',
+    tr: 'Lütfen önce testi tamamlayın!',
+    uk: 'Спочатку завершіть тест!',
+    vi: 'Vui lòng hoàn thành bài test trước!'
+  },
+  imageFailed: {
+    ko: '이미지 생성에 실패했습니다. 다시 시도해주세요.',
+    en: 'Failed to create image. Please try again.',
+    ja: '画像の作成に失敗しました。もう一度お試しください。',
+    zh: '图片创建失败，请重试。',
+    de: 'Bild konnte nicht erstellt werden. Bitte erneut versuchen.',
+    es: 'Error al crear la imagen. Inténtalo de nuevo.',
+    fr: 'Échec de la création de l\'image. Veuillez réessayer.',
+    id: 'Gagal membuat gambar. Silakan coba lagi.',
+    nl: 'Kan afbeelding niet maken. Probeer opnieuw.',
+    pl: 'Nie udało się utworzyć obrazu. Spróbuj ponownie.',
+    pt: 'Falha ao criar imagem. Tente novamente.',
+    ru: 'Не удалось создать изображение. Попробуйте снова.',
+    tr: 'Görüntü oluşturulamadı. Lütfen tekrar deneyin.',
+    uk: 'Не вдалося створити зображення. Спробуйте ще раз.',
+    vi: 'Tạo ảnh thất bại. Vui lòng thử lại.'
+  }
+};
+
+// 다국어 메시지 가져오기 함수
+function getAlertMessage(key) {
+  var lang = langType || 'ko';
+  if (ALERT_MESSAGES[key] && ALERT_MESSAGES[key][lang]) {
+    return ALERT_MESSAGES[key][lang];
+  }
+  return ALERT_MESSAGES[key] ? ALERT_MESSAGES[key]['en'] : key;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   var headerIcon = document.getElementById('header__icon');
   var siteCache = document.getElementById('site-cache');
@@ -220,7 +284,7 @@ function fn_sendFB(sns) {
     tmp.select();
     document.execCommand("copy");
     document.body.removeChild(tmp);
-    alert("URL이 복사되었습니다.");
+    alert(getAlertMessage('urlCopied'));
   } 
 }
 
@@ -248,7 +312,7 @@ async function fnSaveResultImage() {
   try {
     // 결과가 있는지 확인
     if (!currentAgency || !currentResultTitle) {
-      alert('먼저 테스트를 완료해주세요!');
+      alert(getAlertMessage('completeTestFirst'));
       return;
     }
     
@@ -294,7 +358,7 @@ async function fnSaveResultImage() {
     
   } catch (error) {
     console.error('결과 이미지 저장/공유 실패:', error);
-    alert('이미지 생성에 실패했습니다. 다시 시도해주세요.');
+    alert(getAlertMessage('imageFailed'));
   } finally {
     // 버튼 상태 복구
     if (saveBtn) {
