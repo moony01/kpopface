@@ -230,10 +230,18 @@ function fn_sendFB(sns) {
  */
 async function fnSaveResultImage() {
   // 저장 버튼 찾기 (중복 클릭 방지)
-  var saveBtn = document.querySelector('.save-result-btn');
+  var saveBtn = document.getElementById('save-image-btn');
+  var originalText = '';
   if (saveBtn) {
+    originalText = saveBtn.querySelector('.save-image-text') ? 
+                   saveBtn.querySelector('.save-image-text').textContent : 
+                   saveBtn.textContent;
     saveBtn.disabled = true;
-    saveBtn.textContent = '생성중...';
+    if (saveBtn.querySelector('.save-image-text')) {
+      saveBtn.querySelector('.save-image-text').textContent = '생성중...';
+    } else {
+      saveBtn.textContent = '생성중...';
+    }
   }
   
   try {
@@ -284,7 +292,11 @@ async function fnSaveResultImage() {
     // 버튼 상태 복구
     if (saveBtn) {
       saveBtn.disabled = false;
-      saveBtn.textContent = '결과 이미지 저장';
+      if (saveBtn.querySelector('.save-image-text')) {
+        saveBtn.querySelector('.save-image-text').textContent = originalText;
+      } else {
+        saveBtn.textContent = originalText;
+      }
     }
   }
 }

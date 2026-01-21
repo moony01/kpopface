@@ -311,6 +311,43 @@
 
 /* fileupload: end */
 
+/* save-image-btn: start */
+.save-image-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 15px auto;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #6B46C1, #EC4899);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.save-image-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(107, 70, 193, 0.4);
+}
+
+.save-image-btn:active {
+    transform: translateY(0);
+}
+
+.save-image-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.save-image-btn i {
+    margin-right: 8px;
+}
+/* save-image-btn: end */
+
 /* Tips: start */
 .tips-contents {
     width: 100%;
