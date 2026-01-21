@@ -251,13 +251,18 @@ async function fnSaveResultImage() {
       return;
     }
     
+    // T1.9: 사용자 업로드 이미지 가져오기
+    var userImage = document.getElementById('face-image');
+    var userImageSrc = userImage ? userImage.src : null;
+    
     // generateResultImage 함수 호출 (imageGenerator.js)
     var imageBlob = await generateResultImage({
       agency: currentAgency,
       title: currentResultTitle,
       explain: currentResultExplain,
       celeb: currentResultCeleb,
-      lang: langType || 'ko'
+      lang: langType || 'ko',
+      userImageSrc: userImageSrc  // T1.9: 사용자 이미지 전달
     });
     
     // 파일명 생성
