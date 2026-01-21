@@ -122,6 +122,97 @@
       property="og:image"
     />
 
+    <!-- OG 보완 -->
+    <meta property="og:site_name" content="K-Pop Face Test">
+    {% if page.lang == "ko" %}
+    <meta property="og:locale" content="ko_KR">
+    {% elsif page.lang == "en" %}
+    <meta property="og:locale" content="en_US">
+    {% elsif page.lang == "ja" %}
+    <meta property="og:locale" content="ja_JP">
+    {% elsif page.lang == "zh" %}
+    <meta property="og:locale" content="zh_CN">
+    {% elsif page.lang == "de" %}
+    <meta property="og:locale" content="de_DE">
+    {% elsif page.lang == "es" %}
+    <meta property="og:locale" content="es_ES">
+    {% elsif page.lang == "fr" %}
+    <meta property="og:locale" content="fr_FR">
+    {% elsif page.lang == "id" %}
+    <meta property="og:locale" content="id_ID">
+    {% elsif page.lang == "nl" %}
+    <meta property="og:locale" content="nl_NL">
+    {% elsif page.lang == "pl" %}
+    <meta property="og:locale" content="pl_PL">
+    {% elsif page.lang == "pt" %}
+    <meta property="og:locale" content="pt_BR">
+    {% elsif page.lang == "ru" %}
+    <meta property="og:locale" content="ru_RU">
+    {% elsif page.lang == "tr" %}
+    <meta property="og:locale" content="tr_TR">
+    {% elsif page.lang == "uk" %}
+    <meta property="og:locale" content="uk_UA">
+    {% elsif page.lang == "vi" %}
+    <meta property="og:locale" content="vi_VN">
+    {% else %}
+    <meta property="og:locale" content="ko_KR">
+    {% endif %}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    {% if page.title %}
+    <meta name="twitter:title" content="{{ page.title }}">
+    {% else %}
+    <meta name="twitter:title" content="{{ site.title }}">
+    {% endif %}
+    {% if page.description %}
+    <meta name="twitter:description" content="{{ page.description }}">
+    {% else %}
+    <meta name="twitter:description" content="{{ site.description }}">
+    {% endif %}
+    <meta name="twitter:image" content="{{ site.url }}/kpopface/static/img/share/kakao-url-share.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ site.url }}/kpopface{{ page.url }}">
+
+    <!-- hreflang 다국어 SEO -->
+    <link rel="alternate" hreflang="ko" href="{{ site.url }}/kpopface/">
+    <link rel="alternate" hreflang="en" href="{{ site.url }}/kpopface/en/">
+    <link rel="alternate" hreflang="ja" href="{{ site.url }}/kpopface/ja/">
+    <link rel="alternate" hreflang="zh" href="{{ site.url }}/kpopface/zh/">
+    <link rel="alternate" hreflang="de" href="{{ site.url }}/kpopface/de/">
+    <link rel="alternate" hreflang="es" href="{{ site.url }}/kpopface/es/">
+    <link rel="alternate" hreflang="fr" href="{{ site.url }}/kpopface/fr/">
+    <link rel="alternate" hreflang="id" href="{{ site.url }}/kpopface/id/">
+    <link rel="alternate" hreflang="nl" href="{{ site.url }}/kpopface/nl/">
+    <link rel="alternate" hreflang="pl" href="{{ site.url }}/kpopface/pl/">
+    <link rel="alternate" hreflang="pt" href="{{ site.url }}/kpopface/pt/">
+    <link rel="alternate" hreflang="ru" href="{{ site.url }}/kpopface/ru/">
+    <link rel="alternate" hreflang="tr" href="{{ site.url }}/kpopface/tr/">
+    <link rel="alternate" hreflang="uk" href="{{ site.url }}/kpopface/uk/">
+    <link rel="alternate" hreflang="vi" href="{{ site.url }}/kpopface/vi/">
+    <link rel="alternate" hreflang="x-default" href="{{ site.url }}/kpopface/en/">
+
+    <!-- JSON-LD 구조화 데이터 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "K-Pop Face Test",
+      "alternateName": "{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}",
+      "description": "{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}",
+      "url": "{{ site.url }}/kpopface{{ page.url }}",
+      "applicationCategory": "Entertainment",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "inLanguage": ["ko", "en", "ja", "zh", "de", "es", "fr", "id", "nl", "pl", "pt", "ru", "tr", "uk", "vi"]
+    }
+    </script>
+
     {% if page.description %}
     <meta content="{{ page.description }}" property="og:description" />
     {% else %}
