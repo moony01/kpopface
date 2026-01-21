@@ -3,9 +3,10 @@
  * 
  * @file imageGenerator.js
  * @description Canvas API로 K-POP Face Test 결과 이미지를 생성 (사용자 사진 포함)
- * @version 2.1.0
+ * @version 2.2.0
  * @update T1.9 - 사용자 업로드 이미지 포함 기능 추가
  * @update T1.10 - 배경색 #fefae0 통일 + 퍼센트 바 차트 추가
+ * @update T1.11 - 바 색상 CSS와 동일하게 통일 + 정렬 개선
  */
 
 (function(global) {
@@ -27,20 +28,28 @@
   var USER_IMAGE_BORDER = 8;       // 테두리 두께
   var USER_IMAGE_Y = 180;          // 이미지 Y 좌표
   
-  // 소속사별 바 차트 색상
+  // 소속사별 바 차트 색상 (CSS main.css와 동일)
   var AGENCY_BAR_COLORS = {
-    sm: '#87CEEB',    // 하늘색 (SM)
-    jyp: '#FFD700',   // 금색/노랑 (JYP)
-    yg: '#90EE90',    // 연두색 (YG)
-    hybe: '#DDA0DD'   // 연보라 (HYBE)
+    sm: 'rgba(117, 204, 84, 1)',     // 연두색 (.sm-bar)
+    jyp: 'rgba(195, 140, 102, 1)',   // 브라운 (.jyp-bar)
+    yg: 'rgba(27, 175, 234, 1)',     // 하늘색 (.yg-bar)
+    hybe: 'rgba(235, 166, 190, 1)'   // 분홍색 (.hybe-bar)
+  };
+  
+  // 소속사별 바 배경색 (0.2 투명도)
+  var AGENCY_BAR_BG_COLORS = {
+    sm: 'rgba(117, 204, 84, 0.2)',
+    jyp: 'rgba(195, 140, 102, 0.2)',
+    yg: 'rgba(27, 175, 234, 0.2)',
+    hybe: 'rgba(235, 166, 190, 0.2)'
   };
   
   // 소속사별 테두리 색상 (이미지 프레임용)
   var AGENCY_COLORS = {
-    sm: { border: '#87CEEB' },    // 하늘색
-    jyp: { border: '#9370DB' },   // 보라색 (JYP 배경색 기반)
-    yg: { border: '#90EE90' },    // 연두색
-    hybe: { border: '#DDA0DD' }   // 연보라
+    sm: { border: 'rgba(117, 204, 84, 1)' },
+    jyp: { border: 'rgba(195, 140, 102, 1)' },
+    yg: { border: 'rgba(27, 175, 234, 1)' },
+    hybe: { border: 'rgba(235, 166, 190, 1)' }
   };
   
   // 소속사별 이모지 (fallback용)
@@ -204,47 +213,47 @@
   
   /**
    * 퍼센트 바 차트 그리기 (T1.10)
+   * CSS main.css의 바 스타일과 동일하게 적용
    * @param {CanvasRenderingContext2D} ctx
    * @param {Array} predictions - 예측 결과 배열 [{agency, percent}, ...]
    * @param {number} startY - 시작 Y 좌표
    */
   function drawPercentageBars(ctx, predictions, startY) {
-    var barHeight = 55;
-    var barGap = 25;
-    var maxBarWidth = 600;
-    var labelWidth = 100;
-    var startX = 140;
-    
-    // 배경 박스 색상 (회색 바탕)
-    var bgBarColor = '#E0E0E0';
+    var barHeight = 50;
+    var barGap = 20;
+    var maxBarWidth = 650;
+    var labelWidth = 80;
+    var paddingLeft = (CANVAS_WIDTH - labelWidth - maxBarWidth) / 2;  // 중앙 정렬
     
     for (var i = 0; i < predictions.length && i < 4; i++) {
       var pred = predictions[i];
       var y = startY + i * (barHeight + barGap);
+      var agencyKey = pred.agency.toLowerCase();
       
-      // 소속사 라벨
-      ctx.font = 'bold 36px Pretendard, "Noto Sans KR", sans-serif';
-      ctx.fillStyle = '#333333';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(pred.agency.toUpperCase(), startX, y + barHeight / 2);
-      
-      // 배경 바 (회색)
-      var barStartX = startX + labelWidth;
-      ctx.fillStyle = bgBarColor;
-      roundRect(ctx, barStartX, y, maxBarWidth, barHeight, 8);
-      ctx.fill();
-      
-      // 퍼센트 바 (소속사별 색상)
-      var barColor = AGENCY_BAR_COLORS[pred.agency] || '#87CEEB';
-      var barWidth = Math.max((pred.percent / 100) * maxBarWidth, 60);  // 최소 60px
-      ctx.fillStyle = barColor;
-      roundRect(ctx, barStartX, y, barWidth, barHeight, 8);
-      ctx.fill();
-      
-      // 퍼센트 텍스트 (바 안에)
+      // 소속사 라벨 (왼쪽 정렬)
       ctx.font = 'bold 32px Pretendard, "Noto Sans KR", sans-serif';
       ctx.fillStyle = '#333333';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(pred.agency.toUpperCase(), paddingLeft + labelWidth - 15, y + barHeight / 2);
+      
+      // 배경 바 (소속사별 0.2 투명도 색상) - CSS와 동일
+      var barStartX = paddingLeft + labelWidth;
+      var bgColor = AGENCY_BAR_BG_COLORS[agencyKey] || 'rgba(200, 200, 200, 0.2)';
+      ctx.fillStyle = bgColor;
+      roundRect(ctx, barStartX, y, maxBarWidth, barHeight, 10);
+      ctx.fill();
+      
+      // 퍼센트 바 (소속사별 색상) - CSS와 동일
+      var barColor = AGENCY_BAR_COLORS[agencyKey] || 'rgba(150, 150, 150, 1)';
+      var barWidth = Math.max((pred.percent / 100) * maxBarWidth, 80);  // 최소 80px
+      ctx.fillStyle = barColor;
+      roundRect(ctx, barStartX, y, barWidth, barHeight, 10);
+      ctx.fill();
+      
+      // 퍼센트 텍스트 (바 안에, 흰색)
+      ctx.font = 'bold 28px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle = '#FFFFFF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(pred.percent + '%', barStartX + barWidth / 2, y + barHeight / 2);
