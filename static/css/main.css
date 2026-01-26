@@ -286,22 +286,43 @@
 }
 
 .image-title-wrap {
-    padding: 20px 15px 15px 15px;
+    display: flex;
+    justify-content: center;
+    padding: 0 15px 20px 15px;
     color: #222;
 }
 
 .try-again-btn {
-    border-radius: 40px;
-    border: solid 1.5px #35465d;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid #35465d;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    color: #35465d;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.try-again-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(53, 70, 93, 0.4);
     background-color: #35465d;
+    color: #ffffff;
+}
+
+.try-again-btn:active {
+    transform: translateY(0);
 }
 
 .try-again-text {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
-    color: #ffffff;
-    padding: 4px 15px;
+    color: inherit;
 }
 
 .fa-spin {
@@ -316,12 +337,13 @@
     display: block;
     width: 100%;
     max-width: 300px;
-    margin: 15px auto;
+    margin: 20px auto 10px;
     padding: 12px 20px;
     background: linear-gradient(135deg, #6B46C1, #EC4899);
     color: white;
     border: none;
     border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
