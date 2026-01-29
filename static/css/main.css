@@ -370,6 +370,60 @@
 }
 /* save-image-btn: end */
 
+/* sns-promo: start */
+.sns-promo-container {
+    text-align: center;
+    margin: 30px auto;
+    padding-bottom: 20px;
+}
+
+.sns-promo-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.sns-promo-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.sns-icon {
+    font-size: 2rem;
+    transition: transform 0.2s, opacity 0.2s;
+    text-decoration: none;
+}
+
+.sns-icon:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.sns-icon-instagram {
+    color: #E4405F;
+}
+
+.sns-icon-tiktok {
+    color: #000000;
+}
+
+.sns-icon-x {
+    color: #000000;
+}
+
+@media screen and (max-width: 559px) {
+    .sns-icon {
+        font-size: 1.8rem;
+    }
+    .sns-promo-icons {
+        gap: 15px;
+    }
+}
+/* sns-promo: end */
+
 /* Tips: start */
 .tips-contents {
     width: 100%;
