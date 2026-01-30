@@ -28,6 +28,10 @@ function getSupabase() {
 const commentListElement = null;
 const commentCountElement = null;
 
+// 대댓글 관련 전역 변수
+let replyingToId = null;       // 현재 답글 대상 댓글 ID
+let replyingToNickname = null; // 현재 답글 대상 닉네임
+
 
 // 다국어 메시지 사전
 const MESSAGES = {
@@ -47,7 +51,10 @@ const MESSAGES = {
         post_success: "댓글이 등록되었습니다!",
         fail: "오류가 발생했습니다.",
         vote_limit: "오늘은 이미 3번 투표하셨어요! 내일 다시 투표해주세요.",
-        vote_remain: "투표 완료! (오늘 남은 횟수: {count}회)"
+        vote_remain: "투표 완료! (오늘 남은 횟수: {count}회)",
+        reply: "답글",
+        reply_to: "{nickname}님에게 답글",
+        cancel_reply: "취소"
     },
     en: {
         vote_success: "Voted for {agency}! Thank you.",
@@ -65,7 +72,10 @@ const MESSAGES = {
         post_success: "Comment posted!",
         fail: "An error occurred.",
         vote_limit: "You've already voted 3 times today! Please come back tomorrow.",
-        vote_remain: "Voted! ({count} votes remaining today)"
+        vote_remain: "Voted! ({count} votes remaining today)",
+        reply: "Reply",
+        reply_to: "Reply to {nickname}",
+        cancel_reply: "Cancel"
     },
     ja: {
         vote_success: "{agency}に投票しました！ありがとうございます。",
@@ -83,7 +93,10 @@ const MESSAGES = {
         post_success: "コメントが登録されました！",
         fail: "エラーが発生しました。",
         vote_limit: "本日はすでに3回投票しました！明日またお願いします。",
-        vote_remain: "投票しました！（本日残り{count}回）"
+        vote_remain: "投票しました！（本日残り{count}回）",
+        reply: "返信",
+        reply_to: "{nickname}さんに返信",
+        cancel_reply: "キャンセル"
     },
     zh: {
         vote_success: "已给{agency}投票！谢谢。",
@@ -101,7 +114,10 @@ const MESSAGES = {
         post_success: "评论已发布！",
         fail: "发生错误。",
         vote_limit: "您今天已经投票3次了！请明天再来。",
-        vote_remain: "投票成功！（今天还剩{count}次）"
+        vote_remain: "投票成功！（今天还剩{count}次）",
+        reply: "回复",
+        reply_to: "回复 {nickname}",
+        cancel_reply: "取消"
     },
     es: {
         vote_success: "¡Votado por {agency}! Gracias.",
@@ -119,7 +135,10 @@ const MESSAGES = {
         post_success: "¡Publicado!",
         fail: "Error.",
         vote_limit: "¡Ya has votado 3 veces hoy! Vuelve mañana.",
-        vote_remain: "¡Votado! (Quedan {count} votos hoy)"
+        vote_remain: "¡Votado! (Quedan {count} votos hoy)",
+        reply: "Responder",
+        reply_to: "Responder a {nickname}",
+        cancel_reply: "Cancelar"
     },
     fr: {
         vote_success: "A voté pour {agency} !",
@@ -137,7 +156,10 @@ const MESSAGES = {
         post_success: "Publié !",
         fail: "Erreur.",
         vote_limit: "Vous avez déjà voté 3 fois aujourd'hui ! Revenez demain.",
-        vote_remain: "Voté ! (Il reste {count} votes aujourd'hui)"
+        vote_remain: "Voté ! (Il reste {count} votes aujourd'hui)",
+        reply: "Répondre",
+        reply_to: "Répondre à {nickname}",
+        cancel_reply: "Annuler"
     },
     de: {
         vote_success: "Für {agency} gestimmt!",
@@ -155,7 +177,10 @@ const MESSAGES = {
         post_success: "Veröffentlicht!",
         fail: "Fehler.",
         vote_limit: "Sie haben heute bereits 3 Mal abgestimmt! Kommen Sie morgen wieder.",
-        vote_remain: "Abgestimmt! (Noch {count} Stimmen heute)"
+        vote_remain: "Abgestimmt! (Noch {count} Stimmen heute)",
+        reply: "Antworten",
+        reply_to: "Antwort an {nickname}",
+        cancel_reply: "Abbrechen"
     },
     id: {
         vote_success: "Memilih {agency}!",
@@ -173,7 +198,10 @@ const MESSAGES = {
         post_success: "Terposting!",
         fail: "Kesalahan.",
         vote_limit: "Anda sudah memilih 3 kali hari ini! Silakan kembali besok.",
-        vote_remain: "Sudah memilih! (Tersisa {count} suara hari ini)"
+        vote_remain: "Sudah memilih! (Tersisa {count} suara hari ini)",
+        reply: "Balas",
+        reply_to: "Balas {nickname}",
+        cancel_reply: "Batal"
     },
     vi: {
         vote_success: "Đã chọn {agency}!",
@@ -191,15 +219,18 @@ const MESSAGES = {
         post_success: "Đã đăng!",
         fail: "Lỗi.",
         vote_limit: "Bạn đã bình chọn 3 lần hôm nay! Hãy quay lại vào ngày mai.",
-        vote_remain: "Đã bình chọn! (Còn lại {count} lần hôm nay)"
+        vote_remain: "Đã bình chọn! (Còn lại {count} lần hôm nay)",
+        reply: "Trả lời",
+        reply_to: "Trả lời {nickname}",
+        cancel_reply: "Hủy"
     },
     // Fallback for others (simple English map)
-    pl: { vote_success: "Zagłosowano na {agency}!", vote_duplicate: "Już głosowałeś!", comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd.", vote_limit: "Głosowałeś już 3 razy dzisiaj! Wróć jutro.", vote_remain: "Zagłosowano! (Pozostało {count})" },
-    nl: { vote_success: "Gestemd op {agency}!", vote_duplicate: "Al gestemd!", comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout.", vote_limit: "Je hebt vandaag al 3 keer gestemd! Kom morgen terug.", vote_remain: "Gestemd! (Nog {count} vandaag)" },
-    pt: { vote_success: "Votou na {agency}!", vote_duplicate: "Já votou!", comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro.", vote_limit: "Você já votou 3 vezes hoje! Volte amanhã.", vote_remain: "Votado! (Restam {count} votos hoje)" },
-    ru: { vote_success: "Голос за {agency}!", vote_duplicate: "Уже голосовали!", comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка.", vote_limit: "Вы уже проголосовали 3 раза сегодня! Приходите завтра.", vote_remain: "Проголосовано! (Осталось {count})" },
-    tr: { vote_success: "{agency} oylandı!", vote_duplicate: "Zaten oy verdiniz!", comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata.", vote_limit: "Bugün zaten 3 kez oy verdiniz! Yarın tekrar gelin.", vote_remain: "Oy verildi! (Bugün kalan {count})" },
-    uk: { vote_success: "Голос за {agency}!", vote_duplicate: "Вже голосували!", comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка.", vote_limit: "Ви вже проголосували 3 рази сьогодні! Приходьте завтра.", vote_remain: "Проголосовано! (Залишилось {count})" }
+    pl: { vote_success: "Zagłosowano na {agency}!", vote_duplicate: "Już głosowałeś!", comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd.", vote_limit: "Głosowałeś już 3 razy dzisiaj! Wróć jutro.", vote_remain: "Zagłosowano! (Pozostało {count})", reply: "Odpowiedz", reply_to: "Odpowiedź do {nickname}", cancel_reply: "Anuluj" },
+    nl: { vote_success: "Gestemd op {agency}!", vote_duplicate: "Al gestemd!", comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout.", vote_limit: "Je hebt vandaag al 3 keer gestemd! Kom morgen terug.", vote_remain: "Gestemd! (Nog {count} vandaag)", reply: "Reageren", reply_to: "Reageren op {nickname}", cancel_reply: "Annuleren" },
+    pt: { vote_success: "Votou na {agency}!", vote_duplicate: "Já votou!", comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro.", vote_limit: "Você já votou 3 vezes hoje! Volte amanhã.", vote_remain: "Votado! (Restam {count} votos hoje)", reply: "Responder", reply_to: "Responder a {nickname}", cancel_reply: "Cancelar" },
+    ru: { vote_success: "Голос за {agency}!", vote_duplicate: "Уже голосовали!", comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка.", vote_limit: "Вы уже проголосовали 3 раза сегодня! Приходите завтра.", vote_remain: "Проголосовано! (Осталось {count})", reply: "Ответить", reply_to: "Ответ {nickname}", cancel_reply: "Отмена" },
+    tr: { vote_success: "{agency} oylandı!", vote_duplicate: "Zaten oy verdiniz!", comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata.", vote_limit: "Bugün zaten 3 kez oy verdiniz! Yarın tekrar gelin.", vote_remain: "Oy verildi! (Bugün kalan {count})", reply: "Yanıtla", reply_to: "{nickname} kişisine yanıt", cancel_reply: "İptal" },
+    uk: { vote_success: "Голос за {agency}!", vote_duplicate: "Вже голосували!", comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка.", vote_limit: "Ви вже проголосували 3 рази сьогодні! Приходьте завтра.", vote_remain: "Проголосовано! (Залишилось {count})", reply: "Відповісти", reply_to: "Відповідь для {nickname}", cancel_reply: "Скасувати" }
 };
 
 // 현재 언어 감지 및 메시지 반환 함수
@@ -383,7 +414,8 @@ async function fetchComments(page = 1) {
 
         const { data, error, count } = await supabaseClient
             .from('kft_comments')
-            .select('id, created_at, nickname, content, face_type', { count: 'exact' })
+            .select('id, created_at, nickname, content, face_type, parent_id', { count: 'exact' })
+            .is('parent_id', null)  // 원댓글만 페이징 대상
             .order('created_at', { ascending: false })
             .range(from, to);
 
@@ -468,9 +500,8 @@ function renderPagination(totalCount, page) {
     numbersEl.innerHTML = html;
 }
 
-function renderComments(comments) {
+async function renderComments(comments) {
     const listEl = document.getElementById('comment-list');
-
 
     if (!comments || comments.length === 0) {
         if(listEl) {
@@ -483,51 +514,135 @@ function renderComments(comments) {
         return;
     }
 
-    const html = comments.map(comment => {
-        const dateObj = new Date(comment.created_at);
-        const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}`;
+    // 원댓글 ID 목록
+    const parentIds = comments.map(c => c.id);
 
-        let faceBadge = '';
-        if (comment.face_type && comment.face_type !== 'unknown') {
-            const faceType = comment.face_type;
-            let className = 'badge-unknown';
-            if (['SM', 'JYP', 'YG'].includes(faceType)) {
-                className = `badge-${faceType.toLowerCase()}`;
-            }
-            faceBadge = `<span class="face-badge ${className}">${escapeHtml(faceType)} Style</span>`;
+    // 대댓글 조회
+    let replies = [];
+    if (parentIds.length > 0) {
+        const { data: replyData } = await supabaseClient
+            .from('kft_comments')
+            .select('id, created_at, nickname, content, face_type, parent_id')
+            .in('parent_id', parentIds)
+            .order('created_at', { ascending: true });
+        replies = replyData || [];
+    }
+
+    // 대댓글을 parent_id별로 그룹화
+    const repliesByParent = {};
+    replies.forEach(reply => {
+        if (!repliesByParent[reply.parent_id]) {
+            repliesByParent[reply.parent_id] = [];
         }
+        repliesByParent[reply.parent_id].push(reply);
+    });
 
-        return `
-        <div class="comment-item" id="comment-${comment.id}">
-            <div class="cmt-top">
-                <div class="cmt-info">
-                    <span class="cmt-user">${escapeHtml(comment.nickname)}</span>
-                    ${faceBadge}
-                </div>
-                <div class="cmt-right-group">
-                    <span class="cmt-date">${dateStr}</span>
-                    <div class="more-menu-container">
-                        <button class="btn-more" onclick="toggleMenu(${comment.id}, event)" aria-label="댓글 옵션 더보기">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <div id="menu-${comment.id}" class="more-dropdown">
-                            <button onclick="handleEdit(${comment.id}, '${escapeHtml(comment.content)}')">
-                                <i class="fa-solid fa-pen"></i> 수정
-                            </button>
-                            <button onclick="handleDelete(${comment.id})">
-                                <i class="fa-solid fa-trash"></i> 삭제
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cmt-body">
-                <div class="cmt-text">${escapeHtml(comment.content)}</div>
-            </div>
-        </div>`;
+    const html = comments.map(comment => {
+        const commentReplies = repliesByParent[comment.id] || [];
+        return renderSingleComment(comment, false) + renderReplies(commentReplies);
     }).join('');
 
     if(listEl) listEl.innerHTML = html;
+}
+
+/**
+ * 단일 댓글 렌더링
+ */
+function renderSingleComment(comment, isReply = false) {
+    const dateObj = new Date(comment.created_at);
+    const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}`;
+
+    let faceBadge = '';
+    if (comment.face_type && comment.face_type !== 'unknown') {
+        const faceType = comment.face_type;
+        let className = 'badge-unknown';
+        if (['SM', 'JYP', 'YG'].includes(faceType)) {
+            className = `badge-${faceType.toLowerCase()}`;
+        }
+        faceBadge = `<span class="face-badge ${className}">${escapeHtml(faceType)} Style</span>`;
+    }
+
+    const replyBtn = !isReply ? `
+        <button class="btn-reply" onclick="startReply(${comment.id}, ${JSON.stringify(comment.nickname)})">
+            <i class="fa-solid fa-reply"></i> ${t('reply')}
+        </button>` : '';
+
+    const itemClass = isReply ? 'comment-item comment-reply' : 'comment-item';
+
+    return `
+    <div class="${itemClass}" id="comment-${comment.id}">
+        <div class="cmt-top">
+            <div class="cmt-info">
+                <span class="cmt-user">${escapeHtml(comment.nickname)}</span>
+                ${faceBadge}
+            </div>
+            <div class="cmt-right-group">
+                <span class="cmt-date">${dateStr}</span>
+                <div class="more-menu-container">
+                    <button class="btn-more" onclick="toggleMenu(${comment.id}, event)" aria-label="댓글 옵션 더보기">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div id="menu-${comment.id}" class="more-dropdown">
+                        <button onclick="handleEdit(${comment.id}, ${JSON.stringify(comment.content)})">
+                            <i class="fa-solid fa-pen"></i> 수정
+                        </button>
+                        <button onclick="handleDelete(${comment.id})">
+                            <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cmt-body">
+            <div class="cmt-text">${escapeHtml(comment.content)}</div>
+            ${replyBtn}
+        </div>
+    </div>`;
+}
+
+/**
+ * 대댓글 목록 렌더링
+ */
+function renderReplies(replies) {
+    if (!replies || replies.length === 0) return '';
+    return replies.map(reply => renderSingleComment(reply, true)).join('');
+}
+
+/**
+ * 답글 작성 시작
+ */
+function startReply(parentId, nickname) {
+    replyingToId = parentId;
+    replyingToNickname = nickname;
+
+    // 답글 표시 UI 업데이트
+    const replyIndicator = document.getElementById('reply-indicator');
+    if (replyIndicator) {
+        replyIndicator.innerHTML = `
+            <span>${t('reply_to', {nickname: nickname})}</span>
+            <button onclick="cancelReply()" class="btn-cancel-reply">
+                <i class="fa-solid fa-xmark"></i> ${t('cancel_reply')}
+            </button>`;
+        replyIndicator.style.display = 'flex';
+    }
+
+    // 입력창으로 포커스
+    const contentEl = document.getElementById('cmt-content');
+    if (contentEl) contentEl.focus();
+}
+
+/**
+ * 답글 취소
+ */
+function cancelReply() {
+    replyingToId = null;
+    replyingToNickname = null;
+
+    const replyIndicator = document.getElementById('reply-indicator');
+    if (replyIndicator) {
+        replyIndicator.innerHTML = '';
+        replyIndicator.style.display = 'none';
+    }
 }
 
 /**
@@ -643,7 +758,8 @@ async function postComment() {
             nickname: nickname,
             password: password,
             content: content,
-            face_type: facetype
+            face_type: facetype,
+            parent_id: replyingToId  // 대댓글인 경우 parent_id 설정
         };
 
         const { error } = await supabaseClient
@@ -656,6 +772,9 @@ async function postComment() {
         document.getElementById('cmt-password').value = '';
         document.getElementById('cmt-content').value = '';
         document.getElementById('cmt-facetype').value = 'unknown';
+
+        // 답글 상태 초기화
+        cancelReply();
 
         alert(t('post_success'));
         fetchComments();
@@ -710,6 +829,8 @@ window.fetchComments = fetchComments;
 window.handleReaction = handleReaction;
 window.handleEdit = handleEdit;
 window.handleDelete = handleDelete;
+window.startReply = startReply;
+window.cancelReply = cancelReply;
 
 /**
  * 페이지 로드 초기화

@@ -773,3 +773,96 @@
         font-size: 1.1rem;
     }
 }
+
+/* ===== Reply (대댓글) Styles ===== */
+
+/* 답글 표시 인디케이터 */
+.reply-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: var(--cmt-radius-sm);
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: #166534;
+    font-weight: 500;
+}
+
+.btn-cancel-reply {
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-cancel-reply:hover {
+    background: #fee2e2;
+}
+
+/* 답글 버튼 */
+.btn-reply {
+    background: none;
+    border: none;
+    color: var(--cmt-text-sub);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.btn-reply:hover {
+    background: var(--cmt-surface);
+    color: var(--cmt-primary);
+}
+
+.btn-reply i {
+    font-size: 0.75rem;
+}
+
+/* 대댓글 스타일 (들여쓰기) */
+.comment-reply {
+    margin-left: 32px;
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--cmt-primary);
+    background: #fafbfc;
+}
+
+.comment-reply:hover {
+    background: #f5f6f7;
+}
+
+/* 모바일에서 대댓글 들여쓰기 축소 */
+@media (max-width: 520px) {
+    .comment-reply {
+        margin-left: 16px;
+        padding-left: 1rem;
+    }
+
+    .reply-indicator {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .btn-cancel-reply {
+        align-self: flex-end;
+    }
+}
