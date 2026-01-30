@@ -563,7 +563,7 @@ function renderSingleComment(comment, isReply = false) {
     }
 
     const replyBtn = !isReply ? `
-        <button class="btn-reply" onclick="startReply(${comment.id}, ${JSON.stringify(comment.nickname)})">
+        <button class="btn-reply" onclick="startReply(${comment.id}, ${escapeForOnclick(comment.nickname)})">
             <i class="fa-solid fa-reply"></i> ${t('reply')}
         </button>` : '';
 
@@ -583,7 +583,7 @@ function renderSingleComment(comment, isReply = false) {
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
                     <div id="menu-${comment.id}" class="more-dropdown">
-                        <button onclick="handleEdit(${comment.id}, ${JSON.stringify(comment.content)})">
+                        <button onclick="handleEdit(${comment.id}, ${escapeForOnclick(comment.content)})">
                             <i class="fa-solid fa-pen"></i> 수정
                         </button>
                         <button onclick="handleDelete(${comment.id})">
@@ -793,6 +793,15 @@ function escapeHtml(text) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+/**
+ * onclick 속성에서 안전하게 사용할 수 있도록 이스케이프
+ * JSON.stringify 후 HTML 엔티티 변환
+ */
+function escapeForOnclick(text) {
+    if (!text) return '""';
+    return JSON.stringify(text).replace(/"/g, '&quot;');
 }
 
 /**
