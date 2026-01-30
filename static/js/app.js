@@ -93,16 +93,20 @@ document.addEventListener('DOMContentLoaded', function() {
   //   document.getElementsByTagName("html")[0].setAttribute("lang", "ko");
   // }
 
-  Kakao.init('8329cd81f78ef956d4487f90e5a4cd49'); 
+  Kakao.init('8329cd81f78ef956d4487f90e5a4cd49');
 
-  headerIcon.addEventListener('click', function(e) {
-    e.preventDefault();
-    body.classList.toggle('with--sidebar');
-  });
+  if (headerIcon) {
+    headerIcon.addEventListener('click', function(e) {
+      e.preventDefault();
+      body.classList.toggle('with--sidebar');
+    });
+  }
 
-  siteCache.addEventListener('click', function() {
-    body.classList.remove('with--sidebar');
-  });
+  if (siteCache) {
+    siteCache.addEventListener('click', function() {
+      body.classList.remove('with--sidebar');
+    });
+  }
 });
 
 window.addEventListener('beforeinstallprompt', function(e) {

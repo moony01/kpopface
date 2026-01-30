@@ -6,3 +6,5 @@ vendor
 .agent
 .sisyphus/
 .jekyll-server.pid
+.playwright-mcp/
+.claude/settings.local.json
