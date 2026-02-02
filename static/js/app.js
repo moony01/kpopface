@@ -1060,4 +1060,22 @@ async function predict() {
     //     resultName + ": " + prediction[i].probability.toFixed(2);
     // labelContainer.childNodes[i].innerHTML = classPrediction;
   }
+
+  // 페이지 분리 수익화: 결과 데이터 저장 (analyzing 페이지로 이동 시 사용)
+  if (typeof PageRouter !== 'undefined') {
+    var userImage = document.getElementById('face-image');
+    var gender = document.getElementById('gender').checked ? 'male' : 'female';
+
+    var resultData = {
+      gender: gender,
+      image: userImage ? userImage.src : '',
+      results: currentPredictions,
+      resultTitle: currentResultTitle,
+      resultExplain: currentResultExplain,
+      resultCeleb: currentResultCeleb
+    };
+
+    // sessionStorage에 임시 저장 (페이지 분리 모드에서 사용)
+    sessionStorage.setItem('kpopface_pending_result', JSON.stringify(resultData));
+  }
 }

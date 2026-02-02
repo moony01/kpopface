@@ -1,0 +1,142 @@
+---
+layout: page-split
+lang: ko
+title: "상세 분석 | K-Pop Face Test"
+description: "당신의 K-POP 소속사 얼굴상 상세 분석 결과입니다."
+---
+
+<!-- 상단 광고 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_1"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="detail-container">
+  <h1 class="detail-title">📊 상세 분석 결과</h1>
+
+  <!-- 전체 소속사 순위 -->
+  <div class="agency-ranking">
+    <div class="agency-ranking-title">전체 소속사 매칭률</div>
+    <div id="agency-ranking-list">
+      <!-- JS로 동적 생성 -->
+    </div>
+  </div>
+
+  <!-- 네이티브 광고 -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8955182453510440"
+         data-ad-slot="YOUR_AD_SLOT_NATIVE"
+         data-ad-format="fluid"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- 비주얼 리포트 -->
+  <div id="visual-report-container">
+    <!-- JS로 동적 생성 -->
+  </div>
+
+  <!-- 중간 광고 -->
+  <div class="ad-slot ad-slot-large">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8955182453510440"
+         data-ad-slot="YOUR_AD_SLOT_2"
+         data-ad-format="rectangle"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- 공유 섹션 -->
+  <div class="share-section">
+    <div class="share-title">📤 결과 공유하기</div>
+    <div class="share-buttons">
+      <button class="share-btn instagram" onclick="fnShareInstagram()">
+        <i class="fab fa-instagram"></i>
+      </button>
+      <button class="share-btn tiktok" onclick="fnShareTikTok()">
+        <i class="fab fa-tiktok"></i>
+      </button>
+      <button class="share-btn save" onclick="fnSaveImage()">
+        <i class="fas fa-download"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 홈으로 돌아가기 -->
+  <a href="/kpopface/" class="back-home-btn">
+    <i class="fas fa-home"></i> 다시 테스트하기
+  </a>
+</div>
+
+<!-- 하단 광고 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_3"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<script>
+(function() {
+  // 결과 데이터 로드
+  var result = PageRouter.loadResult();
+
+  if (!result) {
+    window.location.href = '/kpopface/';
+    return;
+  }
+
+  // 상세 페이지 조회 표시
+  PageRouter.updateResult({ viewedDetail: true });
+
+  var agencyNames = {
+    sm: 'SM',
+    jyp: 'JYP',
+    yg: 'YG'
+  };
+
+  // 전체 소속사 순위 표시
+  var rankingHtml = '';
+  result.results.forEach(function(item, index) {
+    rankingHtml += '<div class="agency-rank-item">';
+    rankingHtml += '<div class="agency-rank-label">' + agencyNames[item.agency] + '</div>';
+    rankingHtml += '<div class="agency-rank-bar-container">';
+    rankingHtml += '<div class="agency-rank-bar ' + item.agency + '" style="width: ' + item.percent + '%"></div>';
+    rankingHtml += '</div>';
+    rankingHtml += '<div class="agency-rank-percent">' + item.percent + '%</div>';
+    rankingHtml += '</div>';
+  });
+  document.getElementById('agency-ranking-list').innerHTML = rankingHtml;
+
+  // 비주얼 리포트 표시
+  var topAgency = result.results[0].agency;
+  var gender = result.gender || 'female'; // 기본값 female
+
+  var reportHtml = VisualReports.getReportHTML(topAgency, gender);
+  document.getElementById('visual-report-container').innerHTML = reportHtml;
+})();
+
+// 공유 기능
+function fnShareInstagram() {
+  alert('인스타그램 스토리에 공유하려면 결과 이미지를 저장 후 업로드해주세요!');
+}
+
+function fnShareTikTok() {
+  alert('틱톡에 공유하려면 결과 이미지를 저장 후 업로드해주세요!');
+}
+
+function fnSaveImage() {
+  alert('이미지 저장 기능은 준비 중입니다.');
+}
+</script>
