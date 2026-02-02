@@ -1,0 +1,155 @@
+---
+layout: page-split
+lang: ja
+title: "結果 | K-Pop顔テスト"
+description: "あなたのK-POP事務所の顔タイプテスト結果です。"
+---
+
+<!-- Top Ad -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_1"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="result-container">
+  <div class="result-image-wrap">
+    <img id="result-user-image" src="../static/img/icon.png" alt="分析された画像">
+  </div>
+
+  <h1 class="result-title">🎉 あなたは</h1>
+  <div class="result-agency" id="result-agency">SM</div>
+  <p style="font-size: 18px; color: #666;">スタイル！</p>
+
+  <div class="result-percent-bar">
+    <div class="result-percent-fill" id="result-percent-fill">
+      <span id="result-percent">78%</span>
+    </div>
+  </div>
+</div>
+
+<!-- Middle Ad -->
+<div class="ad-slot ad-slot-large">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_2"
+       data-ad-format="rectangle"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="detail-cta-box">
+  <div class="detail-cta-title">📊 全事務所マッチング + 詳細分析</div>
+  <div class="detail-cta-subtitle">ビジュアルレポートを見たいですか？</div>
+  <button class="detail-cta-btn" onclick="fnShowDetailWithAd()">
+    <i class="fas fa-unlock"></i> 詳細分析を見る
+  </button>
+  <div class="detail-cta-note">(広告視聴後に確認可能)</div>
+</div>
+
+<div class="share-section">
+  <div class="share-title">📤 結果を共有</div>
+  <div class="share-buttons">
+    <button class="share-btn instagram" onclick="fnShareInstagram()">
+      <i class="fab fa-instagram"></i>
+    </button>
+    <button class="share-btn tiktok" onclick="fnShareTikTok()">
+      <i class="fab fa-tiktok"></i>
+    </button>
+    <button class="share-btn save" onclick="fnSaveImage()">
+      <i class="fas fa-download"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Bottom Ad -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_3"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- Ad Overlay -->
+<div class="ad-overlay" id="ad-overlay">
+  <div class="ad-overlay-content">
+    <div class="ad-overlay-title">しばらくお待ちください</div>
+    <div class="ad-overlay-countdown" id="ad-countdown">15秒後に結果確認</div>
+    <div class="ad-overlay-slot">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8955182453510440"
+           data-ad-slot="YOUR_AD_SLOT_INTERSTITIAL"
+           data-ad-format="auto"></ins>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var result = PageRouter.loadResult();
+
+  if (!result) {
+    window.location.href = '/kpopface/ja/';
+    return;
+  }
+
+  if (result.image) {
+    document.getElementById('result-user-image').src = result.image;
+  }
+
+  var topResult = result.results[0];
+  var agencyEl = document.getElementById('result-agency');
+  var percentFillEl = document.getElementById('result-percent-fill');
+  var percentEl = document.getElementById('result-percent');
+
+  var agencyNames = { sm: 'SM', jyp: 'JYP', yg: 'YG' };
+
+  agencyEl.textContent = agencyNames[topResult.agency] || topResult.agency.toUpperCase();
+  agencyEl.className = 'result-agency ' + topResult.agency;
+
+  percentFillEl.style.width = topResult.percent + '%';
+  percentFillEl.className = 'result-percent-fill ' + topResult.agency;
+  percentEl.textContent = topResult.percent + '%';
+})();
+
+function fnShowDetailWithAd() {
+  var overlay = document.getElementById('ad-overlay');
+  overlay.style.display = 'flex';
+
+  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+
+  var countdown = 15;
+  var countdownEl = document.getElementById('ad-countdown');
+
+  var timer = setInterval(function() {
+    countdown--;
+    countdownEl.textContent = countdown + '秒後に結果確認';
+
+    if (countdown <= 0) {
+      clearInterval(timer);
+      PageRouter.navigateTo('detail');
+    }
+  }, 1000);
+}
+
+function fnShareInstagram() {
+  alert('Instagramストーリーに共有するには、結果画像を保存してアップロードしてください！');
+}
+
+function fnShareTikTok() {
+  alert('TikTokに共有するには、結果画像を保存してアップロードしてください！');
+}
+
+function fnSaveImage() {
+  alert('画像保存機能は近日公開予定です。');
+}
+</script>

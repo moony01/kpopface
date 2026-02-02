@@ -1,0 +1,119 @@
+---
+layout: page-split
+lang: ja
+title: "分析中... | K-Pop顔テスト"
+description: "AIがあなたのK-POP事務所の顔タイプを分析しています。"
+---
+
+<!-- Top Ad -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_1"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="analyzing-container">
+  <h1 class="analyzing-title">
+    <i class="fas fa-search"></i> AIが分析中...
+  </h1>
+
+  <div class="analyzing-image-wrap">
+    <img id="user-image" src="../static/img/icon.png" alt="分析中の画像">
+    <div class="progress-overlay">
+      <span id="progress-text">0%</span>
+    </div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar">
+      <span class="progress-text" id="progress-text-inner"></span>
+    </div>
+  </div>
+
+  <p class="step-text" id="step-text">顔の形を分析中...</p>
+
+  <div class="tip-box">
+    <div class="tip-box-title">💡 ご存知でしたか？</div>
+    <div class="tip-box-text" id="tip-text">SMは鋭い目元と冷たいイメージを好みます</div>
+  </div>
+</div>
+
+<!-- Middle Ad -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_2"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- Bottom Ad -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8955182453510440"
+       data-ad-slot="YOUR_AD_SLOT_3"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<script>
+(function() {
+  var progress = 0;
+  var resultId = new URLSearchParams(window.location.search).get('id');
+
+  var steps = [
+    "顔の形を分析中...",
+    "目の特徴を抽出中...",
+    "顔の比率を計算中...",
+    "事務所スタイルをマッチング中...",
+    "最終結果を生成中..."
+  ];
+
+  var tips = [
+    "SMは鋭い目元と冷たいイメージを好みます",
+    "JYPは親しみやすく健康的なイメージを重視します",
+    "YGはユニークで独特な魅力を追求します"
+  ];
+
+  if (!resultId) {
+    window.location.href = '/kpopface/ja/';
+    return;
+  }
+
+  var result = PageRouter ? PageRouter.loadResult() : null;
+  if (result && result.image) {
+    var userImageEl = document.getElementById('user-image');
+    if (userImageEl) userImageEl.src = result.image;
+  }
+
+  var tipEl = document.getElementById('tip-text');
+  if (tipEl) tipEl.textContent = tips[Math.floor(Math.random() * tips.length)];
+
+  var interval = setInterval(function() {
+    progress += 2;
+
+    var progressBar = document.getElementById('progress-bar');
+    var progressText = document.getElementById('progress-text');
+    var stepText = document.getElementById('step-text');
+
+    if (progressBar) progressBar.style.width = progress + '%';
+    if (progressText) progressText.textContent = progress + '%';
+
+    var stepIndex = Math.min(Math.floor(progress / 20), steps.length - 1);
+    if (stepText) stepText.textContent = steps[stepIndex];
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      window.location.href = '/kpopface/ja/result.html?id=' + resultId;
+    }
+  }, 100);
+})();
+</script>
