@@ -698,3 +698,47 @@
 
 
 
+
+/* ========================================
+   상세 분석 보기 CTA (페이지 분리 수익화)
+   ======================================== */
+.detail-cta-wrap {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px dashed #6c5ce7;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.detail-cta-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.detail-cta-btn-main {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.detail-cta-btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+}
+
+.detail-cta-btn-main i {
+    font-size: 18px;
+}

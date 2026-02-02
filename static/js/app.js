@@ -1061,7 +1061,7 @@ async function predict() {
     // labelContainer.childNodes[i].innerHTML = classPrediction;
   }
 
-  // 페이지 분리 수익화: 결과 데이터 저장 (analyzing 페이지로 이동 시 사용)
+  // 페이지 분리 수익화: 결과 데이터 저장 및 상세보기 버튼 표시
   if (typeof PageRouter !== 'undefined') {
     var userImage = document.getElementById('face-image');
     var gender = document.getElementById('gender').checked ? 'male' : 'female';
@@ -1077,5 +1077,31 @@ async function predict() {
 
     // sessionStorage에 임시 저장 (페이지 분리 모드에서 사용)
     sessionStorage.setItem('kpopface_pending_result', JSON.stringify(resultData));
+
+    // 상세보기 버튼 표시
+    var detailCtaWrap = document.getElementById('detail-cta-wrap');
+    if (detailCtaWrap) {
+      detailCtaWrap.style.display = 'block';
+    }
+  }
+}
+
+/**
+ * 상세 분석 페이지로 이동 (페이지 분리 수익화)
+ */
+function fnGoToDetailAnalysis() {
+  var pendingData = sessionStorage.getItem('kpopface_pending_result');
+  if (!pendingData) {
+    alert('먼저 테스트를 완료해주세요!');
+    return;
+  }
+
+  var resultData = JSON.parse(pendingData);
+
+  // PageRouter를 통해 analyzing 페이지로 이동
+  if (typeof PageRouter !== 'undefined') {
+    PageRouter.saveAndNavigate(resultData, 'analyzing');
+  } else {
+    alert('페이지 이동 기능을 사용할 수 없습니다.');
   }
 }

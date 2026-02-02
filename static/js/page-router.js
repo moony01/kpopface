@@ -17,9 +17,9 @@ var PageRouter = (function() {
 
     sessionStorage.setItem(STORAGE_PREFIX + resultId, JSON.stringify(resultData));
 
-    // 언어별 경로 처리
+    // 언어별 경로 처리 (kpopface 베이스 경로 포함)
     var langPath = getLangPath();
-    var basePath = langPath ? '/' + langPath + '/' : '/';
+    var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
 
     window.location.href = basePath + targetPage + '.html?id=' + resultId;
   }
@@ -71,7 +71,7 @@ var PageRouter = (function() {
     var result = loadResult();
     if (!result) {
       var langPath = getLangPath();
-      var basePath = langPath ? '/' + langPath + '/' : '/';
+      var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
       window.location.href = basePath;
       return null;
     }
@@ -102,7 +102,7 @@ var PageRouter = (function() {
   function navigateTo(targetPage) {
     var resultId = getResultId();
     var langPath = getLangPath();
-    var basePath = langPath ? '/' + langPath + '/' : '/';
+    var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
 
     window.location.href = basePath + targetPage + '.html?id=' + resultId;
   }
