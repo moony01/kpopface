@@ -26,7 +26,7 @@
   // 결과 ID 없으면 메인으로 리다이렉트
   if (!resultId) {
     var langPath = PageRouter ? PageRouter.getLangPath() : '';
-    var basePath = langPath ? '/' + langPath + '/' : '/';
+    var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
     window.location.href = basePath;
     return;
   }
@@ -66,7 +66,7 @@
       clearInterval(interval);
 
       var langPath = PageRouter ? PageRouter.getLangPath() : '';
-      var basePath = langPath ? '/' + langPath + '/' : '/';
+      var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
       window.location.href = basePath + 'result.html?id=' + resultId;
     }
   }, 100); // 5초 동안 진행 (100ms × 50회)
