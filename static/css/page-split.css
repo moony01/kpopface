@@ -1,0 +1,886 @@
+/**
+ * 페이지 분리 수익화 전략 - 전용 CSS
+ */
+
+/* 공통 컨테이너 */
+.page-split-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+  min-height: calc(100vh - 60px);
+}
+
+/* 광고 슬롯 공통 */
+.ad-slot {
+  width: 100%;
+  min-height: 100px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+  border-radius: 8px;
+}
+
+.ad-slot-large {
+  min-height: 250px;
+}
+
+/* ========================================
+   분석 로딩 페이지 (analyzing.html)
+   ======================================== */
+
+.analyzing-container {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.analyzing-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.analyzing-title i {
+  margin-right: 8px;
+  color: #6c5ce7;
+}
+
+/* 사용자 이미지 + 프로그레스 */
+.analyzing-image-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #6c5ce7;
+}
+
+.analyzing-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.progress-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(108, 92, 231, 0.9);
+  padding: 8px;
+  color: white;
+  font-weight: bold;
+}
+
+/* 프로그레스 바 */
+.progress-bar-container {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 16px;
+  background: #e0e0e0;
+  border-radius: 20px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+  border-radius: 20px;
+  width: 0%;
+  transition: width 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-text {
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* 분석 단계 텍스트 */
+.step-text {
+  font-size: 16px;
+  color: #666;
+  margin: 16px 0;
+  min-height: 24px;
+}
+
+/* 팁 박스 - 분석 화면과 자연스럽게 통합 */
+.tip-box {
+  background: rgba(108, 92, 231, 0.08);
+  border: none;
+  padding: 12px 16px;
+  margin: 8px 0 0 0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.tip-box-title {
+  font-weight: bold;
+  color: #6c5ce7;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.tip-box-text {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ========================================
+   기본 결과 페이지 (result.html)
+   ======================================== */
+
+.result-container {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.result-image-wrap {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #6c5ce7;
+}
+
+.result-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.result-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.result-agency {
+  font-size: 32px;
+  font-weight: bold;
+  color: #6c5ce7;
+  margin-bottom: 8px;
+}
+
+/* 소속사별 색상 */
+.result-agency.sm { color: #00a6ed; }
+.result-agency.jyp { color: #ff6b6b; }
+.result-agency.yg { color: #ffd93d; }
+
+/* 퍼센트 바 (결과) */
+.result-percent-bar {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 24px;
+  background: #e0e0e0;
+  border-radius: 20px;
+  height: 32px;
+  overflow: hidden;
+}
+
+.result-percent-fill {
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.result-percent-fill.sm { background: linear-gradient(90deg, #00a6ed, #4dabf5); }
+.result-percent-fill.jyp { background: linear-gradient(90deg, #ff6b6b, #ffa8a8); }
+.result-percent-fill.yg { background: linear-gradient(90deg, #ffd93d, #ffe066); color: #333; }
+
+/* 상세보기 CTA */
+.detail-cta-box {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border: 2px dashed #6c5ce7;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.detail-cta-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.detail-cta-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.detail-cta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.detail-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+}
+
+.detail-cta-btn i {
+  margin-right: 8px;
+}
+
+.detail-cta-note {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+/* 공유 버튼 */
+.share-section {
+  margin: 24px 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.share-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.share-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  transition: transform 0.2s;
+}
+
+.share-btn:hover {
+  transform: scale(1.1);
+}
+
+.share-btn.instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+.share-btn.tiktok { background: #000; }
+.share-btn.save { background: #28a745; }
+
+/* ========================================
+   광고 오버레이 (인터스티셜)
+   ======================================== */
+
+.ad-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ad-overlay-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 350px;
+  width: 90%;
+}
+
+.ad-overlay-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.ad-overlay-countdown {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6c5ce7;
+  margin: 16px 0;
+}
+
+.ad-overlay-slot {
+  min-height: 250px;
+  background: #f5f5f5;
+  margin: 16px 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+}
+
+/* ========================================
+   상세 분석 페이지 (detail.html)
+   ======================================== */
+
+.detail-container {
+  padding: 24px 0;
+}
+
+.detail-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* 전체 소속사 순위 */
+.agency-ranking {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.agency-ranking-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.agency-rank-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.agency-rank-label {
+  width: 60px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.agency-rank-bar-container {
+  flex: 1;
+  height: 24px;
+  background: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 12px;
+}
+
+.agency-rank-bar {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.5s ease;
+}
+
+.agency-rank-bar.sm { background: linear-gradient(90deg, #00a6ed, #4dabf5); }
+.agency-rank-bar.jyp { background: linear-gradient(90deg, #ff6b6b, #ffa8a8); }
+.agency-rank-bar.yg { background: linear-gradient(90deg, #ffd93d, #ffe066); }
+
+.agency-rank-percent {
+  width: 50px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* 비주얼 리포트 */
+.visual-report {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #6c5ce7;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #6c5ce7;
+}
+
+.report-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 3px solid #6c5ce7;
+}
+
+.section-text {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+.section-list {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.section-list li {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+
+/* 홈으로 돌아가기 */
+.back-home-btn {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 24px auto;
+  padding: 14px;
+  background: #6c5ce7;
+  color: white;
+  text-align: center;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.back-home-btn:hover {
+  background: #5b4cdb;
+}
+
+/* ========================================
+   1차 결과 - 작은 이미지 스타일
+   ======================================== */
+
+.result-image-wrap {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #6c5ce7;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+}
+
+.result-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.result-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin: 12px 0 8px;
+  text-align: center;
+}
+
+.result-percent {
+  font-size: 48px;
+  font-weight: bold;
+  color: #6c5ce7;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+/* ========================================
+   상세 분석 모달 - 결과 요약
+   ======================================== */
+
+.detail-modal-content {
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* 상단 닫기 버튼 */
+.modal-close-top {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #666;
+  transition: background 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.modal-close-top:hover {
+  background: rgba(0, 0, 0, 0.2);
+  color: #333;
+}
+
+/* 결과 화면 광고 슬롯 */
+.result-ad-slot {
+  width: 100%;
+  min-height: 100px;
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ========================================
+   상세 분석 팝업 - 복합형 로딩 UI
+   ======================================== */
+
+/* 미니 프로필 스캔 영역 */
+.modal-scan-area {
+  margin: 16px 0;
+}
+
+.modal-scan-image-wrap {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #6c5ce7;
+  position: relative;
+}
+
+.modal-scan-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 스캔 라인 애니메이션 */
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #6c5ce7, transparent);
+  animation: scanMove 2s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+  0% { top: 0; }
+  50% { top: calc(100% - 3px); }
+  100% { top: 0; }
+}
+
+/* 분석 단계 표시 */
+.modal-analysis-steps {
+  text-align: left;
+  padding: 12px 16px;
+  background: rgba(108, 92, 231, 0.05);
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.analysis-step {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #888;
+  transition: all 0.3s ease;
+}
+
+.analysis-step.active {
+  color: #6c5ce7;
+  font-weight: 500;
+}
+
+.analysis-step.completed {
+  color: #27ae60;
+}
+
+.step-icon {
+  width: 20px;
+  margin-right: 8px;
+  text-align: center;
+}
+
+.step-text {
+  flex: 1;
+}
+
+/* 프로그레스 바 */
+.modal-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.modal-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.modal-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.modal-progress-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6c5ce7;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* 팁 박스 */
+.modal-tip-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(108, 92, 231, 0.08);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #666;
+  text-align: left;
+}
+
+.modal-tip-icon {
+  flex-shrink: 0;
+}
+
+.modal-tip-text {
+  line-height: 1.4;
+}
+
+.modal-result-summary {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal-result-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.modal-result-hashtag {
+  font-size: 14px;
+  color: #6c5ce7;
+  margin: 0 0 8px;
+}
+
+.modal-result-celeb {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ========================================
+   KPOP Company League 배너
+   ======================================== */
+
+.vote-wrapper .league-banner-link {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.vote-wrapper .league-banner {
+  width: 100%;
+  height: 240px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.league-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.league-banner:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+}
+
+.league-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+.league-banner-logo {
+  font-size: 24px;
+}
+
+.league-banner-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.league-banner-ranking {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px;
+  z-index: 1;
+  align-items: flex-end;
+}
+
+.ranking-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  transition: transform 0.2s ease;
+}
+
+/* 1위 특별 디자인 - 골드 보더 & 위로 확장 (하단 정렬 유지) */
+.ranking-item.rank-1 {
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 255, 255, 0.25) 100%);
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.5), inset 0 0 12px rgba(255, 215, 0, 0.15);
+  padding: 24px 8px 14px;
+  min-height: 90px;
+}
+
+.rank-num {
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffd700;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.rank-1 .rank-num {
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #ffd700, #ffec8b);
+  font-size: 14px;
+  padding: 3px 10px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+.rank-2 .rank-num { color: #fff; background: rgba(192, 192, 192, 0.5); }
+.rank-3 .rank-num { color: #fff; background: rgba(205, 127, 50, 0.5); }
+.rank-4 .rank-num { color: #fff; background: rgba(128, 128, 128, 0.4); }
+
+.rank-name {
+  font-size: 13px;
+  color: white;
+  font-weight: 700;
+}
+
+.rank-1 .rank-name {
+  font-size: 15px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.league-banner-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.league-banner-cta {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+.league-banner-arrow {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.league-banner:hover .league-banner-arrow {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.4);
+}

@@ -46,7 +46,6 @@ lang: de
         </div>
     </div>
     <div class="file-upload">
-        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
         <div class="image-upload-wrap">
             <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
             <div class="drag-text">
@@ -55,17 +54,47 @@ lang: de
             </div>
         </div>
         <div class="file-upload-content">
-            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-            <div id="loading" class="animated bounce">
-                <!-- <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div> -->
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="text-center">AI analysiert dein KPOP-Agenturgesicht.</p>
+            <!-- Ladebildschirm (analyzing style) -->
+            <div id="loading" class="analyzing-container" style="display: none;">
+                <h2 class="analyzing-title">
+                    <i class="fas fa-search"></i> KI analysiert...
+                </h2>
+                <div class="analyzing-image-wrap">
+                    <img id="analyzing-image" src="../static/img/icon.png" alt="Bild wird analysiert">
+                    <div class="progress-overlay">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <p class="step-text" id="step-text">Gesichtsform wird analysiert...</p>
+                <div class="tip-box">
+                    <div class="tip-box-title">💡 Wussten Sie schon?</div>
+                    <div class="tip-box-text" id="tip-text">SM bevorzugt kühle Augen und ein schickes Image</div>
+                </div>
             </div>
-            <p class="result-messege"></p>
-            <div id="label-container"></div>
-            <!-- Ergebnisbild speichern Button -->
+
+            <!-- Ergebnisbereich (1. Ergebnis: kleines Bild + nur 1. Platz) -->
+            <div id="result-area" style="display: none;">
+                <div class="result-image-wrap">
+                    <img id="face-image" src="#" alt="your image" />
+                </div>
+
+                <p class="result-title" id="result-title"></p>
+                <p class="result-percent" id="result-percent"></p>
+
+                <div id="label-container" style="display: none;"></div>
+
+                <div id="detail-cta-wrap" class="detail-cta-wrap">
+                    <p class="detail-cta-text">📊 Vollständige Agentur-Match-Raten + visuellen Bericht sehen?</p>
+                    <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Detaillierte Analyse anzeigen</span>
+                    </button>
+                </div>
+            </div>
+
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">Ergebnisbild speichern</span>
@@ -105,5 +134,107 @@ lang: de
             <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
             </li>
         </ul>
+    </div>
+</div>
+
+<!-- Detailanalyse-Popup-Modal -->
+<div id="detail-modal" class="ad-overlay" style="display: none;">
+    <div class="ad-overlay-content detail-modal-content">
+        <!-- Obere Schließen-Schaltfläche -->
+        <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <!-- Werbe-Wartebildschirm (kombiniertes Lade-UI) -->
+        <div id="modal-ad-wait">
+            <div class="ad-overlay-title">📊 Visual-Analyse läuft...</div>
+
+            <!-- Mini-Profil-Scan-Bereich -->
+            <div class="modal-scan-area">
+                <div class="modal-scan-image-wrap">
+                    <img id="modal-scan-image" src="../static/img/icon.png" alt="Wird analysiert">
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+
+            <!-- Analyseschritte anzeigen -->
+            <div class="modal-analysis-steps">
+                <div class="analysis-step" id="step-1">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Gesichtsform wird analysiert...</span>
+                </div>
+                <div class="analysis-step" id="step-2">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Visuelle Merkmale werden extrahiert...</span>
+                </div>
+                <div class="analysis-step" id="step-3">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Agentur-Match-Rate wird berechnet...</span>
+                </div>
+                <div class="analysis-step" id="step-4">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">AI-Bericht wird erstellt...</span>
+                </div>
+            </div>
+
+            <!-- Fortschrittsbalken -->
+            <div class="modal-progress-wrap">
+                <div class="modal-progress-bar">
+                    <div class="modal-progress-fill" id="modal-progress-fill"></div>
+                </div>
+                <span class="modal-progress-text" id="modal-progress-text">0%</span>
+            </div>
+
+            <!-- Tipp-Box -->
+            <div class="modal-tip-box">
+                <span class="modal-tip-icon">💡</span>
+                <span class="modal-tip-text" id="modal-tip-text">SM bevorzugt kühle Augen und ein schickes Image</span>
+            </div>
+
+            <!-- Werbeslot -->
+            <div class="ad-overlay-slot" style="margin-top: 16px;">
+                <ins class="adsbygoogle"
+                     style="display:block; min-height:100px;"
+                     data-ad-client="ca-pub-8955182453510440"
+                     data-ad-slot="7822847481"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+        </div>
+
+        <!-- Detaillierte Analyseergebnisse -->
+        <div id="modal-detail-result" style="display: none;">
+            <div class="ad-overlay-title">📊 Detaillierte Analyseergebnisse</div>
+
+            <!-- Ergebniszusammenfassung (Agentur-Gesichtstyp, Hashtags, Prominente) -->
+            <div class="modal-result-summary">
+                <p class="modal-result-title" id="modal-result-title"></p>
+                <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
+                <p class="modal-result-celeb" id="modal-result-celeb"></p>
+            </div>
+
+            <!-- Vollständige Agentur-Rangliste -->
+            <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
+                <div class="agency-ranking-title">Vollständige Agentur-Match-Raten</div>
+                <div id="modal-ranking-list"></div>
+            </div>
+
+            <!-- Werbung -->
+            <div class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8955182453510440"
+                     data-ad-slot="3138863990"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Visual-Bericht -->
+            <div id="modal-visual-report" style="text-align: left;"></div>
+
+            <!-- Schließen-Schaltfläche -->
+            <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
+                <i class="fas fa-times"></i> Schließen
+            </button>
+        </div>
     </div>
 </div>

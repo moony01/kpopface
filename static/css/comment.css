@@ -613,6 +613,8 @@
 .vote-wrapper {
   margin: 4rem 0; /* Increased margin for better separation */
   text-align: center;
+  width: 100%;
+  padding: 0;
 }
 .vote-title {
   font-size: 1.6rem; /* Bigger title */

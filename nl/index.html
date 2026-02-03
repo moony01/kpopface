@@ -65,6 +65,16 @@ lang: nl
             </div>
             <p class="result-messege"></p>
             <div id="label-container"></div>
+
+            <!-- Detail Analysis CTA (Page Split Monetization) -->
+            <div id="detail-cta-wrap" class="detail-cta-wrap" style="display: none;">
+                <p class="detail-cta-text">📊 Wil je de volledige match-percentages + visueel rapport zien?</p>
+                <button type="button" class="detail-cta-btn-main" onclick="fnGoToDetailAnalysis()">
+                    <i class="fas fa-unlock"></i>
+                    <span>Bekijk Gedetailleerde Analyse</span>
+                </button>
+            </div>
+
             <!-- Resultaatafbeelding opslaan Button -->
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
@@ -105,5 +115,83 @@ lang: nl
             <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
             </li>
         </ul>
+    </div>
+</div>
+
+<!-- Gedetailleerde Analyse Modal -->
+<div id="detail-modal" class="ad-overlay" style="display: none;">
+    <div class="ad-overlay-content detail-modal-content">
+        <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="modal-ad-wait">
+            <div class="ad-overlay-title">📊 Visuele Analyse bezig...</div>
+            <div class="modal-scan-area">
+                <div class="modal-scan-image-wrap">
+                    <img id="modal-scan-image" src="../static/img/icon.png" alt="Bezig met analyseren">
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+            <div class="modal-analysis-steps">
+                <div class="analysis-step" id="step-1">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Gezichtsvorm analyseren...</span>
+                </div>
+                <div class="analysis-step" id="step-2">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Visuele kenmerken extraheren...</span>
+                </div>
+                <div class="analysis-step" id="step-3">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Match-percentage berekenen...</span>
+                </div>
+                <div class="analysis-step" id="step-4">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">AI-rapport genereren...</span>
+                </div>
+            </div>
+            <div class="modal-progress-wrap">
+                <div class="modal-progress-bar">
+                    <div class="modal-progress-fill" id="modal-progress-fill"></div>
+                </div>
+                <span class="modal-progress-text" id="modal-progress-text">0%</span>
+            </div>
+            <div class="modal-tip-box">
+                <span class="modal-tip-icon">💡</span>
+                <span class="modal-tip-text" id="modal-tip-text">SM geeft de voorkeur aan koele ogen en een chique uitstraling</span>
+            </div>
+            <div class="ad-overlay-slot" style="margin-top: 16px;">
+                <ins class="adsbygoogle"
+                     style="display:block; min-height:100px;"
+                     data-ad-client="ca-pub-8955182453510440"
+                     data-ad-slot="7822847481"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+        </div>
+        <div id="modal-detail-result" style="display: none;">
+            <div class="ad-overlay-title">📊 Gedetailleerde Analyseresultaten</div>
+            <div class="modal-result-summary">
+                <p class="modal-result-title" id="modal-result-title"></p>
+                <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
+                <p class="modal-result-celeb" id="modal-result-celeb"></p>
+            </div>
+            <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
+                <div class="agency-ranking-title">Volledige Match-Percentages</div>
+                <div id="modal-ranking-list"></div>
+            </div>
+            <div class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8955182453510440"
+                     data-ad-slot="3138863990"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+            <div id="modal-visual-report" style="text-align: left;"></div>
+            <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
+                <i class="fas fa-times"></i> Sluiten
+            </button>
+        </div>
     </div>
 </div>
