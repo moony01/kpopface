@@ -25,7 +25,7 @@ var VisualReportsData = {
         sections: { features: "선호 비주얼 특징", visuals: "대표 비주얼 라인", tips: "오디션 팁", strengths: "강점 포인트" },
         content: [
           { section: "features", text: "SM은 '시원한 이목구비'와 '청순하면서 시크한 이미지'를 가진 여자 아이돌을 선호합니다. 큰 눈과 또렷한 이중꺼풀, 높은 코, 갸름한 턱선이 특징입니다." },
-          { section: "visuals", text: "카리나(aespa), 윈터(aespa), 아이린(Red Velvet), 유나(소녀시대), 크리스탈(f(x))" },
+          { section: "visuals", text: "카리나(aespa), 윈터(aespa), 아이린(Red Velvet), 윤아(소녀시대), 크리스탈(f(x))" },
           { section: "tips", items: ["청순하면서도 시크한 분위기 연출 연습", "피부 베이스 관리 중요", "절제된 표정 속 강렬한 눈빛 연습", "SM 특유의 '걸크러시' 이미지 연구"] },
           { section: "strengths", text: "당신의 얼굴형은 SM 여자 아이돌 특유의 시원하고 세련된 이미지와 잘 맞습니다." }
         ]
