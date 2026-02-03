@@ -105,6 +105,160 @@ var ALERT_MESSAGES = {
   }
 };
 
+// T1.14: 다국어 팁/단계 텍스트
+var LOADING_TEXTS = {
+  tips: {
+    ko: [
+      "SM은 시원한 눈매와 차가운 이미지를 선호합니다",
+      "JYP는 건강미와 자연스러운 매력을 중시합니다",
+      "YG는 개성있고 힙한 분위기를 선호합니다",
+      "SM 대표 비주얼: 카리나, 윈터, 태용",
+      "JYP 대표 비주얼: 수지, 나연, 현진",
+      "YG 대표 비주얼: 제니, 지수, 지드래곤"
+    ],
+    en: [
+      "SM prefers cool eyes and a chic image",
+      "JYP values healthy beauty and natural charm",
+      "YG prefers unique and hip vibes",
+      "SM visual icons: Karina, Winter, Taeyong",
+      "JYP visual icons: Suzy, Nayeon, Hyunjin",
+      "YG visual icons: Jennie, Jisoo, G-Dragon"
+    ],
+    ja: [
+      "SMはクールな目元とシックなイメージを好みます",
+      "JYPは健康美と自然な魅力を重視します",
+      "YGは個性的でヒップな雰囲気を好みます",
+      "SM代表ビジュアル: カリナ、ウィンター、テヨン",
+      "JYP代表ビジュアル: スジ、ナヨン、ヒョンジン",
+      "YG代表ビジュアル: ジェニー、ジス、G-Dragon"
+    ],
+    zh: [
+      "SM偏好冷酷的眼神和时尚的形象",
+      "JYP重视健康美和自然魅力",
+      "YG偏好独特和嘻哈风格",
+      "SM代表颜值: Karina, Winter, Taeyong",
+      "JYP代表颜值: Suzy, Nayeon, Hyunjin",
+      "YG代表颜值: Jennie, Jisoo, G-Dragon"
+    ],
+    de: [
+      "SM bevorzugt kühle Augen und ein schickes Image",
+      "JYP schätzt gesunde Schönheit und natürlichen Charme",
+      "YG bevorzugt einzigartige und hippe Vibes",
+      "SM Visual-Ikonen: Karina, Winter, Taeyong",
+      "JYP Visual-Ikonen: Suzy, Nayeon, Hyunjin",
+      "YG Visual-Ikonen: Jennie, Jisoo, G-Dragon"
+    ],
+    es: [
+      "SM prefiere ojos fríos y una imagen sofisticada",
+      "JYP valora la belleza saludable y el encanto natural",
+      "YG prefiere vibras únicas y modernas",
+      "Iconos visuales de SM: Karina, Winter, Taeyong",
+      "Iconos visuales de JYP: Suzy, Nayeon, Hyunjin",
+      "Iconos visuales de YG: Jennie, Jisoo, G-Dragon"
+    ],
+    fr: [
+      "SM préfère les yeux froids et une image chic",
+      "JYP valorise la beauté saine et le charme naturel",
+      "YG préfère les vibes uniques et branchées",
+      "Icônes visuelles SM: Karina, Winter, Taeyong",
+      "Icônes visuelles JYP: Suzy, Nayeon, Hyunjin",
+      "Icônes visuelles YG: Jennie, Jisoo, G-Dragon"
+    ],
+    id: [
+      "SM menyukai mata dingin dan citra yang chic",
+      "JYP menghargai kecantikan sehat dan pesona alami",
+      "YG menyukai vibes unik dan hip",
+      "Ikon visual SM: Karina, Winter, Taeyong",
+      "Ikon visual JYP: Suzy, Nayeon, Hyunjin",
+      "Ikon visual YG: Jennie, Jisoo, G-Dragon"
+    ],
+    nl: [
+      "SM geeft de voorkeur aan koele ogen en een chique uitstraling",
+      "JYP waardeert gezonde schoonheid en natuurlijke charme",
+      "YG geeft de voorkeur aan unieke en hippe vibes",
+      "SM visuele iconen: Karina, Winter, Taeyong",
+      "JYP visuele iconen: Suzy, Nayeon, Hyunjin",
+      "YG visuele iconen: Jennie, Jisoo, G-Dragon"
+    ],
+    pl: [
+      "SM preferuje chłodne oczy i elegancki wizerunek",
+      "JYP ceni zdrowe piękno i naturalny urok",
+      "YG preferuje unikalne i modne klimaty",
+      "Ikony wizualne SM: Karina, Winter, Taeyong",
+      "Ikony wizualne JYP: Suzy, Nayeon, Hyunjin",
+      "Ikony wizualne YG: Jennie, Jisoo, G-Dragon"
+    ],
+    pt: [
+      "SM prefere olhos frios e uma imagem chique",
+      "JYP valoriza beleza saudável e charme natural",
+      "YG prefere vibrações únicas e descoladas",
+      "Ícones visuais do SM: Karina, Winter, Taeyong",
+      "Ícones visuais do JYP: Suzy, Nayeon, Hyunjin",
+      "Ícones visuais do YG: Jennie, Jisoo, G-Dragon"
+    ],
+    ru: [
+      "SM предпочитает холодный взгляд и шикарный образ",
+      "JYP ценит здоровую красоту и естественное обаяние",
+      "YG предпочитает уникальный и хипстерский стиль",
+      "Визуальные иконы SM: Карина, Винтер, Тэён",
+      "Визуальные иконы JYP: Сюзи, Наён, Хёнджин",
+      "Визуальные иконы YG: Дженни, Джису, G-Dragon"
+    ],
+    tr: [
+      "SM soğuk bakışları ve şık bir imajı tercih eder",
+      "JYP sağlıklı güzelliğe ve doğal çekiciliğe değer verir",
+      "YG benzersiz ve hip vibes'ı tercih eder",
+      "SM görsel ikonları: Karina, Winter, Taeyong",
+      "JYP görsel ikonları: Suzy, Nayeon, Hyunjin",
+      "YG görsel ikonları: Jennie, Jisoo, G-Dragon"
+    ],
+    uk: [
+      "SM віддає перевагу холодному погляду та шикарному образу",
+      "JYP цінує здорову красу та природну чарівність",
+      "YG віддає перевагу унікальним та хіповим вайбам",
+      "Візуальні ікони SM: Каріна, Вінтер, Теєн",
+      "Візуальні ікони JYP: Сюзі, Наєн, Хьонджін",
+      "Візуальні ікони YG: Дженні, Джісу, G-Dragon"
+    ],
+    vi: [
+      "SM thích đôi mắt lạnh lùng và hình ảnh sang trọng",
+      "JYP đánh giá cao vẻ đẹp khỏe mạnh và sự quyến rũ tự nhiên",
+      "YG thích phong cách độc đáo và hip",
+      "Biểu tượng visual SM: Karina, Winter, Taeyong",
+      "Biểu tượng visual JYP: Suzy, Nayeon, Hyunjin",
+      "Biểu tượng visual YG: Jennie, Jisoo, G-Dragon"
+    ]
+  },
+  steps: {
+    ko: ["얼굴형 분석 중...", "눈, 코, 입 특징 추출 중...", "소속사별 데이터 비교 중...", "최종 매칭률 계산 중..."],
+    en: ["Analyzing face shape...", "Extracting facial features...", "Comparing agency data...", "Calculating final match..."],
+    ja: ["顔の形を分析中...", "顔の特徴を抽出中...", "事務所データを比較中...", "最終マッチ率を計算中..."],
+    zh: ["分析脸型中...", "提取面部特征中...", "比较公司数据中...", "计算最终匹配率中..."],
+    de: ["Gesichtsform analysieren...", "Gesichtszüge extrahieren...", "Agenturdaten vergleichen...", "Endgültiges Match berechnen..."],
+    es: ["Analizando forma del rostro...", "Extrayendo rasgos faciales...", "Comparando datos de agencia...", "Calculando coincidencia final..."],
+    fr: ["Analyse de la forme du visage...", "Extraction des traits du visage...", "Comparaison des données d'agence...", "Calcul du match final..."],
+    id: ["Menganalisis bentuk wajah...", "Mengekstrak fitur wajah...", "Membandingkan data agensi...", "Menghitung kecocokan akhir..."],
+    nl: ["Gezichtsvorm analyseren...", "Gezichtskenmerken extraheren...", "Bureaugegevens vergelijken...", "Definitieve match berekenen..."],
+    pl: ["Analizowanie kształtu twarzy...", "Wyodrębnianie cech twarzy...", "Porównywanie danych agencji...", "Obliczanie końcowego dopasowania..."],
+    pt: ["Analisando formato do rosto...", "Extraindo características faciais...", "Comparando dados da agência...", "Calculando correspondência final..."],
+    ru: ["Анализ формы лица...", "Извлечение черт лица...", "Сравнение данных агентств...", "Расчёт финального совпадения..."],
+    tr: ["Yüz şekli analiz ediliyor...", "Yüz özellikleri çıkarılıyor...", "Ajans verileri karşılaştırılıyor...", "Son eşleşme hesaplanıyor..."],
+    uk: ["Аналіз форми обличчя...", "Вилучення рис обличчя...", "Порівняння даних агентств...", "Розрахунок фінального збігу..."],
+    vi: ["Đang phân tích hình dạng khuôn mặt...", "Đang trích xuất đặc điểm khuôn mặt...", "Đang so sánh dữ liệu công ty...", "Đang tính toán kết quả cuối cùng..."]
+  }
+};
+
+// 다국어 팁/단계 가져오기 함수
+function getLoadingTips() {
+  var lang = langType || 'ko';
+  return LOADING_TEXTS.tips[lang] || LOADING_TEXTS.tips['en'];
+}
+
+function getLoadingSteps() {
+  var lang = langType || 'ko';
+  return LOADING_TEXTS.steps[lang] || LOADING_TEXTS.steps['en'];
+}
+
 // 다국어 메시지 가져오기 함수
 function getAlertMessage(key) {
   var lang = langType || 'ko';
@@ -298,20 +452,8 @@ var loadingProgress = 0;
 
 function fnStartLoadingAnimation() {
   loadingProgress = 0;
-  var tips = [
-    "SM은 시원한 눈매와 차가운 이미지를 선호합니다",
-    "JYP는 건강미와 자연스러운 매력을 중시합니다",
-    "YG는 개성있고 힙한 분위기를 선호합니다",
-    "SM 대표 비주얼: 카리나, 윈터, 태용",
-    "JYP 대표 비주얼: 수지, 나연, 현진",
-    "YG 대표 비주얼: 제니, 지수, 지드래곤"
-  ];
-  var steps = [
-    "얼굴형 분석 중...",
-    "눈, 코, 입 특징 추출 중...",
-    "소속사별 데이터 비교 중...",
-    "최종 매칭률 계산 중..."
-  ];
+  var tips = getLoadingTips();
+  var steps = getLoadingSteps();
 
   var tipIndex = 0;
   var stepIndex = 0;
@@ -1323,14 +1465,7 @@ function fnShowDetailAnalysis() {
     var currentStep = 0;
     var stepTimes = [0, 5, 10, 15]; // 각 단계 시작 시간 (초)
 
-    var tips = [
-      "SM은 시원한 눈매와 차가운 이미지를 선호합니다",
-      "JYP는 건강미와 자연스러운 매력을 중시합니다",
-      "YG는 개성있고 힙한 분위기를 선호합니다",
-      "SM 대표 비주얼: 카리나, 윈터, 태용",
-      "JYP 대표 비주얼: 수지, 나연, 현진",
-      "YG 대표 비주얼: 제니, 지수, 지드래곤"
-    ];
+    var tips = getLoadingTips();
     var tipIndex = 0;
 
     // 초기 상태 설정
