@@ -55,18 +55,48 @@ lang: vi
             </div>
         </div>
         <div class="file-upload-content">
-            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-            <div id="loading" class="animated bounce">
-                <!-- <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div> -->
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="text-center">AI đang phân tích khuôn mặt công ty KPOP của bạn.</p>
+            <!-- 로딩 화면 (analyzing 스타일) -->
+            <div id="loading" class="analyzing-container" style="display: none;">
+                <h2 class="analyzing-title">
+                    <i class="fas fa-search"></i> AI đang phân tích...
+                </h2>
+                <div class="analyzing-image-wrap">
+                    <img id="analyzing-image" src="{{ site.baseurl }}/static/img/icon.png" alt="analyzing">
+                    <div class="progress-overlay">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <p class="step-text" id="step-text">Đang phân tích hình dạng khuôn mặt...</p>
+                <div class="tip-box">
+                    <div class="tip-box-title">💡 Bạn có biết?</div>
+                    <div class="tip-box-text" id="tip-text">SM thích đôi mắt lạnh lùng và hình ảnh sang trọng</div>
+                </div>
+                <!-- AI 분석 중 광고 슬롯 -->
+                <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
             </div>
-            <!-- AI 분석 중 광고 슬롯 -->
-            <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
-            <p class="result-messege"></p>
-            <div id="label-container"></div>
+
+            <!-- 결과 표시 영역 -->
+            <div id="result-area" style="display: none;">
+                <div class="result-image-wrap">
+                    <img id="face-image" src="#" alt="your image" />
+                </div>
+                <p class="result-title" id="result-title"></p>
+                <p class="result-percent" id="result-percent"></p>
+                <div id="label-container" style="display: none;"></div>
+
+                <!-- 결과 화면 광고 슬롯 -->
+                <div class="result-ad-slot">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-8955182453510440"
+                         data-ad-slot="3138863990"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                </div>
+            </div>
 
             <!-- Detail Analysis CTA (Page Split Monetization) -->
             <div id="detail-cta-wrap" class="detail-cta-wrap" style="display: none;">
