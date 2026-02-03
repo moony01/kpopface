@@ -27,27 +27,37 @@ function fnLoadDynamicAd(containerId, adSlot, adFormat) {
   var container = document.getElementById(containerId);
   if (!container) return;
 
-  // 기존 광고 제거
-  container.innerHTML = '';
+  // 모달이 완전히 렌더링된 후 광고 로드 (레이아웃 계산 대기)
+  // 브라우저가 레이아웃을 계산할 시간을 주기 위해 setTimeout 사용
+  setTimeout(function() {
+    // 기존 광고 제거
+    container.innerHTML = '';
 
-  // 새 광고 요소 생성
-  var ins = document.createElement('ins');
-  ins.className = 'adsbygoogle';
-  ins.style.display = 'block';
-  ins.style.minHeight = '100px';
-  ins.setAttribute('data-ad-client', 'ca-pub-8955182453510440');
-  ins.setAttribute('data-ad-slot', adSlot);
-  ins.setAttribute('data-ad-format', adFormat || 'auto');
-  ins.setAttribute('data-full-width-responsive', 'true');
+    // 컨테이너에 명시적 width 설정 (AdSense가 크기 감지 가능하도록)
+    container.style.width = '100%';
 
-  container.appendChild(ins);
+    // 새 광고 요소 생성
+    var ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.style.width = '100%';
+    ins.style.minHeight = '100px';
+    ins.setAttribute('data-ad-client', 'ca-pub-8955182453510440');
+    ins.setAttribute('data-ad-slot', adSlot);
+    ins.setAttribute('data-ad-format', adFormat || 'auto');
+    ins.setAttribute('data-full-width-responsive', 'true');
 
-  // 광고 로드
-  try {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  } catch (e) {
-    console.log('Ad load error:', e);
-  }
+    container.appendChild(ins);
+
+    // 광고 로드 (추가 지연으로 레이아웃 확정 보장)
+    requestAnimationFrame(function() {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.log('Ad load error:', e);
+      }
+    });
+  }, 100); // 100ms 지연으로 모달 transition 완료 대기
 }
 
 // T1.13: 다국어 Alert 메시지 (15개 언어 지원)
