@@ -182,15 +182,8 @@ lang: ko
                 <span class="modal-tip-text" id="modal-tip-text">SM은 시원한 눈매와 차가운 이미지를 선호합니다</span>
             </div>
 
-            <!-- 광고 슬롯 -->
-            <div class="ad-overlay-slot" style="margin-top: 16px;">
-                <ins class="adsbygoogle"
-                     style="display:block; min-height:100px;"
-                     data-ad-client="ca-pub-8955182453510440"
-                     data-ad-slot="7822847481"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-            </div>
+            <!-- 광고 슬롯 (동적 로드) -->
+            <div id="ad-analyzing-slot" class="ad-overlay-slot" style="margin-top: 16px; min-height: 100px;"></div>
         </div>
 
         <!-- 상세 분석 결과 -->
@@ -210,15 +203,8 @@ lang: ko
                 <div id="modal-ranking-list"></div>
             </div>
 
-            <!-- 광고 -->
-            <div class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-8955182453510440"
-                     data-ad-slot="3138863990"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-            </div>
+            <!-- 광고 (동적 로드) -->
+            <div id="ad-detail-slot" class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;"></div>
 
             <!-- 비주얼 리포트 -->
             <div id="modal-visual-report" style="text-align: left;"></div>

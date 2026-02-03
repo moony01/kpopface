@@ -16,6 +16,40 @@ var currentResultExplain = ""; // 해시태그 설명
 var currentResultCeleb = "";   // 대표 연예인
 var currentPredictions = [];   // T1.10: AI 예측 결과 배열 (퍼센트 바 차트용)
 
+/**
+ * 동적 AdSense 광고 로드 함수
+ * 숨겨진 모달에서 광고가 로드되지 않는 문제 해결
+ * @param {string} containerId - 광고를 넣을 컨테이너 ID
+ * @param {string} adSlot - AdSense 슬롯 ID
+ * @param {string} adFormat - 광고 포맷 (auto, rectangle 등)
+ */
+function fnLoadDynamicAd(containerId, adSlot, adFormat) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+
+  // 기존 광고 제거
+  container.innerHTML = '';
+
+  // 새 광고 요소 생성
+  var ins = document.createElement('ins');
+  ins.className = 'adsbygoogle';
+  ins.style.display = 'block';
+  ins.style.minHeight = '100px';
+  ins.setAttribute('data-ad-client', 'ca-pub-8955182453510440');
+  ins.setAttribute('data-ad-slot', adSlot);
+  ins.setAttribute('data-ad-format', adFormat || 'auto');
+  ins.setAttribute('data-full-width-responsive', 'true');
+
+  container.appendChild(ins);
+
+  // 광고 로드
+  try {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  } catch (e) {
+    console.log('Ad load error:', e);
+  }
+}
+
 // T1.13: 다국어 Alert 메시지 (15개 언어 지원)
 var ALERT_MESSAGES = {
   urlCopied: {
@@ -1277,10 +1311,8 @@ function fnShowDetailAnalysis() {
       scanImage.src = faceImage.src;
     }
 
-    // 광고 로드 시도
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {}
+    // 분석 중 광고 동적 로드
+    fnLoadDynamicAd('ad-analyzing-slot', '7822847481', 'auto');
 
     // 20초 동안 단계별 애니메이션
     var totalDuration = 20;
@@ -1434,9 +1466,6 @@ function fnDisplayDetailResult() {
     reportContainer.innerHTML = reportHtml;
   }
 
-  // 광고 로드 시도
-  try {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  } catch (e) {}
+  // 상세 결과 광고 동적 로드
+  fnLoadDynamicAd('ad-detail-slot', '3138863990', 'auto');
 }
