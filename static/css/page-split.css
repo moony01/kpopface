@@ -311,11 +311,9 @@
   display: none;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
   z-index: 9999;
 }
 
@@ -326,6 +324,9 @@
   text-align: center;
   max-width: 350px;
   width: 90%;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .ad-overlay-title {
