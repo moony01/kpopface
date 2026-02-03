@@ -985,3 +985,92 @@
     padding: 8px 10px;
   }
 }
+
+/* 매우 작은 화면 (280px~320px) */
+@media screen and (max-width: 320px) {
+  /* 전체 소속사 매칭률 - 초소형 모바일 최적화 */
+  .agency-ranking {
+    padding: 10px;
+  }
+
+  .agency-ranking-title {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .agency-rank-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 4px 0;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .agency-rank-label {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .agency-rank-percent {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .agency-rank-bar-container {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    width: 100%;
+    height: 18px;
+    margin: 0;
+    min-width: unset;
+  }
+
+  /* 모달 컨텐츠 */
+  .detail-modal-content {
+    width: 98%;
+    padding: 12px;
+  }
+
+  .modal-result-summary {
+    padding: 10px;
+  }
+
+  .modal-result-title {
+    font-size: 18px;
+  }
+
+  .modal-result-tags {
+    font-size: 11px;
+  }
+
+  .modal-result-celebs {
+    font-size: 11px;
+  }
+
+  /* 비주얼 리포트 */
+  .visual-report {
+    padding: 12px;
+  }
+
+  .report-title {
+    font-size: 16px;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  .section-text {
+    font-size: 13px;
+  }
+}
