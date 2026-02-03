@@ -1460,6 +1460,10 @@ function fnShowDetailAnalysis() {
   var modalResult = document.getElementById('modal-detail-result');
 
   if (modal) {
+    // 모달을 body로 이동 (site-pusher의 transform 영향을 피하기 위해)
+    if (modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
     modal.style.display = 'flex';
     if (modalAdWait) modalAdWait.style.display = 'block';
     if (modalResult) modalResult.style.display = 'none';
