@@ -376,9 +376,14 @@ function fnLoadLeagueRanking() {
     if (data && data.length > 0) {
       for (var i = 0; i < data.length && i < 4; i++) {
         var nameEl = document.getElementById('rank-name-' + (i + 1));
+        var scoreEl = document.getElementById('rank-score-' + (i + 1));
         if (nameEl) {
           // 항상 영어 이름 표시 (HYBE, SM, JYP, YG)
           nameEl.textContent = data[i].name_en;
+        }
+        if (scoreEl && data[i].firepower != null) {
+          // 점수 표시 (천 단위 포맷)
+          scoreEl.textContent = Number(data[i].firepower).toLocaleString() + 'pt';
         }
       }
     }
