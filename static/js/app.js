@@ -260,6 +260,9 @@ function readURL(input) {
       $('#loading').show();
       $('#result-area').hide();
 
+      // AI 분석 중 광고 동적 로드
+      fnLoadDynamicAd('ad-loading-slot', '7822847481', 'auto');
+
       $('.image-title').html(input.files[0].name);
 
       // 로딩 시작 시간 기록
