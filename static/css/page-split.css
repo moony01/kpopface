@@ -903,3 +903,87 @@
   transform: translateX(4px);
   background: rgba(255, 255, 255, 0.4);
 }
+
+/* ========================================
+   모바일 반응형 스타일
+   ======================================== */
+
+@media screen and (max-width: 480px) {
+  /* 모달 오버레이 - 모바일 최적화 */
+  .ad-overlay {
+    padding: 10px;
+  }
+
+  .ad-overlay-content {
+    padding: 16px;
+    max-height: calc(100vh - 20px);
+    width: 95%;
+    max-width: none;
+  }
+
+  .ad-overlay-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  /* 전체 소속사 매칭률 - 모바일 최적화 */
+  .agency-ranking {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .agency-ranking-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .agency-rank-item {
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .agency-rank-label {
+    width: 45px;
+    font-size: 12px;
+  }
+
+  .agency-rank-bar-container {
+    flex: 1;
+    height: 20px;
+    margin: 0 8px;
+    min-width: 120px;
+  }
+
+  .agency-rank-percent {
+    width: 40px;
+    font-size: 12px;
+  }
+
+  /* 상세 분석 모달 컨텐츠 */
+  .detail-modal-content {
+    max-width: none;
+    width: 95%;
+  }
+
+  .modal-result-summary {
+    padding: 12px;
+  }
+
+  .modal-result-title {
+    font-size: 20px;
+  }
+
+  .modal-scan-image-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .modal-progress-text {
+    font-size: 12px;
+  }
+
+  .modal-tip-box {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+}
