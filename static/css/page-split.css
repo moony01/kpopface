@@ -339,14 +339,15 @@
 }
 
 .ad-overlay-slot {
+  width: 100%;
+  min-width: 280px;
   min-height: 250px;
   background: #f5f5f5;
   margin: 16px 0;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   color: #999;
+  box-sizing: border-box;
 }
 
 /* ========================================

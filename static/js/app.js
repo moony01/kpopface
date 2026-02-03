@@ -57,7 +57,7 @@ function fnLoadDynamicAd(containerId, adSlot, adFormat) {
         console.log('Ad load error:', e);
       }
     });
-  }, 100); // 100ms 지연으로 모달 transition 완료 대기
+  }, 300); // 300ms 지연으로 모달 transition 완료 대기
 }
 
 // T1.13: 다국어 Alert 메시지 (15개 언어 지원)
