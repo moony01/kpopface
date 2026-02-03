@@ -107,6 +107,15 @@ document.addEventListener('DOMContentLoaded', function() {
       body.classList.remove('with--sidebar');
     });
   }
+
+  // 상세 분석 보기 버튼 이벤트 리스너
+  var detailBtn = document.getElementById('detail-analysis-btn');
+  if (detailBtn) {
+    detailBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      fnShowDetailAnalysis();
+    });
+  }
 });
 
 window.addEventListener('beforeinstallprompt', function(e) {
@@ -143,25 +152,177 @@ function fnChangeLang(lang) {
   }
 }
 
+// KCL 리그 순위 데이터 로드
+function fnLoadLeagueRanking() {
+  var SUPABASE_URL = "https://eevckvdicfhqxywixznt.supabase.co";
+  var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVldmNrdmRpY2ZocXh5d2l4em50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4NjQwMjQsImV4cCI6MjA4MjQ0MDAyNH0.idh6w8dJ-8Rjdh9aB3DuaYofnO78fNBPuSOG8QoqKqM";
+
+  // 현재 페이지 언어 감지 및 KCL 링크 설정
+  var pathParts = window.location.pathname.split('/').filter(function(p) { return p; });
+  var currentLang = 'ko'; // 기본값: 한국어
+  var supportedLangs = ['en', 'ja', 'zh', 'de', 'es', 'fr', 'id', 'nl', 'pl', 'pt', 'ru', 'tr', 'uk', 'vi'];
+
+  // URL 경로에서 언어 코드 추출 (예: /kpopface/en/ -> en)
+  for (var i = 0; i < pathParts.length; i++) {
+    if (supportedLangs.indexOf(pathParts[i]) !== -1) {
+      currentLang = pathParts[i];
+      break;
+    }
+  }
+
+  // KCL 링크 동적 설정
+  var kclLink = document.getElementById('league-banner-link');
+  if (kclLink) {
+    kclLink.href = 'https://kclhq.com/' + currentLang;
+  }
+
+  fetch(SUPABASE_URL + '/rest/v1/kcl_companies?select=name_ko,name_en,firepower&order=firepower.desc&limit=4', {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY
+    }
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    console.log('KCL Ranking data:', data);
+    if (data && data.length > 0) {
+      for (var i = 0; i < data.length && i < 4; i++) {
+        var nameEl = document.getElementById('rank-name-' + (i + 1));
+        if (nameEl) {
+          // 항상 영어 이름 표시 (HYBE, SM, JYP, YG)
+          nameEl.textContent = data[i].name_en;
+        }
+      }
+    }
+  })
+  .catch(function(err) {
+    console.log('League ranking load error:', err);
+  });
+}
+
+// 페이지 로드 시 리그 순위 로드
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', fnLoadLeagueRanking);
+} else {
+  fnLoadLeagueRanking();
+}
+
 //파일 업로드
+var loadingStartTime = 0;
+var MIN_LOADING_DURATION = 10000; // 메인 로딩 최소 10초
+
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
     reader.onload = function (e) {
+      // 업로드 영역 숨기고 로딩 컨텐츠 표시
       $('.image-upload-wrap').hide();
-      $('#loading').show();
-      $('.file-upload-image').attr('src', e.target.result);
       $('.file-upload-content').show();
+
+      // 로딩 UI에 업로드 이미지 표시
+      $('#analyzing-image').attr('src', e.target.result);
+
+      // 로딩 화면 표시, 결과 영역 숨기기
+      $('#loading').show();
+      $('#result-area').hide();
+
       $('.image-title').html(input.files[0].name);
+
+      // 로딩 시작 시간 기록
+      loadingStartTime = Date.now();
+
+      // 프로그레스 애니메이션 시작
+      fnStartLoadingAnimation();
+
+      // 이미지가 로드된 후 AI 모델 초기화 및 예측
+      var faceImage = document.getElementById('face-image');
+      faceImage.src = e.target.result;
+      faceImage.onload = function() {
+        init().then(function() {
+          predict();
+          // 최소 5초 보장 후 로딩 완료
+          var elapsed = Date.now() - loadingStartTime;
+          var remaining = Math.max(0, MIN_LOADING_DURATION - elapsed);
+          setTimeout(function() {
+            fnCompleteLoading();
+          }, remaining);
+        });
+      };
     };
     reader.readAsDataURL(input.files[0]);
-    init().then(()=>{
-        predict();
-        $('#loading').hide();
-    });
   } else {
-      removeUpload();
+    removeUpload();
   }
+}
+
+// 로딩 애니메이션 시작
+var loadingInterval = null;
+var loadingProgress = 0;
+
+function fnStartLoadingAnimation() {
+  loadingProgress = 0;
+  var tips = [
+    "SM은 시원한 눈매와 차가운 이미지를 선호합니다",
+    "JYP는 건강미와 자연스러운 매력을 중시합니다",
+    "YG는 개성있고 힙한 분위기를 선호합니다",
+    "SM 대표 비주얼: 카리나, 윈터, 태용",
+    "JYP 대표 비주얼: 수지, 나연, 현진",
+    "YG 대표 비주얼: 제니, 지수, 지드래곤"
+  ];
+  var steps = [
+    "얼굴형 분석 중...",
+    "눈, 코, 입 특징 추출 중...",
+    "소속사별 데이터 비교 중...",
+    "최종 매칭률 계산 중..."
+  ];
+
+  var tipIndex = 0;
+  var stepIndex = 0;
+
+  loadingInterval = setInterval(function() {
+    loadingProgress += Math.random() * 15 + 5;
+    if (loadingProgress > 95) loadingProgress = 95;
+
+    // 프로그레스 바 업데이트
+    $('#progress-bar').css('width', loadingProgress + '%');
+    $('#progress-text').text(Math.floor(loadingProgress) + '%');
+
+    // 단계 텍스트 변경
+    if (loadingProgress > (stepIndex + 1) * 25 && stepIndex < steps.length - 1) {
+      stepIndex++;
+      $('#step-text').text(steps[stepIndex]);
+    }
+
+    // 팁 변경
+    if (Math.random() > 0.7) {
+      tipIndex = (tipIndex + 1) % tips.length;
+      $('#tip-text').text(tips[tipIndex]);
+    }
+  }, 300);
+}
+
+// 로딩 완료
+function fnCompleteLoading() {
+  // 프로그레스 100%로 완료
+  if (loadingInterval) {
+    clearInterval(loadingInterval);
+    loadingInterval = null;
+  }
+
+  $('#progress-bar').css('width', '100%');
+  $('#progress-text').text('100%');
+  $('#step-text').text('분석 완료!');
+
+  // 잠시 후 결과 표시
+  setTimeout(function() {
+    $('#loading').hide();
+    $('#result-area').show();
+
+    // 결과 화면 광고 로드
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  }, 500);
 }
 
 //파일 삭제버튼
@@ -1007,10 +1168,19 @@ async function predict() {
         resultCeleb = "";
     }
   }
-  var title = "<div class='" + prediction[0].className + "-kpop-title'>" + resultTitle + "</div>"
-  var explain = "<div class='kpop-explain pt-2'>" + resultExplain + "</div>"
-  var celeb = "<div class='" + prediction[0].className + "-kpop-celeb pt-2 pb-2'>" + resultCeleb + "</div>"
-  $('.result-messege').html(title + explain + celeb);
+  // 1차 결과: 소속사 이름과 퍼센트만 표시
+  var topPercent = Math.round(prediction[0].probability * 100);
+  var topAgencyName = { sm: 'SM', jyp: 'JYP', yg: 'YG', hybe: 'HYBE' };
+
+  // 1차 결과 표시 (작은 이미지 아래)
+  var resultTitleEl = document.getElementById('result-title');
+  var resultPercentEl = document.getElementById('result-percent');
+  if (resultTitleEl) resultTitleEl.textContent = resultTitle;
+  if (resultPercentEl) resultPercentEl.textContent = topPercent + '%';
+
+  // 기존 result-messege 숨김 처리 (하위 호환)
+  var resultMsgEl = document.querySelector('.result-messege');
+  if (resultMsgEl) resultMsgEl.style.display = 'none';
   
 // T1.2: 결과 이미지 저장/공유를 위한 전역 변수 설정
   currentAgency = prediction[0].className;
@@ -1027,7 +1197,8 @@ async function predict() {
   
   var barWidth;
 
-  for (let i = 0; i < maxPredictions; i++) {
+  // 메인 페이지에서는 1위 소속사만 표시 (상세 분석에서 전체 확인 가능)
+  for (let i = 0; i < 1; i++) {
     if (prediction[i].probability.toFixed(2) > 0.1) {
       barWidth = Math.round(prediction[i].probability.toFixed(2) * 100) + "%";
     } else if (prediction[i].probability.toFixed(2) >= 0.01) {
@@ -1061,47 +1232,211 @@ async function predict() {
     // labelContainer.childNodes[i].innerHTML = classPrediction;
   }
 
-  // 페이지 분리 수익화: 결과 데이터 저장 및 상세보기 버튼 표시
-  if (typeof PageRouter !== 'undefined') {
-    var userImage = document.getElementById('face-image');
-    var gender = document.getElementById('gender').checked ? 'male' : 'female';
+  // 결과 데이터 저장 (상세 분석용)
+  var userImage = document.getElementById('face-image');
+  var gender = document.getElementById('gender').checked ? 'male' : 'female';
 
-    var resultData = {
-      gender: gender,
-      image: userImage ? userImage.src : '',
-      results: currentPredictions,
-      resultTitle: currentResultTitle,
-      resultExplain: currentResultExplain,
-      resultCeleb: currentResultCeleb
-    };
+  var resultData = {
+    gender: gender,
+    image: userImage ? userImage.src : '',
+    results: currentPredictions,
+    resultTitle: currentResultTitle,
+    resultExplain: currentResultExplain,
+    resultCeleb: currentResultCeleb
+  };
 
-    // sessionStorage에 임시 저장 (페이지 분리 모드에서 사용)
-    sessionStorage.setItem('kpopface_pending_result', JSON.stringify(resultData));
-
-    // 상세보기 버튼 표시
-    var detailCtaWrap = document.getElementById('detail-cta-wrap');
-    if (detailCtaWrap) {
-      detailCtaWrap.style.display = 'block';
-    }
-  }
+  // sessionStorage에 임시 저장
+  sessionStorage.setItem('kpopface_pending_result', JSON.stringify(resultData));
 }
 
 /**
- * 상세 분석 페이지로 이동 (페이지 분리 수익화)
+ * 상세 분석 보기 (팝업 모달)
+ * 15초 복합형 로딩 UI 후 상세 분석 결과 표시
  */
-function fnGoToDetailAnalysis() {
+function fnShowDetailAnalysis() {
   var pendingData = sessionStorage.getItem('kpopface_pending_result');
   if (!pendingData) {
     alert('먼저 테스트를 완료해주세요!');
     return;
   }
 
+  // 팝업 모달 표시
+  var modal = document.getElementById('detail-modal');
+  var modalAdWait = document.getElementById('modal-ad-wait');
+  var modalResult = document.getElementById('modal-detail-result');
+
+  if (modal) {
+    modal.style.display = 'flex';
+    if (modalAdWait) modalAdWait.style.display = 'block';
+    if (modalResult) modalResult.style.display = 'none';
+
+    // 스캔 이미지를 유저 얼굴 이미지로 설정
+    var faceImage = document.getElementById('face-image');
+    var scanImage = document.getElementById('modal-scan-image');
+    if (faceImage && scanImage && faceImage.src) {
+      scanImage.src = faceImage.src;
+    }
+
+    // 광고 로드 시도
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+
+    // 20초 동안 단계별 애니메이션
+    var totalDuration = 20;
+    var elapsed = 0;
+    var currentStep = 0;
+    var stepTimes = [0, 5, 10, 15]; // 각 단계 시작 시간 (초)
+
+    var tips = [
+      "SM은 시원한 눈매와 차가운 이미지를 선호합니다",
+      "JYP는 건강미와 자연스러운 매력을 중시합니다",
+      "YG는 개성있고 힙한 분위기를 선호합니다",
+      "SM 대표 비주얼: 카리나, 윈터, 태용",
+      "JYP 대표 비주얼: 수지, 나연, 현진",
+      "YG 대표 비주얼: 제니, 지수, 지드래곤"
+    ];
+    var tipIndex = 0;
+
+    // 초기 상태 설정
+    fnUpdateModalStep(0, 'active');
+
+    var modalTimer = setInterval(function() {
+      elapsed++;
+      var progress = Math.min((elapsed / totalDuration) * 100, 100);
+
+      // 프로그레스 바 업데이트
+      var progressFill = document.getElementById('modal-progress-fill');
+      var progressText = document.getElementById('modal-progress-text');
+      if (progressFill) progressFill.style.width = progress + '%';
+      if (progressText) progressText.textContent = Math.floor(progress) + '%';
+
+      // 단계 업데이트
+      for (var i = stepTimes.length - 1; i >= 0; i--) {
+        if (elapsed >= stepTimes[i] && currentStep < i + 1) {
+          // 이전 단계 완료 처리
+          if (currentStep > 0) {
+            fnUpdateModalStep(currentStep, 'completed');
+          }
+          currentStep = i + 1;
+          fnUpdateModalStep(currentStep, 'active');
+          break;
+        }
+      }
+
+      // 팁 변경 (3초마다)
+      if (elapsed % 3 === 0) {
+        tipIndex = (tipIndex + 1) % tips.length;
+        var tipText = document.getElementById('modal-tip-text');
+        if (tipText) tipText.textContent = tips[tipIndex];
+      }
+
+      // 완료
+      if (elapsed >= totalDuration) {
+        clearInterval(modalTimer);
+        // 마지막 단계 완료 처리
+        fnUpdateModalStep(4, 'completed');
+
+        setTimeout(function() {
+          if (modalAdWait) modalAdWait.style.display = 'none';
+          fnDisplayDetailResult();
+        }, 500);
+      }
+    }, 1000);
+  }
+}
+
+/**
+ * 모달 분석 단계 업데이트
+ */
+function fnUpdateModalStep(stepNum, status) {
+  var stepEl = document.getElementById('step-' + stepNum);
+  if (!stepEl) return;
+
+  var iconEl = stepEl.querySelector('.step-icon');
+
+  // 모든 클래스 초기화
+  stepEl.classList.remove('active', 'completed');
+
+  if (status === 'active') {
+    stepEl.classList.add('active');
+    if (iconEl) iconEl.textContent = '🔄';
+  } else if (status === 'completed') {
+    stepEl.classList.add('completed');
+    if (iconEl) iconEl.textContent = '✅';
+  }
+}
+
+/**
+ * 상세 분석 모달 닫기
+ */
+function fnCloseDetailModal() {
+  var modal = document.getElementById('detail-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+/**
+ * 상세 분석 결과 표시 (팝업 모달 내부)
+ */
+function fnDisplayDetailResult() {
+  var pendingData = sessionStorage.getItem('kpopface_pending_result');
+  if (!pendingData) return;
+
   var resultData = JSON.parse(pendingData);
 
-  // PageRouter를 통해 analyzing 페이지로 이동
-  if (typeof PageRouter !== 'undefined') {
-    PageRouter.saveAndNavigate(resultData, 'analyzing');
-  } else {
-    alert('페이지 이동 기능을 사용할 수 없습니다.');
+  // 모달 결과 섹션 표시
+  var modalResult = document.getElementById('modal-detail-result');
+  if (modalResult) {
+    modalResult.style.display = 'block';
   }
+
+  // 결과 요약 표시 (소속사얼굴상, 해시태그, 연예인)
+  var titleEl = document.getElementById('modal-result-title');
+  var hashtagEl = document.getElementById('modal-result-hashtag');
+  var celebEl = document.getElementById('modal-result-celeb');
+
+  if (titleEl && resultData.resultTitle) {
+    titleEl.textContent = resultData.resultTitle;
+  }
+  if (hashtagEl && resultData.resultExplain) {
+    hashtagEl.textContent = resultData.resultExplain;
+  }
+  if (celebEl && resultData.resultCeleb) {
+    celebEl.textContent = resultData.resultCeleb;
+  }
+
+  // 전체 소속사 순위 표시 (모달 내부)
+  var rankingList = document.getElementById('modal-ranking-list');
+  if (rankingList && resultData.results) {
+    var agencyNames = { sm: 'SM', jyp: 'JYP', yg: 'YG' };
+    var rankingHtml = '';
+
+    resultData.results.forEach(function(item) {
+      rankingHtml += '<div class="agency-rank-item">';
+      rankingHtml += '<div class="agency-rank-label">' + (agencyNames[item.agency] || item.agency.toUpperCase()) + '</div>';
+      rankingHtml += '<div class="agency-rank-bar-container">';
+      rankingHtml += '<div class="agency-rank-bar ' + item.agency + '" style="width: ' + item.percent + '%"></div>';
+      rankingHtml += '</div>';
+      rankingHtml += '<div class="agency-rank-percent">' + item.percent + '%</div>';
+      rankingHtml += '</div>';
+    });
+    rankingList.innerHTML = rankingHtml;
+  }
+
+  // 비주얼 리포트 표시 (모달 내부)
+  var reportContainer = document.getElementById('modal-visual-report');
+  if (reportContainer && typeof VisualReports !== 'undefined') {
+    var topAgency = resultData.results[0].agency;
+    var gender = resultData.gender || 'female';
+    var reportHtml = VisualReports.getReportHTML(topAgency, gender);
+    reportContainer.innerHTML = reportHtml;
+  }
+
+  // 광고 로드 시도
+  try {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  } catch (e) {}
 }

@@ -46,7 +46,6 @@ lang: en
         </div>
     </div>
     <div class="file-upload">
-        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
         <div class="image-upload-wrap">
             <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
             <div class="drag-text">
@@ -55,16 +54,59 @@ lang: en
             </div>
         </div>
         <div class="file-upload-content">
-            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-            <div id="loading" class="animated bounce">
-                <!-- <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div> -->
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="text-center">AI is analyzing your KPOP agency face.</p>
+            <!-- Loading Screen (analyzing style) -->
+            <div id="loading" class="analyzing-container" style="display: none;">
+                <h2 class="analyzing-title">
+                    <i class="fas fa-search"></i> AI is Analyzing...
+                </h2>
+                <div class="analyzing-image-wrap">
+                    <img id="analyzing-image" src="../static/img/icon.png" alt="Analyzing image">
+                    <div class="progress-overlay">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <p class="step-text" id="step-text">Analyzing face shape...</p>
+                <div class="tip-box">
+                    <div class="tip-box-title">💡 Did you know?</div>
+                    <div class="tip-box-text" id="tip-text">SM prefers cool eyes and a chic image</div>
+                </div>
             </div>
-            <p class="result-messege"></p>
-            <div id="label-container"></div>
+
+            <!-- Result Area (Primary: small image + 1st place only) -->
+            <div id="result-area" style="display: none;">
+                <div class="result-image-wrap">
+                    <img id="face-image" src="#" alt="your image" />
+                </div>
+
+                <p class="result-title" id="result-title"></p>
+                <p class="result-percent" id="result-percent"></p>
+
+                <!-- Hidden label-container (for init function) -->
+                <div id="label-container" style="display: none;"></div>
+
+                <!-- View Detailed Analysis Button -->
+                <div id="detail-cta-wrap" class="detail-cta-wrap">
+                    <p class="detail-cta-text">📊 Want to see full agency match rates + visual report?</p>
+                    <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>View Detailed Analysis</span>
+                    </button>
+                </div>
+
+                <!-- Result Ad Slot -->
+                <div class="result-ad-slot">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-8955182453510440"
+                         data-ad-slot="3138863990"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                </div>
+            </div>
+
             <!-- Save Result Image Button -->
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
@@ -105,5 +147,65 @@ lang: en
             <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
             </li>
         </ul>
+    </div>
+</div>
+
+<!-- Detailed Analysis Popup Modal -->
+<div id="detail-modal" class="ad-overlay" style="display: none;">
+    <div class="ad-overlay-content detail-modal-content">
+        <!-- Top Close Button -->
+        <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <!-- Ad Wait Screen -->
+        <div id="modal-ad-wait">
+            <div class="ad-overlay-title">📊 Preparing Detailed Analysis</div>
+            <div class="ad-overlay-countdown"><span id="ad-countdown">15</span> seconds</div>
+            <div class="ad-overlay-slot">
+                <ins class="adsbygoogle"
+                     style="display:block; min-height:250px;"
+                     data-ad-client="ca-pub-8955182453510440"
+                     data-ad-slot="7822847481"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+            <p style="color: #999; font-size: 12px;">Please wait a moment...</p>
+        </div>
+
+        <!-- Detailed Analysis Result -->
+        <div id="modal-detail-result" style="display: none;">
+            <div class="ad-overlay-title">📊 Detailed Analysis Results</div>
+
+            <!-- Result Summary (Agency face type, hashtags, celebrities) -->
+            <div class="modal-result-summary">
+                <p class="modal-result-title" id="modal-result-title"></p>
+                <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
+                <p class="modal-result-celeb" id="modal-result-celeb"></p>
+            </div>
+
+            <!-- Full Agency Ranking -->
+            <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
+                <div class="agency-ranking-title">Full Agency Match Rates</div>
+                <div id="modal-ranking-list"></div>
+            </div>
+
+            <!-- Ad -->
+            <div class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8955182453510440"
+                     data-ad-slot="3138863990"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Visual Report -->
+            <div id="modal-visual-report" style="text-align: left;"></div>
+
+            <!-- Close Button -->
+            <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
     </div>
 </div>

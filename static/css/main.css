@@ -742,3 +742,206 @@
 .detail-cta-btn-main i {
     font-size: 18px;
 }
+
+/* ========================================
+   상세 분석 통합 스타일 (메인 페이지 내)
+   ======================================== */
+
+/* 광고 대기 화면 */
+.detail-ad-wait {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+    color: white;
+}
+
+.ad-wait-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.ad-wait-text {
+    font-size: 18px;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.ad-wait-countdown {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.ad-wait-countdown span {
+    color: #ffd93d;
+    font-size: 32px;
+}
+
+/* 광고 슬롯 인라인 */
+.ad-slot-inline {
+    width: 100%;
+    min-height: 100px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 상세 분석 결과 섹션 */
+.detail-result-section {
+    margin-top: 30px;
+    padding: 20px 0;
+    border-top: 2px solid #e9ecef;
+}
+
+.detail-section-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* 전체 소속사 순위 */
+.agency-full-ranking {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.ranking-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.agency-rank-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 12px;
+}
+
+.agency-rank-label {
+    width: 50px;
+    font-weight: bold;
+    color: #333;
+    flex-shrink: 0;
+}
+
+.agency-rank-bar-container {
+    flex: 1;
+    height: 24px;
+    background: #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.agency-rank-bar {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.5s ease;
+}
+
+.agency-rank-bar.sm {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.agency-rank-bar.jyp {
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+}
+
+.agency-rank-bar.yg {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+}
+
+.agency-rank-percent {
+    width: 50px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* 비주얼 리포트 */
+.visual-report {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.report-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #6c5ce7;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.report-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.section-text {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.section-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.section-list li {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 4px;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .detail-ad-wait {
+        padding: 20px 16px;
+    }
+
+    .ad-wait-countdown {
+        font-size: 20px;
+    }
+
+    .ad-wait-countdown span {
+        font-size: 28px;
+    }
+
+    .agency-full-ranking {
+        padding: 16px;
+    }
+
+    .visual-report {
+        padding: 16px;
+    }
+
+    .report-title {
+        font-size: 16px;
+    }
+}
