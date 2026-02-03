@@ -311,7 +311,11 @@
   display: none;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   z-index: 9999;
 }
 
