@@ -18,6 +18,9 @@ plugins:
 exclude:
   - GEMINI.md
   - SECURITY_AUDIT.md
+  - CLAUDE.md
+  - .claude
+  - doc
   - node_modules
   - package.json
   - package-lock.json
