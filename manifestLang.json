@@ -1,6 +1,6 @@
   {
     "short_name": "KpopFaceTest",
-    "name": "kpop Face Analysis Test",
+    "name": "kpop Face Test",
     "icons": [
       {
         "src": "favicon.png",
@@ -26,6 +26,6 @@
     "orientation": "portrait",
     "theme_color": "#283618",
     "background_color": "#ffffff",
-    "description": "KPOP Entertainment Company Face Analysis Test using Artificial Intelligence",
+    "description": "KPOP Entertainment Company Face Test using Artificial Intelligence",
     "scope": "/"
   }
