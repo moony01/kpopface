@@ -15,6 +15,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <script src="static/js/app.js"></script>
 
+    {% if page.noindex %}
+    <meta name="robots" content="noindex, nofollow">
+    {% endif %}
     <!-- SEO 메타 태그 -->
     <meta name="description" content="K-Pop Face Test 개인정보처리방침 - 업로드된 이미지는 서버에 저장되지 않으며 페이지 이탈 시 즉시 소멸됩니다.">
     <link rel="canonical" href="https://moony01.com/kpopface/privacy.html">

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /doc/
 
 Sitemap: https://moony01.com/kpopface/sitemap.xml
