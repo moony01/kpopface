@@ -375,6 +375,7 @@
 .bmc-btn {
     display: block;
     width: 100%;
+    box-sizing: border-box;
     max-width: 300px;
     margin: 10px auto;
     padding: 12px 20px;
