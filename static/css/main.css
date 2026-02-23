@@ -288,7 +288,7 @@
 .image-title-wrap {
     display: flex;
     justify-content: center;
-    padding: 0 15px 20px 15px;
+    padding: 0 15px 10px 15px;
     color: #222;
 }
 
@@ -372,16 +372,16 @@
 
 
 .bmc-wrap {
+    margin: 0 auto 10px;
     text-align: center;
-    margin: 10px auto;
     max-width: 300px;
 }
 
 .bmc-desc {
-    font-size: 13px;
-    color: #888;
-    margin: 0 0 6px 0;
-    line-height: 1.4;
+    margin: 4px 0 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #7a7a7a;
 }
 
 /* bmc (buy me a coffee): start */
@@ -390,7 +390,7 @@
     width: 100%;
     box-sizing: border-box;
     max-width: 300px;
-    margin: 10px auto;
+    margin: 0;
     padding: 12px 20px;
     border-radius: 25px;
     border: 2px solid #FFDD00;
@@ -742,6 +742,10 @@ a.sns-icon-youtube {
         font-size: 32px;
         font-weight: 600;
         padding-bottom: 10px;
+    }
+
+    .bmc-desc {
+        font-size: 11px;
     }
  }
  
