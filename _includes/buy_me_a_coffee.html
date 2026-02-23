@@ -1,8 +1,12 @@
 {% assign bmc_text = "Buy a Coffee" %}
-{% if page.lang == 'ko' %}{% assign bmc_text = "커피 한 잔 사주기" %}{% endif %}
-{% if page.lang == 'ja' %}{% assign bmc_text = "コーヒーをおごる" %}{% endif %}
-{% if page.lang == 'zh' %}{% assign bmc_text = "请喝咖啡" %}{% endif %}
+{% assign bmc_desc = "Your donation helps keep this app running and improving" %}
+{% if page.lang == 'ko' %}{% assign bmc_text = "커피 한 잔 사주기" %}{% assign bmc_desc = "개발자에게 도네이션 해주시면 앱 운영과 개선에 큰 도움이 됩니다" %}{% endif %}
+{% if page.lang == 'ja' %}{% assign bmc_text = "コーヒーをおごる" %}{% assign bmc_desc = "寄付はアプリの運営と改善に役立ちます" %}{% endif %}
+{% if page.lang == 'zh' %}{% assign bmc_text = "请喝咖啡" %}{% assign bmc_desc = "您的捐赠将帮助这个应用持续运营和改进" %}{% endif %}
 
-<a href="https://www.buymeacoffee.com/moony01" target="_blank" rel="noopener noreferrer" class="bmc-btn">
-    <span class="bmc-btn-text">☕ {{ bmc_text }}</span>
-</a>
+<div class="bmc-wrap">
+    <p class="bmc-desc">{{ bmc_desc }}</p>
+    <a href="https://www.buymeacoffee.com/moony01" target="_blank" rel="noopener noreferrer" class="bmc-btn">
+        <span class="bmc-btn-text">☕ {{ bmc_text }}</span>
+    </a>
+</div>

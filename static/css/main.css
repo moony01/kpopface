@@ -371,6 +371,19 @@
 /* save-image-btn: end */
 
 
+.bmc-wrap {
+    text-align: center;
+    margin: 10px auto;
+    max-width: 300px;
+}
+
+.bmc-desc {
+    font-size: 13px;
+    color: #888;
+    margin: 0 0 6px 0;
+    line-height: 1.4;
+}
+
 /* bmc (buy me a coffee): start */
 .bmc-btn {
     display: block;
