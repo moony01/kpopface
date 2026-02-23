@@ -27,9 +27,8 @@
 │   ├── /feature            # 기능 명세
 │   └── /database           # DB/API 관련
 ├── /.claude/planning       # 프로젝트 관리 문서
-│   ├── tasks.md            # 현재 태스크 목록
-│   ├── tasks-completed.md  # 완료된 태스크 아카이브
 │   └── prd.md              # 제품 요구사항 문서
+# 태스크 관리: C:\project\.claude\tasks.md (통합 관리)
 └── _config.yml             # Jekyll 설정
 ```
 
@@ -98,15 +97,15 @@ git push
 
 ## 문서 위치
 
-`.claude/planning/` 폴더에서 프로젝트 태스크를 관리합니다.
+태스크는 **프로젝트 루트(`C:\project\.claude\`)에서 통합 관리**합니다.
 
 ## 문서 용도
 
-| 파일 | 용도 | 업데이트 시점 |
-|------|------|--------------|
-| `tasks.md` | 현재 진행 중인 태스크 목록 | 태스크 추가/상태 변경 시 |
-| `tasks-completed.md` | 완료된 태스크 아카이브 | 태스크 완료 후 이동 |
-| `prd.md` | 제품 요구사항 문서 | 기능 추가/변경 시 |
+| 파일 | 용도 | 위치 |
+|------|------|------|
+| `tasks.md` | 전체 프로젝트 태스크 (통합) | `C:\project\.claude\tasks.md` |
+| `tasks-completed.md` | 완료 태스크 아카이브 (통합) | `C:\project\.claude\tasks-completed.md` |
+| `prd.md` | 제품 요구사항 문서 | `.claude/planning/prd.md` (로컬) |
 
 ## 태스크 관리 규칙
 
@@ -144,6 +143,6 @@ T1.3 [UI] 저장 버튼 추가
 
 ### 태스크 완료 시
 
-1. `tasks.md`에서 해당 태스크를 `✅ 완료` 섹션으로 이동
+1. `C:\project\.claude\tasks.md`에서 해당 태스크를 완료 처리
 2. 커밋 해시, 완료일 기록
-3. 주기적으로 `tasks-completed.md`로 아카이브
+3. 주기적으로 `C:\project\.claude\tasks-completed.md`로 아카이브

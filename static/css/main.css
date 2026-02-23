@@ -370,6 +370,40 @@
 }
 /* save-image-btn: end */
 
+
+/* bmc (buy me a coffee): start */
+.bmc-container {
+    text-align: center;
+    margin: 30px auto;
+    padding-bottom: 20px;
+}
+
+.bmc-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.bmc-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.sns-icon-bmc {
+    color: #FFDD00;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 559px) {
+    .bmc-icons {
+        gap: 15px;
+    }
+}
+/* bmc (buy me a coffee): end */
+
 /* sns-promo: start */
 .sns-promo-container {
     text-align: center;
@@ -414,6 +448,10 @@
     color: #000000;
 }
 
+
+.sns-icon-youtube {
+    color: #FF0000;
+}
 @media screen and (max-width: 559px) {
     .sns-icon {
         font-size: 1.8rem;
