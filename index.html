@@ -116,14 +116,12 @@ lang: ko
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">결과 이미지 저장하기</span>
             </button>
+            {% include buy_me_a_coffee.html %}
             <div class="image-title-wrap">
                 <button type="button" class="try-again-btn" onclick="removeUpload()">
                     <span class="try-again-text">다른 사진으로 재시도</span>
                 </button>
             </div>
-            
-            {% include buy_me_a_coffee.html %}
-            {% include sns_promotion.html %}
         </div>
     </div>
     {% include vote_section_ko.html %}

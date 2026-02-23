@@ -372,35 +372,36 @@
 
 
 /* bmc (buy me a coffee): start */
-.bmc-container {
-    text-align: center;
-    margin: 30px auto;
-    padding-bottom: 20px;
-}
-
-.bmc-title {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.bmc-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.sns-icon-bmc {
-    color: #FFDD00;
+.bmc-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid #FFDD00;
+    background-color: #FFDD00;
     text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
 
-@media screen and (max-width: 559px) {
-    .bmc-icons {
-        gap: 15px;
-    }
+.bmc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 221, 0, 0.4);
+    opacity: 0.9;
+}
+
+.bmc-btn:active {
+    transform: translateY(0);
+}
+
+.bmc-btn-text {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
 }
 /* bmc (buy me a coffee): end */
 
@@ -449,7 +450,7 @@
 }
 
 
-.sns-icon-youtube {
+a.sns-icon-youtube {
     color: #FF0000;
 }
 @media screen and (max-width: 559px) {

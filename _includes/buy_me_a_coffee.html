@@ -3,11 +3,6 @@
 {% if page.lang == 'ja' %}{% assign bmc_text = "コーヒーをおごる" %}{% endif %}
 {% if page.lang == 'zh' %}{% assign bmc_text = "请喝咖啡" %}{% endif %}
 
-<div class="bmc-container">
-    <div class="bmc-title">{{ bmc_text }}</div>
-    <div class="bmc-icons">
-        <a href="https://www.buymeacoffee.com/moony01" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-bmc">
-            ☕
-        </a>
-    </div>
-</div>
+<a href="https://www.buymeacoffee.com/moony01" target="_blank" rel="noopener noreferrer" class="bmc-btn">
+    <span class="bmc-btn-text">☕ {{ bmc_text }}</span>
+</a>
