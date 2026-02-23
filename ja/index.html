@@ -149,45 +149,72 @@ lang: ja
         <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
             <i class="fas fa-times"></i>
         </button>
-        <!-- 広告待機画面 -->
+        <!-- 広告待機画面（複合型ローディングUI） -->
         <div id="modal-ad-wait">
-            <div class="ad-overlay-title">📊 詳細分析準備中</div>
-            <div class="ad-overlay-countdown"><span id="ad-countdown">15</span>秒</div>
-            <div class="ad-overlay-slot">
-                <ins class="adsbygoogle"
-                     style="display:block; min-height:250px;"
-                     data-ad-client="ca-pub-8955182453510440"
-                     data-ad-slot="7822847481"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-            </div>
-            <p style="color: #999; font-size: 12px;">しばらくお待ちください...</p>
-        </div>
+            <div class="ad-overlay-title">📊 ビジュアル分析中...</div>
 
+            <!-- ミニプロフィールスキャンエリア -->
+            <div class="modal-scan-area">
+                <div class="modal-scan-image-wrap">
+                    <img id="modal-scan-image" src="../static/img/icon.png" alt="分析中">
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+
+            <!-- 分析ステップ表示 -->
+            <div class="modal-analysis-steps">
+                <div class="analysis-step" id="step-1">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">顔型分析中...</span>
+                </div>
+                <div class="analysis-step" id="step-2">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">ビジュアル特徴抽出中...</span>
+                </div>
+                <div class="analysis-step" id="step-3">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">事務所マッチング率計算中...</span>
+                </div>
+                <div class="analysis-step" id="step-4">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">AIレポート生成中...</span>
+                </div>
+            </div>
+
+            <!-- プログレスバー -->
+            <div class="modal-progress-wrap">
+                <div class="modal-progress-bar">
+                    <div class="modal-progress-fill" id="modal-progress-fill"></div>
+                </div>
+                <span class="modal-progress-text" id="modal-progress-text">0%</span>
+            </div>
+
+            <!-- ティップボックス -->
+            <div class="modal-tip-box">
+                <span class="modal-tip-icon">💡</span>
+                <span class="modal-tip-text" id="modal-tip-text">SMはクールな目元とシックなイメージを好みます</span>
+            </div>
+
+            <!-- 広告スロット（動的ロード） -->
+            <div id="ad-analyzing-slot" class="ad-overlay-slot" style="margin-top: 16px; min-height: 100px;"></div>
+        </div>
         <!-- 詳細分析結果 -->
         <div id="modal-detail-result" style="display: none;">
             <div class="ad-overlay-title">📊 詳細分析結果</div>
-
-            <!-- 結果サマリー（事務所顔タイプ、ハッシュタグ、芸能人） -->
             <div class="modal-result-summary">
                 <p class="modal-result-title" id="modal-result-title"></p>
                 <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
                 <p class="modal-result-celeb" id="modal-result-celeb"></p>
             </div>
-
             <!-- 全事務所ランキング -->
             <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
                 <div class="agency-ranking-title">全事務所マッチング率</div>
                 <div id="modal-ranking-list"></div>
             </div>
 
-            <!-- 広告 -->
+            <!-- 広告（動的ロード） -->
             <div id="ad-detail-slot" class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;"></div>
-
-            <!-- ビジュアルレポート -->
             <div id="modal-visual-report" style="text-align: left;"></div>
-
-            <!-- 閉じるボタン -->
             <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
                 <i class="fas fa-times"></i> 閉じる
             </button>
