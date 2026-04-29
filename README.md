@@ -1,51 +1,142 @@
-## 프로젝트 제목
+# K-Pop Idol Face Test
 
-케이팝 AI 얼굴상 테스트 : [moony01.com/kpopface/](https://moony01.com/kpopface/)
+> **Which K-Pop idol do you look like?** AI face matcher trained on K-Pop idols from Korea's top 3 entertainment companies — SM, JYP, YG.
 
-## 프로젝트 설명
+[![Live Site](https://img.shields.io/badge/Live-moony01.com%2Fkpopface-blue)](https://moony01.com/kpopface/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![PWA](https://img.shields.io/badge/PWA-enabled-purple.svg)](https://moony01.com/kpopface/)
+[![Languages](https://img.shields.io/badge/i18n-15%20languages-orange.svg)](https://moony01.com/kpopface/)
 
-대한민국 케이팝 3대 엔터사의 연예인들의 얼굴을 학습 한 AI 얼굴상 테스트
+🌐 **Live Demo**: https://moony01.com/kpopface/
 
-## 핵심 개발 내용
+---
 
-- 앱을 웹, 모바일에 모두 호환 할 수 있도록 반응형 웹으로 퍼블리싱한다.
+## Overview
 
-- Github가 지원하고 있는 Jekyll을 학습한다. (jekyll 기반의 앱을 Github 저장소에 push 하면 Github Pages가 자동으로 웹사이트를 빌드하고 호스팅합니다.)
+**K-Pop Idol Face Test** is a real-world AI web application that uses Google's **Teachable Machine** to analyze a user's face and match them with the most similar K-Pop idol. The model is trained on idols from Korea's three major entertainment agencies — SM, JYP, YG — and the app is built as a multilingual Jekyll site with global SEO across 15 languages.
 
-- Python의 Selenium Webdriver를 활용하여 웹에서 Search Crawling을 하여 AI에 학습 시킬 데이터를 수집한다.
+## Key Features
 
-- Machine Learning 모델인 Teachable Machine에 데이터를 학습 시키고 API를 통신하여 결과를 가져온다.
+- 🎯 **AI Face Matching** — Powered by Google Teachable Machine
+- 🌏 **15 Languages** — Korean, English, Indonesian, Turkish, Spanish, Japanese, French, German, and more
+- 📱 **Mobile-First PWA** — Installable as a mobile app, fully responsive
+- 🔍 **SEO Optimized** — FAQ schema, multilingual hreflang, structured data
+- 📊 **Production-Ready** — Google Analytics 4, AdSense, Search Console fully integrated
+- ⚡ **Free & Instant** — No signup, no payment, results in seconds
 
-- SEO를 최적화한다.
+## Tech Stack
 
-- PWA를 구현한다.
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Jekyll, SCSS, Vanilla JavaScript |
+| **AI / ML** | Google Teachable Machine (cloud API) |
+| **Data Pipeline** | Python 3.9 + Selenium (image scraping) |
+| **Hosting** | GitHub Pages |
+| **Analytics** | Google Analytics 4, Google Search Console |
+| **Monetization** | Google AdSense |
+| **Mobile Wrapper** | React Native WebView (Android — discontinued) |
 
-- React Native Webview를 사용하여 Play Store에 앱을 출시한다.
+## Production Statistics (28 days, April 2026)
 
-- 도메인을 연결한다.
+This is not a toy project — it serves real traffic from K-Pop fans worldwide.
 
-- Google ads를 활용하여 마케팅을 진행한다.
+| Metric | Value |
+|--------|-------|
+| Sessions | 5,513 |
+| Unique Users | 5,239 |
+| Pageviews | 11,665 |
+| Search Impressions (GSC) | 37,649 |
+| Search Clicks (GSC) | 5,155 |
+| Average CTR | 13.69% |
+| Top 3 Countries | Indonesia (66%), South Korea (14%), USA (3%) |
+| Mobile Traffic | 81.5% |
 
-- Root Domain을 활용하여 Adsense 광고를 적용한다.
+**Top Search Queries (English):**
+- "kpop face test" — Rank 1.6
+- "my idol face" — Rank 5.6
+- "kbs test face" — Rank 1.7
 
-- Cloudflare DNS를 연결하여 보안 및 트레픽을 관리한다.
+## Live Demo
 
-## 설치 방법
+🔗 **Try it now**: https://moony01.com/kpopface/
 
-1. 앱은 Ruby기반이기에 앱을 실행하기 위해 우선 [루비를 설치](https://www.ruby-lang.org/ko/downloads/)해야합니다.
+Available languages: 🇰🇷 한국어 / 🇺🇸 English / 🇮🇩 Bahasa Indonesia / 🇹🇷 Türkçe / 🇪🇸 Español / 🇯🇵 日本語 / 🇫🇷 Français / 🇩🇪 Deutsch / and 7 more.
 
-2. 다음은 저장소를 clone합니다.
+## How It Works
 
-3. 프로젝트를 실행하기 전에 Gemfile에 명시된 종속성들을 설치 하기위해 `bundle install` 명령어를 실행합니다.
+1. **Upload a photo** — Take or select a clear, front-facing photo
+2. **AI analyzes facial features** — Sent to Google Teachable Machine API for face matching against trained idol dataset
+3. **Get your top idol matches** — Closest matches from SM, JYP, YG agencies in seconds
 
-4. 종속성 설치를 완료했으면 `bundle exec jekyll serve` 명령어를 실행합니다.
+## Local Development
 
-# Git 명령어
+### Prerequisites
+- Ruby 3.0+ ([Download](https://www.ruby-lang.org/en/downloads/))
+- Bundler
 
-1. 브랜치 변경: `git checkout gh-pages`
+### Setup
 
-2. 현재 브랜치에서 다른 브랜치의 최신 버전 merge: `git merge main`
+```bash
+git clone https://github.com/moony01/kpopface.git
+cd kpopface
 
-3. 최신 버전 merge한 내역 저장소에 push: `git push`
+bundle install
+bundle exec jekyll serve
+```
 
-4. `git commit -m "명령어"`
+Open [http://localhost:4000/kpopface/](http://localhost:4000/kpopface/)
+
+### Train Your Own Model (Optional)
+
+1. Scrape idol images:
+   ```bash
+   pip install selenium
+   python scraper.py
+   ```
+2. Upload images to [Teachable Machine](https://teachablemachine.withgoogle.com/)
+3. Replace the model endpoint URL in `assets/js/`
+
+## Project Structure
+
+```
+kpopface/
+├── _layouts/         # Jekyll templates
+├── _config.yml       # Site config + i18n
+├── en/, id/, ja/...  # Per-language entry points (15 langs)
+├── assets/
+│   ├── css/          # SCSS styles
+│   └── js/           # Teachable Machine API client + UI logic
+├── sitemap.xml       # SEO
+└── manifest.json     # PWA manifest
+```
+
+## SEO & Performance
+
+- **Lighthouse Mobile**: 90+ (PWA, accessibility, best practices)
+- **Indexed Pages**: 25+ across 15 languages
+- **Structured Data**: WebApplication + FAQPage JSON-LD schemas
+- **i18n**: hreflang tags for all 15 language variants
+
+## Privacy
+
+When you upload a photo, it is sent to Google's Teachable Machine API for face analysis — Google's terms of service apply for that processing step. We do **not** store your photos on our own servers, and we do not associate uploaded photos with any user account (the app has no login). Beyond standard Google Analytics page-view metrics and AdSense ad serving, no personal data is collected.
+
+For details on what Google does with image data sent to Teachable Machine, refer to [Google's Privacy Policy](https://policies.google.com/privacy).
+
+## Acknowledgments
+
+- [Google Teachable Machine](https://teachablemachine.withgoogle.com/) — No-code ML training
+- [Jekyll](https://jekyllrb.com/) — Static site generator
+
+## License
+
+[MIT License](LICENSE) © 2024–2026 [moony01](https://github.com/moony01)
+
+You are free to use, modify, and distribute this code. Attribution appreciated.
+
+## Contact
+
+- 👤 **Author**: [@moony01](https://github.com/moony01)
+- 📧 **Email**: mun01180@gmail.com
+- 🌐 **Website**: [moony01.com](https://moony01.com)
+- 💖 **Sponsor**: [github.com/sponsors/moony01](https://github.com/sponsors/moony01)
