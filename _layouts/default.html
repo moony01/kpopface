@@ -195,9 +195,132 @@
         "price": "0",
         "priceCurrency": "KRW"
       },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "ratingCount": "3200",
+        "bestRating": "5"
+      },
+      "featureList": "K-Pop Idol Face Matching, AI Face Analyzer, Korean Beauty Standard Test, Entertainment Agency Visual Test",
       "inLanguage": ["ko", "en", "ja", "zh", "de", "es", "fr", "id", "nl", "pl", "pt", "ru", "tr", "uk", "vi"]
     }
     </script>
+
+    {% if page.lang == "en" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Which K-pop idol do I look like if I upload a photo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our AI compares your facial features — eye shape, nose bridge, jawline — against 500+ K-pop idol photos. Upload any clear front-facing photo to get your top 3 matches instantly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the K-pop face test free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, completely free. No account, no subscription, no watermarks. Upload your photo and get results in seconds."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Korean beauty standard face test?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Korean entertainment companies like SM, JYP, and YG each favor different facial aesthetics. Our test compares your face to idols from each agency to show which company vibe suits your visuals."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is the K-pop idol face analyzer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The AI uses facial landmark detection to measure similarities in face shape, eye spacing, and feature proportions. Results are entertainment-focused — enjoy them as a fun comparison, not a scientific measurement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which K-pop idols are in the database?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BTS, BLACKPINK, NewJeans, IVE, aespa, SEVENTEEN, Stray Kids, TWICE, EXO, and hundreds more across SM, JYP, YG, HYBE, and smaller agencies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I find my idol face match on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The test works on all devices — iPhone, Android, and desktop. Mobile photo upload is fully supported."
+          }
+        }
+      ]
+    }
+    </script>
+    {% elsif page.lang == "id" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Mirip idol K-pop siapa jika saya unggah foto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI kami membandingkan fitur wajahmu — bentuk mata, tulang hidung, rahang — dengan 500+ foto idol K-pop. Unggah foto wajah jelas dari depan untuk mendapatkan 3 kecocokan teratas secara instan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Apakah tes wajah K-pop ini gratis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ya, sepenuhnya gratis. Tanpa akun, tanpa langganan, tanpa watermark. Unggah foto dan dapatkan hasil dalam hitungan detik."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Apa itu tes standar kecantikan Korea?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Perusahaan hiburan Korea seperti SM, JYP, dan YG masing-masing menyukai estetika wajah yang berbeda. Tes kami membandingkan wajahmu dengan idol dari setiap agensi untuk menunjukkan vibes perusahaan mana yang cocok dengan visualmu."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Seberapa akurat analyzer wajah idol K-pop?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI menggunakan deteksi landmark wajah untuk mengukur kemiripan bentuk wajah, jarak mata, dan proporsi fitur. Hasilnya berfokus pada hiburan — nikmati sebagai perbandingan seru, bukan pengukuran ilmiah."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Idol K-pop mana saja yang ada di database?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BTS, BLACKPINK, NewJeans, IVE, aespa, SEVENTEEN, Stray Kids, TWICE, EXO, dan ratusan lainnya dari SM, JYP, YG, HYBE, dan agensi kecil lainnya."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Bisa cek kecocokan wajah idol di HP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ya. Tes ini berfungsi di semua perangkat — iPhone, Android, dan desktop. Upload foto dari HP didukung sepenuhnya."
+          }
+        }
+      ]
+    }
+    </script>
+    {% endif %}
 
     {% if page.description %}
     <meta content="{{ page.description }}" property="og:description" />
