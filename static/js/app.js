@@ -352,6 +352,8 @@ function fnChangeLang(lang) {
 
 // KCL 리그 순위 데이터 로드
 function fnLoadLeagueRanking() {
+  // KCL 순위는 전용 iframe이 소유한다.
+  if (!document.getElementById('league-banner-link')) return;
   var SUPABASE_URL = "https://eevckvdicfhqxywixznt.supabase.co";
   var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVldmNrdmRpY2ZocXh5d2l4em50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4NjQwMjQsImV4cCI6MjA4MjQ0MDAyNH0.idh6w8dJ-8Rjdh9aB3DuaYofnO78fNBPuSOG8QoqKqM";
 

@@ -382,6 +382,13 @@
     flex-direction: column;
     gap: 10px;
   }
+  .cmt-input,
+  .cmt-select {
+    flex: 0 1 auto;
+    min-height: 42px;
+    padding: 8px 12px;
+    line-height: 1.2;
+  }
   .comment-write-card {
     padding: 1.25rem;
   }
@@ -762,9 +769,16 @@
     .input-row {
         gap: 8px;
     }
-    .cmt-input, .cmt-select, .cmt-textarea {
+    .cmt-textarea {
         font-size: 0.85rem; /* Smaller text */
         padding: 10px;
+    }
+    .cmt-input, .cmt-select {
+        flex: 0 1 auto;
+        min-height: 40px;
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        line-height: 1.2;
     }
     /* Ensure vote items fit or wrap nicely */
     .vote-item {
