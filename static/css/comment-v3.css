@@ -373,7 +373,7 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 520px) {
+@media (max-width: 768px) {
   .comment-section-wrapper {
     padding: 0;
     margin: 2rem auto;
