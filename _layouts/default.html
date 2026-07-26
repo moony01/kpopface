@@ -93,6 +93,7 @@
     <script src="{{ site.baseurl }}/static/js/visual-reports.js"></script>
     <script src="{{ site.baseurl }}/static/js/app.js"></script>
     <script src="{{ site.baseurl }}/static/js/comment.js"></script>
+    <script src="{{ site.baseurl }}/static/js/kcl-embed.js"></script>
     {% if page.title %}
     <meta content="{{ page.title }}" property="og:title" />
     <meta content="article" property="og:type" />
@@ -280,7 +281,6 @@
     </title>
   </head>
   <body>
-    {% include cross-site-nav.html %}
     <div class="site-pusher">
       {{ content }}
       <div class="modal-body app-download-wrap">
