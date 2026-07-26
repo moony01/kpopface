@@ -1,0 +1,17 @@
+<section class="vote-wrapper kcl-embed-wrapper" data-kcl-embed>
+    <iframe
+        class="kcl-vote-embed"
+        data-kcl-embed-frame
+        data-kcl-embed-src="https://kclhq.com/embed/kpopface-vote/{{ include.locale | default: 'en' }}"
+        data-kcl-embed-local-src="http://localhost:3000/embed/kpopface-vote/{{ include.locale | default: 'en' }}"
+        title="KPOP Company League voting"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="clipboard-write"
+    ></iframe>
+    <noscript>
+        <a href="https://kclhq.com/{{ include.locale | default: 'en' }}" target="_blank" rel="noopener">
+            Vote in KPOP Company League
+        </a>
+    </noscript>
+</section>
