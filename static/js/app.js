@@ -10,11 +10,105 @@ let loc = window.location.href.split("/")[0] + "//" + window.location.href.split
 var deferredPrompt;
 
 // T1.2: 결과 이미지 저장/공유를 위한 전역 변수
-var currentAgency = "";        // 현재 결과 소속사 코드 (sm, jyp, yg, hybe)
+var currentAgency = "";        // 현재 결과 소속사 코드 (sm, jyp, yg)
 var currentResultTitle = "";   // 결과 제목 (예: "SM얼굴상")
 var currentResultExplain = ""; // 해시태그 설명
 var currentResultCeleb = "";   // 대표 연예인
 var currentPredictions = [];   // T1.10: AI 예측 결과 배열 (퍼센트 바 차트용)
+
+/**
+ * 로컬에서는 AdSense가 실제 광고를 채우지 않으므로, 같은 슬롯에만 테스트용
+ * 예약 영역을 표시한다. 운영 도메인에서는 이 분기가 실행되지 않는다.
+ */
+function isLocalAdTestEnvironment() {
+  var host = window.location.hostname;
+  return host === 'localhost' || host === '127.0.0.1' || host === '::1' || host === '[::1]';
+}
+
+function reserveLocalAdSlot(container, placement) {
+  if (!isLocalAdTestEnvironment() || !container) return false;
+  if (container.querySelector('[data-local-adsense-placeholder]')) return true;
+
+  container.classList.add('adsense-dev-slot');
+
+  var placeholder = document.createElement('div');
+  var title = document.createElement('strong');
+  var description = document.createElement('span');
+
+  placeholder.className = 'adsense-dev-placeholder';
+  placeholder.setAttribute('data-local-adsense-placeholder', 'true');
+  placeholder.setAttribute('role', 'status');
+  placeholder.setAttribute('aria-label', 'Google AdSense local test slot');
+  title.textContent = 'Google AdSense 테스트 영역';
+  description.textContent = placement + ' · 로컬 개발 서버 전용';
+
+  placeholder.appendChild(title);
+  placeholder.appendChild(description);
+  container.appendChild(placeholder);
+  return true;
+}
+
+function reserveLocalPersistentAdSlots() {
+  if (!isLocalAdTestEnvironment()) return;
+  document.querySelectorAll('.result-ad-slot').forEach(function(container) {
+    reserveLocalAdSlot(container, '분석·결과 공통 광고 슬롯');
+  });
+}
+
+/**
+ * 메인 분석과 결과는 한 개의 AdSense 요소를 공유한다.
+ * 분석 화면에서 먼저 요청한 뒤 같은 DOM 노드를 결과 위치로 되돌리므로,
+ * 상태 전환만으로 새 광고 요청이나 자동 새로고침이 일어나지 않는다.
+ */
+var persistentAnalysisResultAd = {
+  slot: null,
+  anchor: null,
+  requestStarted: false
+};
+
+function getPersistentAnalysisResultAdSlot() {
+  var state = persistentAnalysisResultAd;
+  if (state.slot) return state.slot;
+
+  var slot = document.querySelector('#result-area .result-ad-slot');
+  if (!slot || !slot.parentNode) return null;
+
+  state.slot = slot;
+  state.anchor = document.createComment('persistent-analysis-result-ad-anchor');
+  slot.parentNode.insertBefore(state.anchor, slot);
+  return slot;
+}
+
+function requestPersistentAnalysisResultAd(slot) {
+  if (!slot || persistentAnalysisResultAd.requestStarted) return;
+  persistentAnalysisResultAd.requestStarted = true;
+
+  if (reserveLocalAdSlot(slot, '분석·결과 공통 광고 슬롯')) return;
+
+  requestAnimationFrame(function() {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.log('Persistent ad load error:', e);
+    }
+  });
+}
+
+function showPersistentAdDuringAnalysis() {
+  var slot = getPersistentAnalysisResultAdSlot();
+  var loadingSlot = document.getElementById('ad-loading-slot');
+  if (!slot || !loadingSlot) return;
+
+  loadingSlot.appendChild(slot);
+  requestPersistentAnalysisResultAd(slot);
+}
+
+function restorePersistentAdForResult() {
+  var state = persistentAnalysisResultAd;
+  if (!state.slot || !state.anchor || !state.anchor.parentNode) return;
+
+  state.anchor.parentNode.insertBefore(state.slot, state.anchor.nextSibling);
+}
 
 /**
  * 동적 AdSense 광고 로드 함수
@@ -41,13 +135,17 @@ function fnLoadDynamicAd(containerId, adSlot, adFormat) {
     ins.className = 'adsbygoogle';
     ins.style.display = 'block';
     ins.style.width = '100%';
-    ins.style.minHeight = '100px';
+    // 광고가 채워지지 않은 경우에는 빈 100px 영역을 남기지 않는다.
+    // 채워진 광고는 AdSense가 자체 높이를 적용한다.
+    ins.style.minHeight = '0';
     ins.setAttribute('data-ad-client', 'ca-pub-8955182453510440');
     ins.setAttribute('data-ad-slot', adSlot);
     ins.setAttribute('data-ad-format', adFormat || 'auto');
     ins.setAttribute('data-full-width-responsive', 'true');
 
     container.appendChild(ins);
+
+    if (reserveLocalAdSlot(container, '분석 중 광고 슬롯')) return;
 
     // 광고 로드 (추가 지연으로 레이아웃 확정 보장)
     requestAnimationFrame(function() {
@@ -306,14 +404,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 상세 분석 보기 버튼 이벤트 리스너
-  var detailBtn = document.getElementById('detail-analysis-btn');
-  if (detailBtn) {
-    detailBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      fnShowDetailAnalysis();
-    });
-  }
+  // The result CTA is now a normal link to KCL. Keep the legacy modal
+  // functions below dormant so old session data cannot intercept navigation.
 });
 
 window.addEventListener('beforeinstallprompt', function(e) {
@@ -390,7 +482,7 @@ function fnLoadLeagueRanking() {
         var nameEl = document.getElementById('rank-name-' + (i + 1));
         var scoreEl = document.getElementById('rank-score-' + (i + 1));
         if (nameEl) {
-          // 항상 영어 이름 표시 (HYBE, SM, JYP, YG)
+          // 항상 영어 이름 표시 (SM, JYP, YG)
           nameEl.textContent = data[i].name_en;
         }
         if (scoreEl && data[i].firepower != null) {
@@ -405,11 +497,16 @@ function fnLoadLeagueRanking() {
   });
 }
 
-// 페이지 로드 시 리그 순위 로드
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', fnLoadLeagueRanking);
-} else {
+// 페이지 로드 시 리그 순위 및 로컬 광고 테스트 영역 초기화
+function initializePageEnhancements() {
   fnLoadLeagueRanking();
+  reserveLocalPersistentAdSlots();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializePageEnhancements);
+} else {
+  initializePageEnhancements();
 }
 
 //파일 업로드
@@ -428,11 +525,12 @@ function readURL(input) {
       $('#analyzing-image').attr('src', e.target.result);
 
       // 로딩 화면 표시, 결과 영역 숨기기
+      hideRetryButtonForLoading();
       $('#loading').show();
       $('#result-area').hide();
 
-      // AI 분석 중 광고 동적 로드
-      fnLoadDynamicAd('ad-loading-slot', '7822847481', 'auto');
+      // 분석과 결과에 같은 AdSense 슬롯을 노출하고 요청은 한 번만 한다.
+      showPersistentAdDuringAnalysis();
 
       $('.image-title').html(input.files[0].name);
 
@@ -511,13 +609,9 @@ function fnCompleteLoading() {
 
   // 잠시 후 결과 표시
   setTimeout(function() {
-    $('#loading').hide();
     $('#result-area').show();
-
-    // 결과 화면 광고 로드
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {}
+    restorePersistentAdForResult();
+    $('#loading').hide();
   }, 500);
 }
 
@@ -789,6 +883,205 @@ async function init() {
     labelContainer.appendChild(element);
   }
 }
+
+/**
+ * 무료 결과 화면에 전체 소속사 매칭률을 표시한다.
+ * 상세 분석 모달은 KCL의 회원가입·재업로드·AI 리포트 흐름으로 대체되었다.
+ */
+function renderFreeAgencyRanking(predictions) {
+  var list = document.getElementById('agency-ranking-list');
+  if (!list || !Array.isArray(predictions)) return;
+
+  var agencyNames = { sm: 'SM', jyp: 'JYP', yg: 'YG' };
+  list.innerHTML = predictions.filter(function(item) {
+    return Boolean(agencyNames[item.agency]);
+  }).map(function(item) {
+    var agency = item.agency;
+    var label = agencyNames[agency];
+    var percent = Math.max(0, Math.min(100, Number(item.percent) || 0));
+    return '<div class="agency-rank-item">' +
+      '<div class="agency-rank-label">' + label + '</div>' +
+      '<div class="agency-rank-bar-container" role="progressbar" aria-label="' + label + ' match rate" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100">' +
+        '<div class="agency-rank-bar ' + agency + '" style="width: ' + percent + '%"></div>' +
+      '</div>' +
+      '<div class="agency-rank-percent">' + percent + '%</div>' +
+    '</div>';
+  }).join('');
+}
+
+/**
+ * 최신 글로벌 멤버와 회사별 비주얼 히스토리의 상징적 인물을 함께 담은 편집 라인업이다.
+ * 실제 닮은꼴·개인 전속·현재 소속 여부를 뜻하지 않으며, 화면에서는
+ * 회사별 "대표 아티스트" 맥락으로만 사용한다.
+ */
+var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
+  sm: {
+    male: [
+      { ko: '텐', global: 'TEN', group: 'WayV' },
+      { ko: '쇼타로', global: 'Shotaro', group: 'RIIZE' },
+      { ko: '유우시', global: 'Yushi', group: 'NCT WISH' },
+      { ko: '안톤', global: 'Anton', group: 'RIIZE' },
+      { ko: '태민', global: 'Taemin', group: 'SHINee' },
+      { ko: '카이', global: 'Kai', group: 'EXO' },
+      { ko: '재현', global: 'Jaehyun', group: 'NCT 127' },
+      { ko: '태용', global: 'Taeyong', group: 'NCT 127' }
+    ],
+    female: [
+      { ko: '카르멘', global: 'Carmen', group: 'Hearts2Hearts' },
+      { ko: '지우', global: 'Jiwoo', group: 'Hearts2Hearts' },
+      { ko: '이안', global: 'Ian', group: 'Hearts2Hearts' },
+      { ko: '카리나', global: 'Karina', group: 'aespa' },
+      { ko: '윈터', global: 'Winter', group: 'aespa' },
+      { ko: '아이린', global: 'Irene', group: 'Red Velvet' },
+      { ko: '태연', global: 'Taeyeon', group: 'Girls’ Generation' },
+      { ko: '윤아', global: 'Yoona', group: 'Girls’ Generation' }
+    ]
+  },
+  jyp: {
+    male: [
+      { ko: '방찬', global: 'Bang Chan', group: 'Stray Kids' },
+      { ko: '필릭스', global: 'Felix', group: 'Stray Kids' },
+      { ko: '토모야', global: 'Tomoya', group: 'NEXZ' },
+      { ko: '유키', global: 'Yuki', group: 'NEXZ' },
+      { ko: '준호', global: 'Junho', group: '2PM' },
+      { ko: '택연', global: 'Taecyeon', group: '2PM' },
+      { ko: '진영', global: 'Jinyoung', group: 'GOT7' },
+      { ko: '현진', global: 'Hyunjin', group: 'Stray Kids' }
+    ],
+    female: [
+      { ko: '사나', global: 'Sana', group: 'TWICE' },
+      { ko: '쯔위', global: 'Tzuyu', group: 'TWICE' },
+      { ko: '릴리', global: 'Lily', group: 'NMIXX' },
+      { ko: '니나', global: 'Nina', group: 'NiziU' },
+      { ko: '수지', global: 'Suzy', group: 'miss A' },
+      { ko: '나연', global: 'Nayeon', group: 'TWICE' },
+      { ko: '설윤', global: 'Sullyoon', group: 'NMIXX' },
+      { ko: '예지', global: 'Yeji', group: 'ITZY' }
+    ]
+  },
+  yg: {
+    male: [
+      { ko: '요시', global: 'Yoshi', group: 'TREASURE' },
+      { ko: '아사히', global: 'Asahi', group: 'TREASURE' },
+      { ko: '하루토', global: 'Haruto', group: 'TREASURE' },
+      { ko: '최현석', global: 'Choi Hyunsuk', group: 'TREASURE' },
+      { ko: '지드래곤', global: 'G-Dragon', group: 'BIGBANG' },
+      { ko: '태양', global: 'Taeyang', group: 'BIGBANG' },
+      { ko: '송민호', global: 'Mino', group: 'WINNER' },
+      { ko: '강승윤', global: 'Kang Seungyoon', group: 'WINNER' }
+    ],
+    female: [
+      { ko: '리사', global: 'Lisa', group: 'BLACKPINK' },
+      { ko: '아사', global: 'Asa', group: 'BABYMONSTER' },
+      { ko: '치키타', global: 'Chiquita', group: 'BABYMONSTER' },
+      { ko: '파리타', global: 'Pharita', group: 'BABYMONSTER' },
+      { ko: '씨엘', global: 'CL', group: '2NE1' },
+      { ko: '제니', global: 'Jennie', group: 'BLACKPINK' },
+      { ko: '지수', global: 'Jisoo', group: 'BLACKPINK' },
+      { ko: '로제', global: 'Rosé', group: 'BLACKPINK' }
+    ]
+  }
+};
+
+var REPRESENTATIVE_ARTIST_LABELS = {
+  ko: '대표 아티스트',
+  en: 'Featured artists',
+  ja: '代表アーティスト',
+  zh: '代表艺人',
+  de: 'Ausgewählte Künstler',
+  es: 'Artistas destacados',
+  fr: 'Artistes phares',
+  id: 'Artis unggulan',
+  nl: 'Uitgelichte artiesten',
+  pl: 'Wybrani artyści',
+  pt: 'Artistas em destaque',
+  ru: 'Главные артисты',
+  tr: 'Öne çıkan sanatçılar',
+  uk: 'Представники',
+  vi: 'Nghệ sĩ tiêu biểu'
+};
+
+function getRepresentativeArtists(agency, gender) {
+  var agencyArtists = REPRESENTATIVE_ARTISTS_BY_AGENCY[agency];
+  return agencyArtists && Array.isArray(agencyArtists[gender]) ? agencyArtists[gender] : [];
+}
+
+function getRepresentativeArtistName(artist) {
+  return langType === '' || langType === 'ko' ? artist.ko : artist.global;
+}
+
+/**
+ * 무료 결과의 점수와 전체 소속사 매칭률 사이에 대표 아티스트를 표시한다.
+ */
+function renderRepresentativeArtists(agency, gender) {
+  var artists = getRepresentativeArtists(agency, gender);
+  var wrap = document.getElementById('result-artists');
+  var title = document.getElementById('result-artists-title');
+  var list = document.getElementById('result-artists-list');
+
+  if (!wrap || !title || !list) return artists;
+
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+
+  if (!artists.length) {
+    wrap.hidden = true;
+    return artists;
+  }
+
+  var agencyNames = { sm: 'SM', jyp: 'JYP', yg: 'YG' };
+  var agencyName = agencyNames[agency] || String(agency || '').toUpperCase();
+  var resultLanguage = langType || 'ko';
+  var label = REPRESENTATIVE_ARTIST_LABELS[resultLanguage] || REPRESENTATIVE_ARTIST_LABELS.en;
+  title.textContent = agencyName + ' · ' + label;
+
+  artists.forEach(function(artist) {
+    var item = document.createElement('li');
+    var name = document.createElement('span');
+    var group = document.createElement('span');
+
+    item.className = 'result-artist-chip';
+    name.className = 'result-artist-name';
+    group.className = 'result-artist-group';
+    name.textContent = getRepresentativeArtistName(artist);
+    group.textContent = artist.group;
+
+    item.appendChild(name);
+    item.appendChild(group);
+    list.appendChild(item);
+  });
+
+  wrap.hidden = false;
+  return artists;
+}
+
+/**
+ * 결과를 다시 시도하는 행동을 무료 매칭률·리포트 CTA 아래에 둔다.
+ * 모든 로케일이 기존 버튼 마크업을 유지하면서도 같은 위치를 사용한다.
+ */
+function moveRetryButtonBelowReportCta() {
+  var retryButton = document.querySelector('.try-again-btn');
+  var reportCta = document.getElementById('detail-cta-wrap');
+  var retryWrap = retryButton ? retryButton.closest('.image-title-wrap') : null;
+
+  if (!retryWrap || !reportCta) return;
+  reportCta.insertAdjacentElement('afterend', retryWrap);
+  retryWrap.style.display = '';
+}
+
+/**
+ * 분석 중에는 재시도 버튼을 숨긴다.
+ * 결과가 완성되면 moveRetryButtonBelowReportCta가 CTA 아래에 다시 표시한다.
+ */
+function hideRetryButtonForLoading() {
+  var retryButton = document.querySelector('.try-again-btn');
+  var retryWrap = retryButton ? retryButton.closest('.image-title-wrap') : null;
+
+  if (!retryWrap) return;
+  retryWrap.style.display = 'none';
+}
+
 //이미지 로드 결과
 async function predict() {
   var image = document.getElementById("face-image")
@@ -1050,11 +1343,6 @@ async function predict() {
           resultExplain = "#개성있는 비주얼 #힙합스타일 #장난꾸러기";
           resultCeleb = "YG출신 연예인: 빅뱅 지드래곤, 빅뱅 태양, 빅뱅 대성, 위너 송민호, 위너 강승윤, 아이콘 비아이, 아이콘 바비";
         }
-        break;
-      case "hybe":
-        resultTitle = "HYBE상";
-        resultExplain = "#다양한 매력";
-        resultCeleb = "HYBE출신 연예인: 방탄소년단, 투모로우바이투게더, 세븐틴, 엔하이픈";
         break;
       default:
         resultTitle = "알수없음";
@@ -1353,21 +1641,14 @@ async function predict() {
           resultCeleb = "YG출신 연예인: 2NE1 산다라박, 블랙핑크 제니, 블랙핑크 리사, 블랙핑크 지수, 전소미, 한예슬";
         }
         break;
-      case "hybe":
-        resultTitle = "HYBE상";
-        resultExplain = "#개성있는 비주얼 #다양한 매력";
-        resultCeleb = "HYBE출신 연예인: 뉴진스, 르세라핌, 프로미스나인";
-        break;
       default:
         resultTitle = "알수없음";
         resultExplain = "";
         resultCeleb = "";
     }
   }
-  // 1차 결과: 소속사 이름과 퍼센트만 표시
+  // 1차 결과: 소속사 이름과 퍼센트 + 전체 무료 매칭률 표시
   var topPercent = Math.round(prediction[0].probability * 100);
-  var topAgencyName = { sm: 'SM', jyp: 'JYP', yg: 'YG', hybe: 'HYBE' };
-
   // 1차 결과 표시 (작은 이미지 아래)
   var resultTitleEl = document.getElementById('result-title');
   var resultPercentEl = document.getElementById('result-percent');
@@ -1382,28 +1663,38 @@ async function predict() {
   currentAgency = prediction[0].className;
   currentResultTitle = resultTitle;
   currentResultExplain = resultExplain;
-  currentResultCeleb = resultCeleb;
+  var selectedGender = document.getElementById('gender').checked ? 'male' : 'female';
+  var representativeArtists = renderRepresentativeArtists(currentAgency, selectedGender);
+  currentResultCeleb = representativeArtists.length ? representativeArtists.map(function(artist) {
+    return getRepresentativeArtistName(artist) + ' (' + artist.group + ')';
+  }).join(', ') : resultCeleb;
   // T1.10: AI 예측 결과 배열 저장 (퍼센트 바 차트용)
-  currentPredictions = prediction.map(function(p) {
+  var supportedPredictions = prediction.filter(function(p) {
+    return p.className === 'sm' || p.className === 'jyp' || p.className === 'yg';
+  });
+  currentPredictions = supportedPredictions.map(function(p) {
     return {
       agency: p.className,
       percent: Math.round(p.probability * 100)
     };
   });
+
+  moveRetryButtonBelowReportCta();
+  renderFreeAgencyRanking(currentPredictions);
   
   var barWidth;
 
-  // 메인 페이지에서는 1위 소속사만 표시 (상세 분석에서 전체 확인 가능)
-  for (let i = 0; i < 1; i++) {
-    if (prediction[i].probability.toFixed(2) > 0.1) {
-      barWidth = Math.round(prediction[i].probability.toFixed(2) * 100) + "%";
-    } else if (prediction[i].probability.toFixed(2) >= 0.01) {
+  // 모든 소속사 매칭률은 무료 결과 화면에서 바로 표시한다.
+  for (let i = 0; i < supportedPredictions.length && i < labelContainer.children.length; i++) {
+    if (supportedPredictions[i].probability.toFixed(2) > 0.1) {
+      barWidth = Math.round(supportedPredictions[i].probability.toFixed(2) * 100) + "%";
+    } else if (supportedPredictions[i].probability.toFixed(2) >= 0.01) {
       barWidth = "4%"
     } else {
       barWidth = "2%"
     }
     var labelTitle;
-    switch (prediction[i].className) {
+    switch (supportedPredictions[i].className) {
         case "sm":
           labelTitle = "SM";
           break;
@@ -1413,15 +1704,12 @@ async function predict() {
         case "yg":
           labelTitle = "YG";
           break;
-        case "hybe":
-          labelTitle = "HYBE얼굴상";
-          break;
         default:
           labelTitle = "알수없음";
     }
     var label = "<div class='agency-label d-flex align-items-center'>" + labelTitle + "</div>"
-    var bar = "<div class='bar-container'><div class='" + prediction[i].className + "-box'></div><div class='d-flex justify-content-center align-items-center " + prediction[i].className + "-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + Math.round(prediction[i].probability.toFixed(2) * 100) + "%</span></div></div>"
-    labelContainer.childNodes[i].innerHTML = label + bar;
+    var bar = "<div class='bar-container'><div class='" + supportedPredictions[i].className + "-box'></div><div class='d-flex justify-content-center align-items-center " + supportedPredictions[i].className + "-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + Math.round(supportedPredictions[i].probability.toFixed(2) * 100) + "%</span></div></div>"
+    labelContainer.children[i].innerHTML = label + bar;
 
     // const classPrediction =
     //     resultName + ": " + prediction[i].probability.toFixed(2);

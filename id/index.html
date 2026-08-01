@@ -99,25 +99,21 @@ lang: id
             </div>
 
             <!-- Detail Analysis CTA (Page Split Monetization) -->
-            <div id="detail-cta-wrap" class="detail-cta-wrap">
-                <p class="detail-cta-text">📊 Ingin melihat tingkat kecocokan lengkap + laporan visual?</p>
-                <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main">
-                    <i class="fas fa-unlock"></i>
-                    <span>Lihat Analisis Lengkap</span>
-                </button>
-            </div>
+            {% include kpopface-report-cta.html %}
 
-            <!-- Simpan Gambar Hasil Button -->
+            {% comment %}
+            Legacy result image save and donation actions are intentionally disabled.
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">Simpan Gambar Hasil</span>
             </button>
+            {% include buy_me_a_coffee.html %}
+            {% endcomment %}
             <div class="image-title-wrap">
                 <button type="button" class="try-again-btn" onclick="removeUpload()">
                     <span class="try-again-text">Coba Lagi</span>
                 </button>
             </div>
-            {% include buy_me_a_coffee.html %}
 
             {% include sns_promotion.html %}
         </div>
@@ -154,7 +150,7 @@ lang: id
         <ol style="margin-bottom: 24px; padding-left: 20px; line-height: 1.8;">
             <li><strong>Unggah foto</strong> — Ambil atau pilih foto wajah yang jelas dari depan.</li>
             <li><strong>AI menganalisis fitur wajah</strong> — Model kami membandingkan bentuk mata, tulang hidung, rahang, dan proporsi wajah dengan 500+ foto idol K-Pop.</li>
-            <li><strong>Lihat kecocokan idol teratas</strong> — Dapatkan kecocokan terdekat dari SM, JYP, YG, HYBE, dan lainnya dalam hitungan detik.</li>
+            <li><strong>Lihat kecocokan idol teratas</strong> — Dapatkan kecocokan terdekat dari SM, JYP, dan YG dalam hitungan detik.</li>
         </ol>
 
         <h2 style="font-size: 1.4em; margin-bottom: 16px;">Pertanyaan yang Sering Diajukan</h2>
@@ -177,7 +173,7 @@ lang: id
             </div>
             <div class="faq-item" style="margin-bottom: 16px;">
                 <h3 style="font-size: 1.1em; margin-bottom: 4px;">Idol K-pop mana saja yang ada di database?</h3>
-                <p>BTS, BLACKPINK, NewJeans, IVE, aespa, SEVENTEEN, Stray Kids, TWICE, EXO, dan ratusan lainnya dari SM, JYP, YG, HYBE, dan agensi kecil lainnya.</p>
+                <p>BLACKPINK, aespa, Stray Kids, TWICE, EXO, Red Velvet, NMIXX, TREASURE, dan lainnya dari SM, JYP, dan YG.</p>
             </div>
             <div class="faq-item" style="margin-bottom: 16px;">
                 <h3 style="font-size: 1.1em; margin-bottom: 4px;">Bisa cek kecocokan wajah idol di HP?</h3>
