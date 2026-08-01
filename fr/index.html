@@ -99,25 +99,21 @@ lang: fr
             </div>
 
             <!-- Detail Analysis CTA (Page Split Monetization) -->
-            <div id="detail-cta-wrap" class="detail-cta-wrap">
-                <p class="detail-cta-text">📊 Voulez-vous voir les taux de correspondance complets + rapport visuel?</p>
-                <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main">
-                    <i class="fas fa-unlock"></i>
-                    <span>Voir l'Analyse Détaillée</span>
-                </button>
-            </div>
+            {% include kpopface-report-cta.html %}
 
-            <!-- Enregistrer l'image du résultat Button -->
+            {% comment %}
+            Legacy result image save and donation actions are intentionally disabled.
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">Enregistrer l'image du résultat</span>
             </button>
+            {% include buy_me_a_coffee.html %}
+            {% endcomment %}
             <div class="image-title-wrap">
                 <button type="button" class="try-again-btn" onclick="removeUpload()">
                     <span class="try-again-text">Réessayer</span>
                 </button>
             </div>
-            {% include buy_me_a_coffee.html %}
 
             {% include sns_promotion.html %}
         </div>

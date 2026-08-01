@@ -273,7 +273,7 @@ async function fetchVoteCounts() {
  * 투표 UI 업데이트
  */
 function updateVoteUI(counts) {
-    const agencies = ['SM', 'JYP', 'YG']; // 추후 HYBE 등 추가 가능
+    const agencies = ['SM', 'JYP', 'YG'];
     
     agencies.forEach(Key => {
         // DB 컬럼은 소문자(sm, jyp, yg), HTML ID는 대문자(cnt-SM)
@@ -383,12 +383,12 @@ async function fetchComments(page = 1) {
         { id: 101, nickname: '블랙핑크짱', content: '제 얼굴이 YG상이라니 너무 기뻐요! ㅋㅋㅋ 완전 신기방기\n블랙핑크 제니 느낌 있나요?', created_at: new Date().toISOString(), face_type: 'YG' },
         { id: 102, nickname: 'JYP수장', content: '공기반 소리반 느낌 아시죠? JYP 스타일 확실하네요.\n테스트 결과가 아주 흥미롭습니다.', created_at: new Date(Date.now() - 86400000).toISOString(), face_type: 'JYP' },
         { id: 103, nickname: '광야로걸어', content: '에스파 윈터 닮았다고 나왔어요!! 대박.. \n근데 진짜 닮았나? 주변에 물어봐야겠어요 ㅎㅎ', created_at: new Date(Date.now() - 172800000).toISOString(), face_type: 'SM' },
-        { id: 104, nickname: '뉴진스조아', content: '하이브상이라니.. 꿈인가 생시인가 ㅠㅠ \n너무 좋아요! 사이트 디자인도 예쁘네요.', created_at: new Date(Date.now() - 259200000).toISOString(), face_type: 'HYBE' },
+        { id: 104, nickname: '트와이스조아', content: 'JYP상이라니.. 꿈인가 생시인가 ㅠㅠ \n너무 좋아요! 사이트 디자인도 예쁘네요.', created_at: new Date(Date.now() - 259200000).toISOString(), face_type: 'JYP' },
         { id: 105, nickname: '지나가던행인', content: '그냥 재미로 해봤는데 은근 정확한듯? 근데 버튼 UI 클릭하면 메뉴 나오는거 맞죠?', created_at: new Date(Date.now() - 345600000).toISOString(), face_type: 'unknown' },
         { id: 106, nickname: '테스트유저6', content: '페이징 테스트용 데이터입니다. 6', created_at: new Date().toISOString(), face_type: 'SM' },
         { id: 107, nickname: '테스트유저7', content: '페이징 테스트용 데이터입니다. 7', created_at: new Date().toISOString(), face_type: 'YG' },
         { id: 108, nickname: '테스트유저8', content: '페이징 테스트용 데이터입니다. 8', created_at: new Date().toISOString(), face_type: 'JYP' },
-        { id: 109, nickname: '테스트유저9', content: '페이징 테스트용 데이터입니다. 9', created_at: new Date().toISOString(), face_type: 'HYBE' },
+        { id: 109, nickname: '테스트유저9', content: '페이징 테스트용 데이터입니다. 9', created_at: new Date().toISOString(), face_type: 'SM' },
         { id: 110, nickname: '테스트유저10', content: '페이징 테스트용 데이터입니다. 10', created_at: new Date().toISOString(), face_type: 'etc' },
         { id: 111, nickname: '테스트유저11', content: '다음 페이지 데이터 확인용 11', created_at: new Date().toISOString(), face_type: 'SM' }
     ];

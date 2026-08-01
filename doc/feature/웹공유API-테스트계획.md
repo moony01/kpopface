@@ -71,7 +71,7 @@
 테스트 단계:
 1. 성별 선택 (남/여)
 2. 테스트용 이미지 업로드
-3. AI 분석 결과 확인 (SM/JYP/YG/HYBE)
+3. AI 분석 결과 확인 (SM/JYP/YG)
 4. "결과 이미지 저장하기" 버튼 클릭
 5. 공유 시트(Share Sheet) 표시 확인
 6. 인스타그램 스토리 선택
@@ -131,10 +131,9 @@
 - [ ] URL 워터마크
 ```
 
-#### TC-005 ~ TC-007: JYP/YG/HYBE 결과 이미지
+#### TC-005 ~ TC-006: JYP/YG 결과 이미지
 - JYP: 초록 계열 (#00C853 → #69F0AE), 💚
 - YG: 블랙 계열 (#212121 → #616161), 🖤
-- HYBE: 보라-핑크 (#6B46C1 → #EC4899), 💜
 
 ### 3.3 다국어 테스트
 
@@ -364,7 +363,7 @@ if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
 ### 7.1 배포 전 필수 테스트
 
 #### 기능 테스트
-- [ ] Canvas 이미지 생성 (SM/JYP/YG/HYBE 각 1회)
+- [ ] Canvas 이미지 생성 (SM/JYP/YG 각 1회)
 - [ ] Web Share API 공유 (iOS Safari)
 - [ ] Web Share API 공유 (Android Chrome)
 - [ ] PC 다운로드 (Windows Chrome)

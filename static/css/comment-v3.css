@@ -346,10 +346,6 @@
   background: #111111; /* Custom YG Color */
   border: none;
 }
-.badge-hybe {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border: none;
-}
 .badge-unknown {
   background: #adb5bd;
   color: #fff;
