@@ -1,9 +1,9 @@
-{% assign report_text = "See all agency match rates first, then get your AI report on KCL." %}
-{% assign report_label = "Get Free AI Report" %}
+{% assign report_text = "Full agency match rates are available above. Your AI report is coming soon." %}
+{% assign report_label = "AI Report Coming Soon" %}
 {% assign ranking_title = "Full Agency Match Rates" %}
 {% if page.lang == 'ko' %}
-  {% assign report_text = "전체 소속사 매칭률은 무료로 먼저 확인하고, AI 맞춤 리포트는 KCL에서 받아보세요." %}
-  {% assign report_label = "AI 무료 리포트 받기" %}
+  {% assign report_text = "전체 소속사 매칭률은 위에서 무료로 확인할 수 있어요. AI 맞춤 리포트는 준비 중입니다." %}
+  {% assign report_label = "AI 맞춤 리포트 준비 중" %}
   {% assign ranking_title = "전체 소속사 매칭률" %}
 {% endif %}
 
@@ -21,8 +21,9 @@
 
 <div id="detail-cta-wrap" class="detail-cta-wrap">
     <p class="detail-cta-text">📊 {{ report_text }}</p>
-    <a id="detail-analysis-btn" class="detail-cta-btn-main" href="https://www.kclhq.com/{% if page.lang == 'ko' %}ko{% else %}en{% endif %}/kpopface/report?source=kpopface">
+    <!-- KCL report onboarding is not live yet, so this is intentionally non-interactive. -->
+    <button id="detail-analysis-btn" class="detail-cta-btn-main detail-cta-btn-disabled" type="button" disabled aria-disabled="true" data-report-status="coming-soon">
         <i class="fas fa-file-invoice"></i>
         <span>{{ report_label }}</span>
-    </a>
+    </button>
 </div>

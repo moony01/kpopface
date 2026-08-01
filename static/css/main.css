@@ -786,6 +786,15 @@ a.sns-icon-youtube {
     box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
 }
 
+.detail-cta-btn-main:disabled,
+.detail-cta-btn-main:disabled:hover {
+    background: #b5aecf;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.72;
+    transform: none;
+}
+
 .detail-cta-btn-main i {
     font-size: 18px;
 }
