@@ -89,14 +89,7 @@ lang: en
                 <!-- Hidden label-container (for init function) -->
                 <div id="label-container" style="display: none;"></div>
 
-                <!-- View Detailed Analysis Button -->
-                <div id="detail-cta-wrap" class="detail-cta-wrap">
-                    <p class="detail-cta-text">📊 Want to see full agency match rates + visual report?</p>
-                    <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>View Detailed Analysis</span>
-                    </button>
-                </div>
+                {% include kpopface-report-cta.html %}
 
                 <!-- Result Ad Slot -->
                 <div class="result-ad-slot">
@@ -109,17 +102,19 @@ lang: en
                 </div>
             </div>
 
-            <!-- Save Result Image Button -->
+            {% comment %}
+            Legacy result image save and donation actions are intentionally disabled.
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">Save Result Image</span>
             </button>
+            {% include buy_me_a_coffee.html %}
+            {% endcomment %}
             <div class="image-title-wrap">
                 <button type="button" class="try-again-btn" onclick="removeUpload()">
                     <span class="try-again-text">Retry</span>
                 </button>
             </div>
-            {% include buy_me_a_coffee.html %}
 
             {% include sns_promotion.html %}
         </div>
@@ -156,7 +151,7 @@ lang: en
         <ol style="margin-bottom: 24px; padding-left: 20px; line-height: 1.8;">
             <li><strong>Upload your photo</strong> — Take or choose a clear, front-facing photo.</li>
             <li><strong>AI analyzes your features</strong> — Our model compares eye shape, nose bridge, jawline, and facial proportions against 500+ K-Pop idol photos.</li>
-            <li><strong>See your top idol matches</strong> — Get your closest matches from SM, JYP, YG, HYBE, and more in seconds.</li>
+            <li><strong>See your top idol matches</strong> — Get your closest matches across SM, JYP, and YG in seconds.</li>
         </ol>
 
         <h2 style="font-size: 1.4em; margin-bottom: 16px;">Frequently Asked Questions</h2>
@@ -179,7 +174,7 @@ lang: en
             </div>
             <div class="faq-item" style="margin-bottom: 16px;">
                 <h3 style="font-size: 1.1em; margin-bottom: 4px;">Which K-pop idols are in the database?</h3>
-                <p>BTS, BLACKPINK, NewJeans, IVE, aespa, SEVENTEEN, Stray Kids, TWICE, EXO, and hundreds more across SM, JYP, YG, HYBE, and smaller agencies.</p>
+                <p>BLACKPINK, aespa, Stray Kids, TWICE, EXO, Red Velvet, NMIXX, TREASURE, and more across SM, JYP, and YG.</p>
             </div>
             <div class="faq-item" style="margin-bottom: 16px;">
                 <h3 style="font-size: 1.1em; margin-bottom: 4px;">Can I find my idol face match on mobile?</h3>

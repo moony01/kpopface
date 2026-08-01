@@ -33,32 +33,28 @@
   var AGENCY_BAR_COLORS = {
     sm: 'rgba(117, 204, 84, 1)',     // 연두색 (.sm-bar)
     jyp: 'rgba(195, 140, 102, 1)',   // 브라운 (.jyp-bar)
-    yg: 'rgba(27, 175, 234, 1)',     // 하늘색 (.yg-bar)
-    hybe: 'rgba(235, 166, 190, 1)'   // 분홍색 (.hybe-bar)
+    yg: 'rgba(27, 175, 234, 1)'      // 하늘색 (.yg-bar)
   };
   
   // 소속사별 바 배경색 (0.2 투명도)
   var AGENCY_BAR_BG_COLORS = {
     sm: 'rgba(117, 204, 84, 0.2)',
     jyp: 'rgba(195, 140, 102, 0.2)',
-    yg: 'rgba(27, 175, 234, 0.2)',
-    hybe: 'rgba(235, 166, 190, 0.2)'
+    yg: 'rgba(27, 175, 234, 0.2)'
   };
   
   // 소속사별 테두리 색상 (이미지 프레임용)
   var AGENCY_COLORS = {
     sm: { border: 'rgba(117, 204, 84, 1)' },
     jyp: { border: 'rgba(195, 140, 102, 1)' },
-    yg: { border: 'rgba(27, 175, 234, 1)' },
-    hybe: { border: 'rgba(235, 166, 190, 1)' }
+    yg: { border: 'rgba(27, 175, 234, 1)' }
   };
   
   // 소속사별 이모지 (fallback용)
   var AGENCY_EMOJI = {
     sm: '\uD83D\uDC99',    // 💙
     jyp: '\uD83D\uDC9A',   // 💚
-    yg: '\uD83D\uDDA4',    // 🖤
-    hybe: '\uD83D\uDC9C'   // 💜
+    yg: '\uD83D\uDDA4'     // 🖤
   };
   
 // 다국어 구글 검색 문구 (15개 언어 지원)
@@ -107,12 +103,12 @@
   
   /**
    * 소속사별 색상 반환
-   * @param {string} agency - 소속사 코드 (sm, jyp, yg, hybe)
+   * @param {string} agency - 소속사 코드 (sm, jyp, yg)
    * @returns {Object} { main: string, sub: string, border: string }
    */
   function getAgencyColors(agency) {
     var key = (agency || '').toLowerCase();
-    return AGENCY_COLORS[key] || AGENCY_COLORS.hybe;
+    return AGENCY_COLORS[key] || AGENCY_COLORS.sm;
   }
   
   /**
@@ -405,7 +401,7 @@
    * Canvas API로 K-Pop Face Test 결과 이미지 생성
    * 
    * @param {Object} data - 결과 데이터
-   * @param {string} data.agency - 소속사 코드 (sm, jyp, yg, hybe)
+   * @param {string} data.agency - 소속사 코드 (sm, jyp, yg)
    * @param {string} data.title - 결과 제목 (예: "SM얼굴상")
    * @param {string} data.explain - 해시태그 설명
    * @param {string} data.celeb - 대표 연예인
@@ -414,7 +410,7 @@
    * @returns {Promise<Blob>} PNG 이미지 Blob
    */
   function generateResultImage(data) {
-    var agency = data.agency || 'hybe';
+    var agency = data.agency || 'sm';
     var title = data.title || '';
     var explain = data.explain || '';
     var celeb = data.celeb || '';
