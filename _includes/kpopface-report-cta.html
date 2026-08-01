@@ -1,0 +1,28 @@
+{% assign report_text = "See all agency match rates first, then get your AI report on KCL." %}
+{% assign report_label = "Get Free AI Report" %}
+{% assign ranking_title = "Full Agency Match Rates" %}
+{% if page.lang == 'ko' %}
+  {% assign report_text = "전체 소속사 매칭률은 무료로 먼저 확인하고, AI 맞춤 리포트는 KCL에서 받아보세요." %}
+  {% assign report_label = "AI 무료 리포트 받기" %}
+  {% assign ranking_title = "전체 소속사 매칭률" %}
+{% endif %}
+
+<!-- Free scores stay on Kpopface; the new KCL flow re-authenticates and re-uploads. -->
+<!-- Result-dependent artists are rendered immediately below the top score. -->
+<section id="result-artists" class="result-artists" aria-live="polite" hidden>
+    <p id="result-artists-title" class="result-artists-title"></p>
+    <ul id="result-artists-list" class="result-artists-list" role="list"></ul>
+</section>
+
+<div class="agency-ranking result-agency-ranking" style="margin: 16px 0; text-align: left;">
+    <div class="agency-ranking-title">{{ ranking_title }}</div>
+    <div id="agency-ranking-list" aria-live="polite"></div>
+</div>
+
+<div id="detail-cta-wrap" class="detail-cta-wrap">
+    <p class="detail-cta-text">📊 {{ report_text }}</p>
+    <a id="detail-analysis-btn" class="detail-cta-btn-main" href="https://www.kclhq.com/{% if page.lang == 'ko' %}ko{% else %}en{% endif %}/kpopface/report?source=kpopface">
+        <i class="fas fa-file-invoice"></i>
+        <span>{{ report_label }}</span>
+    </a>
+</div>

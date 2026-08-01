@@ -90,26 +90,32 @@ lang: ja
                 <div id="label-container" style="display: none;"></div>
 
                 <!-- 詳細分析ボタン -->
-                <div id="detail-cta-wrap" class="detail-cta-wrap">
-                    <p class="detail-cta-text">📊 全事務所のマッチング率＋ビジュアルレポートを見たいですか？</p>
-                    <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>詳細分析を見る</span>
-                    </button>
+                {% include kpopface-report-cta.html %}
+
+                <!-- 結果画面の広告枠 -->
+                <div class="result-ad-slot">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-8955182453510440"
+                         data-ad-slot="3138863990"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
                 </div>
             </div>
 
-            <!-- 結果画像を保存 Button -->
+            {% comment %}
+            Legacy result image save and donation actions are intentionally disabled.
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">結果画像を保存</span>
             </button>
+            {% include buy_me_a_coffee.html %}
+            {% endcomment %}
             <div class="image-title-wrap">
                 <button type="button" class="try-again-btn" onclick="removeUpload()">
                     <span class="try-again-text">再試行</span>
                 </button>
             </div>
-            {% include buy_me_a_coffee.html %}
 
             {% include sns_promotion.html %}
         </div>

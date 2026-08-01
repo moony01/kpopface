@@ -134,6 +134,49 @@
   line-height: 1.4;
 }
 
+/* 광고가 채워지지 않아도 분석 흐름에 큰 빈 영역을 만들지 않는다. */
+#ad-loading-slot {
+  min-height: 0 !important;
+  margin-top: 8px !important;
+}
+
+#ad-loading-slot .adsbygoogle {
+  min-height: 0 !important;
+}
+
+/* 로컬 개발 서버에서만 app.js가 부여하는 AdSense 테스트 예약 영역 */
+#ad-loading-slot.adsense-dev-slot,
+.result-ad-slot.adsense-dev-slot {
+  min-height: 104px !important;
+}
+
+.adsense-dev-placeholder {
+  box-sizing: border-box;
+  display: flex;
+  min-height: 104px;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px;
+  border: 1px dashed #b4a9ff;
+  border-radius: 10px;
+  background: #f7f5ff;
+  color: #6c5ce7;
+  font-size: 13px;
+  text-align: center;
+}
+
+.adsense-dev-placeholder strong {
+  font-size: 14px;
+}
+
+.adsense-dev-placeholder span {
+  color: #778197;
+  font-size: 12px;
+}
+
 /* ========================================
    기본 결과 페이지 (result.html)
    ======================================== */
@@ -530,6 +573,60 @@
   text-align: center;
 }
 
+/* 상단 결과 바로 아래의 성별·소속사별 대표 아티스트 */
+.result-artists {
+  max-width: 360px;
+  margin: -8px auto 14px;
+  padding: 0 8px;
+  text-align: center;
+}
+
+.result-artists[hidden] {
+  display: none;
+}
+
+.result-artists-title {
+  margin: 0 0 8px;
+  color: #6c5ce7;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.result-artists-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.result-artist-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 5px 8px;
+  border: 1px solid rgba(108, 92, 231, 0.18);
+  border-radius: 999px;
+  background: #f5f2ff;
+  color: #35465d;
+  font-size: 12px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.result-artist-name {
+  font-weight: 700;
+}
+
+.result-artist-group {
+  color: #6c5ce7;
+  font-size: 10px;
+  font-weight: 600;
+}
+
 /* ========================================
    상세 분석 모달 - 결과 요약
    ======================================== */
@@ -568,8 +665,8 @@
 /* 결과 화면 광고 슬롯 */
 .result-ad-slot {
   width: 100%;
-  min-height: 100px;
-  margin: 20px 0;
+  min-height: 0;
+  margin: 8px 0 0;
   border-radius: 8px;
   overflow: hidden;
 }

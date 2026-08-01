@@ -36,19 +36,19 @@
     {% if page.lang != "ko" %}
     <link rel="stylesheet" href="../static/css/common.css" />
     <link rel="stylesheet" href="../static/css/loading.css" />
-    <link rel="stylesheet" href="../static/css/main.css?v=20260223f" />
+    <link rel="stylesheet" href="../static/css/main.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
     <link rel="stylesheet" href="../static/css/modal.css" />
     <link rel="stylesheet" href="../static/css/comment-v3.css" />
-    <link rel="stylesheet" href="../static/css/page-split.css?v=20260203d" />
+    <link rel="stylesheet" href="../static/css/page-split.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
 
     <link rel="manifest" href="../manifestLang.json" />
     {% else %}
     <link rel="stylesheet" href="static/css/common.css" />
     <link rel="stylesheet" href="static/css/loading.css" />
-    <link rel="stylesheet" href="static/css/main.css?v=20260223f" />
+    <link rel="stylesheet" href="static/css/main.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
     <link rel="stylesheet" href="static/css/modal.css" />
     <link rel="stylesheet" href="static/css/comment-v3.css" />
-    <link rel="stylesheet" href="static/css/page-split.css?v=20260203d" />
+    <link rel="stylesheet" href="static/css/page-split.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
 
     <link rel="manifest" href="manifest.json" />
     {% endif %}
@@ -91,7 +91,8 @@
     <!-- 페이지 분리 수익화 모듈 -->
     <script src="{{ site.baseurl }}/static/js/page-router.js"></script>
     <script src="{{ site.baseurl }}/static/js/visual-reports.js"></script>
-    <script src="{{ site.baseurl }}/static/js/app.js"></script>
+    <!-- Build timestamp prevents an old browser cache from running stale result UI code. -->
+    <script src="{{ site.baseurl }}/static/js/app.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
     <script src="{{ site.baseurl }}/static/js/comment.js"></script>
     <script src="{{ site.baseurl }}/static/js/kcl-embed.js"></script>
     {% if page.title %}
@@ -244,7 +245,7 @@
           "name": "Which K-pop idols are in the database?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "BTS, BLACKPINK, NewJeans, IVE, aespa, SEVENTEEN, Stray Kids, TWICE, EXO, and hundreds more across SM, JYP, YG, HYBE, and smaller agencies."
+            "text": "BLACKPINK, aespa, Stray Kids, TWICE, EXO, Red Velvet, NMIXX, TREASURE, and more across SM, JYP, and YG."
           }
         },
         {
@@ -301,7 +302,7 @@
           "name": "Idol K-pop mana saja yang ada di database?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "BTS, BLACKPINK, NewJeans, IVE, aespa, SEVENTEEN, Stray Kids, TWICE, EXO, dan ratusan lainnya dari SM, JYP, YG, HYBE, dan agensi kecil lainnya."
+            "text": "BLACKPINK, aespa, Stray Kids, TWICE, EXO, Red Velvet, NMIXX, TREASURE, dan lainnya dari SM, JYP, dan YG."
           }
         },
         {

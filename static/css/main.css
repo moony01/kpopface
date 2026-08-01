@@ -292,6 +292,12 @@
     color: #222;
 }
 
+.result-message .image-title-wrap {
+    margin: 16px 0 8px;
+    padding-top: 0;
+    padding-bottom: 8px;
+}
+
 .try-again-btn {
     display: block;
     width: 100%;
@@ -551,23 +557,6 @@ a.sns-icon-youtube {
     border-radius: 10px;
     background-color: rgba(27, 175, 234, 1);
 }
-.hybe-box {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 2rem;
-    border-radius: 10px;
-    width: 100%;
-    background-color: rgba(235, 166, 190, 0.2);
-}
-.hybe-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 2rem;
-    border-radius: 10px;
-    background-color: rgba(235, 166, 190, 1);
-}
 /* 소속사 테스트 결과: end */
 
 /* share: start */
@@ -788,6 +777,7 @@ a.sns-icon-youtube {
     font-weight: bold;
     border: none;
     cursor: pointer;
+    text-decoration: none;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
