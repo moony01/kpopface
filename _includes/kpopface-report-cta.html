@@ -19,7 +19,8 @@
     <div id="agency-ranking-list" aria-live="polite"></div>
 </div>
 
-<div id="detail-cta-wrap" class="detail-cta-wrap">
+<!-- Hide the KCL report CTA until its onboarding flow is live. -->
+<div id="detail-cta-wrap" class="detail-cta-wrap" hidden>
     <p class="detail-cta-text">📊 {{ report_text }}</p>
     <!-- KCL report onboarding is not live yet, so this is intentionally non-interactive. -->
     <button id="detail-analysis-btn" class="detail-cta-btn-main detail-cta-btn-disabled" type="button" disabled aria-disabled="true" data-report-status="coming-soon">
