@@ -87,6 +87,8 @@ lang: tr
                 <p class="result-percent" id="result-percent"></p>
                 <div id="label-container" style="display: none;"></div>
 
+                {% include kpopface-report-cta.html %}
+
                 <!-- 결과 화면 광고 슬롯 -->
                 <div class="result-ad-slot">
                     <ins class="adsbygoogle"
@@ -97,9 +99,6 @@ lang: tr
                          data-full-width-responsive="true"></ins>
                 </div>
             </div>
-
-            <!-- Detail Analysis CTA (Page Split Monetization) -->
-            {% include kpopface-report-cta.html %}
 
             {% comment %}
             Legacy result image save and donation actions are intentionally disabled.
@@ -115,9 +114,10 @@ lang: tr
                 </button>
             </div>
 
-            {% include sns_promotion.html %}
         </div>
     </div>
+
+    {% include sns_promotion.html %}
     
     {% include vote_section_tr.html %}
     
