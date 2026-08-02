@@ -688,6 +688,103 @@
   overflow: hidden;
 }
 
+/* 한국어 결과 화면 전용 상견례 얼굴상 테스트 추천 배너 */
+.sanggyeonrye-promo {
+  width: 100%;
+  margin: 12px 0 0;
+}
+
+.sanggyeonrye-promo-link {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #faf9ff 0%, #f2efff 100%);
+  color: #35465d;
+  text-align: left;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sanggyeonrye-promo-link:hover {
+  border-color: rgba(108, 92, 231, 0.45);
+  box-shadow: 0 6px 16px rgba(108, 92, 231, 0.12);
+  transform: translateY(-1px);
+}
+
+.sanggyeonrye-promo-link:focus-visible {
+  outline: 3px solid rgba(108, 92, 231, 0.35);
+  outline-offset: 2px;
+}
+
+.sanggyeonrye-promo-image {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 3px 10px rgba(108, 92, 231, 0.2);
+}
+
+.sanggyeonrye-promo-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.35;
+}
+
+.sanggyeonrye-promo-label {
+  color: #6c5ce7;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.sanggyeonrye-promo-copy strong {
+  color: #2f3d57;
+  font-size: 15px;
+}
+
+.sanggyeonrye-promo-copy > span:last-child {
+  overflow: hidden;
+  color: #778197;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sanggyeonrye-promo-action {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  border-radius: 999px;
+  background: #6c5ce7;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 360px) {
+  .sanggyeonrye-promo-link {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .sanggyeonrye-promo-copy {
+    padding-top: 2px;
+  }
+
+  .sanggyeonrye-promo-action {
+    margin-left: 76px;
+  }
+}
+
 /* ========================================
    상세 분석 팝업 - 복합형 로딩 UI
    ======================================== */
