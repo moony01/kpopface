@@ -210,6 +210,40 @@ var ALERT_MESSAGES = {
     tr: 'Görüntü oluşturulamadı. Lütfen tekrar deneyin.',
     uk: 'Не вдалося створити зображення. Спробуйте ще раз.',
     vi: 'Tạo ảnh thất bại. Vui lòng thử lại.'
+  },
+  analysisComplete: {
+    ko: '분석 완료!',
+    en: 'Analysis complete!',
+    ja: '分析が完了しました！',
+    zh: '分析完成！',
+    de: 'Analyse abgeschlossen!',
+    es: '¡Análisis completado!',
+    fr: 'Analyse terminée !',
+    id: 'Analisis selesai!',
+    nl: 'Analyse voltooid!',
+    pl: 'Analiza zakończona!',
+    pt: 'Análise concluída!',
+    ru: 'Анализ завершён!',
+    tr: 'Analiz tamamlandı!',
+    uk: 'Аналіз завершено!',
+    vi: 'Đã phân tích xong!'
+  },
+  analysisFailed: {
+    ko: '분석에 실패했습니다. 사진을 다시 업로드해주세요.',
+    en: 'The analysis failed. Please upload your photo again.',
+    ja: '分析に失敗しました。写真をもう一度アップロードしてください。',
+    zh: '分析失败，请重新上传照片。',
+    de: 'Die Analyse ist fehlgeschlagen. Bitte laden Sie Ihr Foto erneut hoch.',
+    es: 'El análisis falló. Vuelve a subir tu foto.',
+    fr: 'L’analyse a échoué. Veuillez téléverser à nouveau votre photo.',
+    id: 'Analisis gagal. Silakan unggah foto Anda lagi.',
+    nl: 'De analyse is mislukt. Upload je foto opnieuw.',
+    pl: 'Analiza nie powiodła się. Prześlij zdjęcie ponownie.',
+    pt: 'A análise falhou. Envie sua foto novamente.',
+    ru: 'Анализ не выполнен. Загрузите фотографию ещё раз.',
+    tr: 'Analiz başarısız oldu. Fotoğrafınızı yeniden yükleyin.',
+    uk: 'Аналіз не вдався. Завантажте фотографію ще раз.',
+    vi: 'Phân tích thất bại. Vui lòng tải ảnh lên lại.'
   }
 };
 
@@ -512,11 +546,100 @@ if (document.readyState === 'loading') {
 //파일 업로드
 var loadingStartTime = 0;
 var MIN_LOADING_DURATION = 10000; // 메인 로딩 최소 10초
+var loadingInterval = null;
+var loadingProgress = 0;
+var activeAnalysisRunId = 0;
+var analysisCompletionTimer = null;
+
+/**
+ * 현재 업로드 분석 요청이 아직 유효한지 확인한다.
+ * 사용자가 빠르게 다른 사진을 선택했을 때 이전 비동기 모델 결과가
+ * 새 분석 화면을 덮어쓰지 않도록 실행 번호를 비교한다.
+ * @param {number} runId 분석 실행 번호
+ * @returns {boolean} 현재 화면에 반영할 수 있는 실행인지 여부
+ */
+function isActiveAnalysisRun(runId) {
+  return runId === activeAnalysisRunId;
+}
+
+/**
+ * 이전 분석 완료 타이머를 제거한다.
+ * 모델 분석보다 먼저 예약된 완료 콜백이 결과를 조기에 노출하는 것을 막는다.
+ */
+function clearAnalysisCompletionTimer() {
+  if (analysisCompletionTimer) {
+    clearTimeout(analysisCompletionTimer);
+    analysisCompletionTimer = null;
+  }
+}
+
+/**
+ * 분석 시작 시 결과 전용 DOM을 비운다.
+ * 결과 영역 밖으로 잘못 배치된 요소가 다시 생기더라도, 새 분석 중에는
+ * 이전 점수·대표 아티스트·CTA 데이터가 화면에 남지 않도록 하는 방어층이다.
+ */
+function resetResultStateForAnalysis() {
+  $('#result-area').hide();
+
+  var rankingList = document.getElementById('agency-ranking-list');
+  if (rankingList) rankingList.innerHTML = '';
+
+  var artistsWrap = document.getElementById('result-artists');
+  var artistsList = document.getElementById('result-artists-list');
+  var artistsTitle = document.getElementById('result-artists-title');
+  if (artistsWrap) artistsWrap.hidden = true;
+  if (artistsList) artistsList.innerHTML = '';
+  if (artistsTitle) artistsTitle.textContent = '';
+
+  var resultTitle = document.getElementById('result-title');
+  var resultPercent = document.getElementById('result-percent');
+  if (resultTitle) resultTitle.textContent = '';
+  if (resultPercent) resultPercent.textContent = '';
+
+  currentAgency = '';
+  currentResultTitle = '';
+  currentResultExplain = '';
+  currentResultCeleb = '';
+  currentPredictions = [];
+}
+
+/**
+ * 분석 진행 애니메이션을 중지한다.
+ */
+function stopLoadingAnimation() {
+  if (loadingInterval) {
+    clearInterval(loadingInterval);
+    loadingInterval = null;
+  }
+}
+
+/**
+ * 모델 초기화 또는 예측 실패를 동일한 복구 흐름으로 처리한다.
+ * @param {number} runId 실패한 분석 실행 번호
+ * @param {Error} error 원본 오류
+ */
+function handleAnalysisFailure(runId, error) {
+  if (!isActiveAnalysisRun(runId)) return;
+
+  clearAnalysisCompletionTimer();
+  stopLoadingAnimation();
+  resetResultStateForAnalysis();
+  $('#loading').hide();
+  $('.file-upload-content').hide();
+  $('.image-upload-wrap').show();
+  console.error('Face analysis failed:', error);
+  alert(getAlertMessage('analysisFailed'));
+}
 
 function readURL(input) {
   if (input.files && input.files[0]) {
+    var runId = ++activeAnalysisRunId;
+    clearAnalysisCompletionTimer();
+
     var reader = new FileReader();
     reader.onload = function (e) {
+      if (!isActiveAnalysisRun(runId)) return;
+
       // 업로드 영역 숨기고 로딩 컨텐츠 표시
       $('.image-upload-wrap').hide();
       $('.file-upload-content').show();
@@ -527,7 +650,7 @@ function readURL(input) {
       // 로딩 화면 표시, 결과 영역 숨기기
       hideRetryButtonForLoading();
       $('#loading').show();
-      $('#result-area').hide();
+      resetResultStateForAnalysis();
 
       // 분석과 결과에 같은 AdSense 슬롯을 노출하고 요청은 한 번만 한다.
       showPersistentAdDuringAnalysis();
@@ -544,16 +667,30 @@ function readURL(input) {
       var faceImage = document.getElementById('face-image');
       faceImage.src = e.target.result;
       faceImage.onload = function() {
+        if (!isActiveAnalysisRun(runId)) return;
+
         init().then(function() {
-          predict();
-          // 최소 5초 보장 후 로딩 완료
+          if (!isActiveAnalysisRun(runId)) return null;
+          return predict();
+        }).then(function() {
+          if (!isActiveAnalysisRun(runId)) return;
+
+          // 모델 예측이 끝난 뒤에만 최소 로딩 시간을 계산한다.
           var elapsed = Date.now() - loadingStartTime;
           var remaining = Math.max(0, MIN_LOADING_DURATION - elapsed);
-          setTimeout(function() {
-            fnCompleteLoading();
+          analysisCompletionTimer = setTimeout(function() {
+            fnCompleteLoading(runId);
           }, remaining);
+        }).catch(function(error) {
+          handleAnalysisFailure(runId, error);
         });
       };
+      faceImage.onerror = function(error) {
+        handleAnalysisFailure(runId, error);
+      };
+    };
+    reader.onerror = function(error) {
+      handleAnalysisFailure(runId, error);
     };
     reader.readAsDataURL(input.files[0]);
   } else {
@@ -562,10 +699,8 @@ function readURL(input) {
 }
 
 // 로딩 애니메이션 시작
-var loadingInterval = null;
-var loadingProgress = 0;
-
 function fnStartLoadingAnimation() {
+  stopLoadingAnimation();
   loadingProgress = 0;
   var tips = getLoadingTips();
   var steps = getLoadingSteps();
@@ -596,22 +731,25 @@ function fnStartLoadingAnimation() {
 }
 
 // 로딩 완료
-function fnCompleteLoading() {
+function fnCompleteLoading(runId) {
+  if (typeof runId === 'number' && !isActiveAnalysisRun(runId)) return;
+
+  clearAnalysisCompletionTimer();
   // 프로그레스 100%로 완료
-  if (loadingInterval) {
-    clearInterval(loadingInterval);
-    loadingInterval = null;
-  }
+  stopLoadingAnimation();
 
   $('#progress-bar').css('width', '100%');
   $('#progress-text').text('100%');
-  $('#step-text').text('분석 완료!');
+  $('#step-text').text(getAlertMessage('analysisComplete'));
 
   // 잠시 후 결과 표시
-  setTimeout(function() {
+  var completedRunId = activeAnalysisRunId;
+  analysisCompletionTimer = setTimeout(function() {
+    if (!isActiveAnalysisRun(completedRunId)) return;
     $('#result-area').show();
     restorePersistentAdForResult();
     $('#loading').hide();
+    analysisCompletionTimer = null;
   }, 500);
 }
 
