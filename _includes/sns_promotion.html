@@ -1,21 +1,32 @@
 {% assign cta_text = "Follow the Developer" %}
 {% if page.lang == 'ko' %}{% assign cta_text = "개발자 SNS 구경가기" %}{% endif %}
+{% if page.lang == 'de' %}{% assign cta_text = "Die SNS des Entwicklers ansehen" %}{% endif %}
+{% if page.lang == 'es' %}{% assign cta_text = "Ver las redes sociales del desarrollador" %}{% endif %}
+{% if page.lang == 'fr' %}{% assign cta_text = "Découvrir les réseaux sociaux du développeur" %}{% endif %}
+{% if page.lang == 'id' %}{% assign cta_text = "Lihat SNS pengembang" %}{% endif %}
 {% if page.lang == 'ja' %}{% assign cta_text = "開発者のSNSをチェック" %}{% endif %}
+{% if page.lang == 'nl' %}{% assign cta_text = "Bekijk de SNS van de ontwikkelaar" %}{% endif %}
+{% if page.lang == 'pl' %}{% assign cta_text = "Zobacz SNS dewelopera" %}{% endif %}
+{% if page.lang == 'pt' %}{% assign cta_text = "Confira as redes sociais do desenvolvedor" %}{% endif %}
+{% if page.lang == 'ru' %}{% assign cta_text = "Соцсети разработчика" %}{% endif %}
+{% if page.lang == 'tr' %}{% assign cta_text = "Geliştiricinin sosyal medya hesapları" %}{% endif %}
+{% if page.lang == 'uk' %}{% assign cta_text = "Переглянути соцмережі розробника" %}{% endif %}
+{% if page.lang == 'vi' %}{% assign cta_text = "Xem SNS của nhà phát triển" %}{% endif %}
 {% if page.lang == 'zh' %}{% assign cta_text = "关注开发者 SNS" %}{% endif %}
 
 <div class="sns-promo-container">
   <div class="sns-promo-title">{{ cta_text }}</div>
   <div class="sns-promo-icons">
-    <a href="https://www.tiktok.com/@kpopfacetest" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-tiktok">
+    <a href="https://www.tiktok.com/@kpopfacetest" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-tiktok" aria-label="TikTok" title="TikTok">
       <i class="fa-brands fa-tiktok"></i>
     </a>
-    <a href="https://www.instagram.com/kpopfacetest/" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-instagram">
+    <a href="https://www.instagram.com/kpopfacetest/" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-instagram" aria-label="Instagram" title="Instagram">
       <i class="fa-brands fa-instagram"></i>
     </a>
-    <a href="https://x.com/mun01180" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-x">
+    <a href="https://x.com/mun01180" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-x" aria-label="X" title="X">
       <i class="fa-brands fa-x-twitter"></i>
     </a>
-    <a href="https://www.youtube.com/@kpopfacetest" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-youtube">
+    <a href="https://www.youtube.com/@kpopfacetest" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-youtube" aria-label="YouTube" title="YouTube">
       <i class="fa-brands fa-youtube"></i>
     </a>
   </div>
