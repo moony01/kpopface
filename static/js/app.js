@@ -593,8 +593,13 @@ function resetResultStateForAnalysis() {
 
   var resultTitle = document.getElementById('result-title');
   var resultPercent = document.getElementById('result-percent');
+  var resultExplain = document.getElementById('result-explain');
   if (resultTitle) resultTitle.textContent = '';
   if (resultPercent) resultPercent.textContent = '';
+  if (resultExplain) {
+    resultExplain.textContent = '';
+    resultExplain.hidden = true;
+  }
 
   currentAgency = '';
   currentResultTitle = '';
@@ -1811,6 +1816,12 @@ async function predict() {
   var resultPercentEl = document.getElementById('result-percent');
   if (resultTitleEl) resultTitleEl.textContent = resultTitle;
   if (resultPercentEl) resultPercentEl.textContent = topPercent + '%';
+
+  var resultExplainEl = document.getElementById('result-explain');
+  if (resultExplainEl) {
+    resultExplainEl.textContent = resultExplain || '';
+    resultExplainEl.hidden = !resultExplain;
+  }
 
   // 기존 result-messege 숨김 처리 (하위 호환)
   var resultMsgEl = document.querySelector('.result-messege');

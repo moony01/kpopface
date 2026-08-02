@@ -573,6 +573,23 @@
   text-align: center;
 }
 
+.result-explain {
+  max-width: 360px;
+  margin: -8px auto 14px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #faf9ff;
+  color: #5f6c88;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.result-explain[hidden] {
+  display: none;
+}
+
 /* 상단 결과 바로 아래의 성별·소속사별 대표 아티스트 */
 .result-artists {
   max-width: 360px;
