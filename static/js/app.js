@@ -1062,7 +1062,11 @@ var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
       { ko: '태민', global: 'Taemin', group: 'SHINee' },
       { ko: '카이', global: 'Kai', group: 'EXO' },
       { ko: '재현', global: 'Jaehyun', group: 'NCT 127' },
-      { ko: '태용', global: 'Taeyong', group: 'NCT 127' }
+      { ko: '태용', global: 'Taeyong', group: 'NCT 127' },
+      { ko: '김희철', global: 'Kim Hee-chul', group: 'Super Junior' },
+      { ko: '최시원', global: 'Choi Si-won', group: 'Super Junior' },
+      { ko: '영웅재중', global: 'Hero Jaejoong', group: 'TVXQ' },
+      { ko: '민호', global: 'Minho', group: 'SHINee' }
     ],
     female: [
       { ko: '카르멘', global: 'Carmen', group: 'Hearts2Hearts' },
@@ -1072,7 +1076,10 @@ var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
       { ko: '윈터', global: 'Winter', group: 'aespa' },
       { ko: '아이린', global: 'Irene', group: 'Red Velvet' },
       { ko: '태연', global: 'Taeyeon', group: 'Girls’ Generation' },
-      { ko: '윤아', global: 'Yoona', group: 'Girls’ Generation' }
+      { ko: '윤아', global: 'Yoona', group: 'Girls’ Generation' },
+      { ko: '서현진', global: 'Seo Hyun-jin', group: 'Actress' },
+      { ko: '이연희', global: 'Lee Yeon-hee', group: 'Actress' },
+      { ko: '설리', global: 'Sulli', group: 'f(x)' }
     ]
   },
   jyp: {
@@ -1084,7 +1091,12 @@ var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
       { ko: '준호', global: 'Junho', group: '2PM' },
       { ko: '택연', global: 'Taecyeon', group: '2PM' },
       { ko: '진영', global: 'Jinyoung', group: 'GOT7' },
-      { ko: '현진', global: 'Hyunjin', group: 'Stray Kids' }
+      { ko: '현진', global: 'Hyunjin', group: 'Stray Kids' },
+      { ko: '비', global: 'Rain', group: 'Solo' },
+      { ko: '우영', global: 'Wooyoung', group: '2PM' },
+      { ko: '정진운', global: 'Jung Jinwoon', group: '2AM' },
+      { ko: '영재', global: 'Youngjae', group: 'GOT7' },
+      { ko: '도운', global: 'Dowoon', group: 'DAY6' }
     ],
     female: [
       { ko: '사나', global: 'Sana', group: 'TWICE' },
@@ -1094,7 +1106,10 @@ var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
       { ko: '수지', global: 'Suzy', group: 'miss A' },
       { ko: '나연', global: 'Nayeon', group: 'TWICE' },
       { ko: '설윤', global: 'Sullyoon', group: 'NMIXX' },
-      { ko: '예지', global: 'Yeji', group: 'ITZY' }
+      { ko: '예지', global: 'Yeji', group: 'ITZY' },
+      { ko: '안소희', global: 'Ahn So-hee', group: 'Wonder Girls' },
+      { ko: '다현', global: 'Dahyun', group: 'TWICE' },
+      { ko: '채령', global: 'Chaeryeong', group: 'ITZY' }
     ]
   },
   yg: {
@@ -1106,7 +1121,10 @@ var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
       { ko: '지드래곤', global: 'G-Dragon', group: 'BIGBANG' },
       { ko: '태양', global: 'Taeyang', group: 'BIGBANG' },
       { ko: '송민호', global: 'Mino', group: 'WINNER' },
-      { ko: '강승윤', global: 'Kang Seungyoon', group: 'WINNER' }
+      { ko: '강승윤', global: 'Kang Seungyoon', group: 'WINNER' },
+      { ko: '대성', global: 'Daesung', group: 'BIGBANG' },
+      { ko: '비아이', global: 'B.I', group: 'iKON' },
+      { ko: '바비', global: 'Bobby', group: 'iKON' }
     ],
     female: [
       { ko: '리사', global: 'Lisa', group: 'BLACKPINK' },
@@ -1116,7 +1134,8 @@ var REPRESENTATIVE_ARTISTS_BY_AGENCY = {
       { ko: '씨엘', global: 'CL', group: '2NE1' },
       { ko: '제니', global: 'Jennie', group: 'BLACKPINK' },
       { ko: '지수', global: 'Jisoo', group: 'BLACKPINK' },
-      { ko: '로제', global: 'Rosé', group: 'BLACKPINK' }
+      { ko: '로제', global: 'Rosé', group: 'BLACKPINK' },
+      { ko: '전소미', global: 'Jeon Somi', group: 'Solo' }
     ]
   }
 };
@@ -1689,94 +1708,94 @@ async function predict() {
           // 영어 번역
           resultTitle = "YG Face Type";
           resultExplain = "#Cat-like Face, #Sophisticated Visual";
-          resultCeleb = "Celebrities from YG Entertainment: 2NE1's Sandara Park, BLACKPINK's Jennie, BLACKPINK's Lisa, BLACKPINK's Jisoo, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Celebrities from YG Entertainment: 2NE1's Sandara Park, BLACKPINK's Jennie, BLACKPINK's Lisa, BLACKPINK's Jisoo, Jeon Somi";
           } else if(langType == "de") {
           // 독일어 번역
           resultTitle = "YG Gesichtstyp";
           resultExplain = "#Katzenartiges Gesicht, #Elegantes Aussehen";
-          resultCeleb = "Berühmtheiten von YG Entertainment: Sandara Park von 2NE1, Jennie von BLACKPINK, Lisa von BLACKPINK, Jisoo von BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Berühmtheiten von YG Entertainment: Sandara Park von 2NE1, Jennie von BLACKPINK, Lisa von BLACKPINK, Jisoo von BLACKPINK, Jeon Somi";
 
           } else if(langType == "es") {
           // 스페인어 번역
           resultTitle = "Tipo de Rostro YG";
           resultExplain = "#Rostro de Gato, #Visual Sofisticado";
-          resultCeleb = "Celebridades de YG Entertainment: Sandara Park de 2NE1, Jennie de BLACKPINK, Lisa de BLACKPINK, Jisoo de BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Celebridades de YG Entertainment: Sandara Park de 2NE1, Jennie de BLACKPINK, Lisa de BLACKPINK, Jisoo de BLACKPINK, Jeon Somi";
 
           } else if(langType == "fr") {
           // 프랑스어 번역
           resultTitle = "Type de Visage YG";
           resultExplain = "#Visage de Chat, #Visuel Sophistiqué";
-          resultCeleb = "Célébrités de YG Entertainment: Sandara Park de 2NE1, Jennie de BLACKPINK, Lisa de BLACKPINK, Jisoo de BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Célébrités de YG Entertainment: Sandara Park de 2NE1, Jennie de BLACKPINK, Lisa de BLACKPINK, Jisoo de BLACKPINK, Jeon Somi";
 
           } else if(langType == "id") {
           // 인도네시아어 번역
           resultTitle = "Tipe Wajah YG";
           resultExplain = "#Wajah Mirip Kucing, #Visual Elegan";
-          resultCeleb = "Selebriti dari YG Entertainment: Sandara Park dari 2NE1, Jennie dari BLACKPINK, Lisa dari BLACKPINK, Jisoo dari BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Selebriti dari YG Entertainment: Sandara Park dari 2NE1, Jennie dari BLACKPINK, Lisa dari BLACKPINK, Jisoo dari BLACKPINK, Jeon Somi";
 
           } else if(langType == "ja") {
           // 일본어 번역
           resultTitle = "YG顔タイプ";
           resultExplain = "#猫のような顔、#洗練されたビジュアル";
-          resultCeleb = "YGエンターテインメントの有名人：2NE1のSandara Park、BLACKPINKのJennie、BLACKPINKのLisa、BLACKPINKのJisoo、Lee Hi、Jeon Somi、Han Ye-seul";
+          resultCeleb = "YGエンターテインメントの有名人：2NE1のSandara Park、BLACKPINKのJennie、BLACKPINKのLisa、BLACKPINKのJisoo、Lee Hi、Jeon Somi";
 
           } else if(langType == "nl") {
           // 네덜란드어 번역
           resultTitle = "YG Gezichtstype";
           resultExplain = "#Katachtig Gezicht, #Verfijnde Uitstraling";
-          resultCeleb = "Beroemdheden van YG Entertainment: Sandara Park van 2NE1, Jennie van BLACKPINK, Lisa van BLACKPINK, Jisoo van BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Beroemdheden van YG Entertainment: Sandara Park van 2NE1, Jennie van BLACKPINK, Lisa van BLACKPINK, Jisoo van BLACKPINK, Jeon Somi";
 
           } else if(langType == "pl") {
           /// 폴란드어 번역
           resultTitle = "Typ Twarzy YG";
           resultExplain = "#Twarz Kociego Typu, #Wyrafinowany Wygląd";
-          resultCeleb = "Celebryci z YG Entertainment: Sandara Park z 2NE1, Jennie z BLACKPINK, Lisa z BLACKPINK, Jisoo z BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Celebryci z YG Entertainment: Sandara Park z 2NE1, Jennie z BLACKPINK, Lisa z BLACKPINK, Jisoo z BLACKPINK, Jeon Somi";
 
           } else if(langType == "pt") {
           // 포르투갈어 번역
           resultTitle = "Tipo de Rosto YG";
           resultExplain = "#Rosto Estilo Gato, #Visual Sofisticado";
-          resultCeleb = "Celebridades da YG Entertainment: Sandara Park do 2NE1, Jennie do BLACKPINK, Lisa do BLACKPINK, Jisoo do BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Celebridades da YG Entertainment: Sandara Park do 2NE1, Jennie do BLACKPINK, Lisa do BLACKPINK, Jisoo do BLACKPINK, Jeon Somi";
 
           } else if(langType == "ru") {
           // 러시아어 번역
           resultTitle = "Тип лица YG";
           resultExplain = "#Лицо, похожее на кошку, #Стильный образ";
-          resultCeleb = "Знаменитости из YG Entertainment: Sandara Park из 2NE1, Jennie из BLACKPINK, Lisa из BLACKPINK, Jisoo из BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Знаменитости из YG Entertainment: Sandara Park из 2NE1, Jennie из BLACKPINK, Lisa из BLACKPINK, Jisoo из BLACKPINK, Jeon Somi";
 
           } else if(langType == "tr") {
           // 터키어 번역
           resultTitle = "YG Yüz Tipi";
           resultExplain = "#Kedi Benzeri Yüz, #Zarif Görünüm";
-          resultCeleb = "YG Eğlence Ünlüleri: 2NE1'den Sandara Park, BLACKPINK'ten Jennie, BLACKPINK'ten Lisa, BLACKPINK'ten Jisoo, Jeon Somi, Han Ye-seul";
+          resultCeleb = "YG Eğlence Ünlüleri: 2NE1'den Sandara Park, BLACKPINK'ten Jennie, BLACKPINK'ten Lisa, BLACKPINK'ten Jisoo, Jeon Somi";
 
           } else if(langType == "uk") {
           // 우크라이나어 번역
           resultTitle = "YG Тип обличчя";
           resultExplain = "#Обличчя Кота, #Вишуканий Вигляд";
-          resultCeleb = "Знаменитості від YG Entertainment: Sandara Park з 2NE1, Jennie з BLACKPINK, Lisa з BLACKPINK, Jisoo з BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Знаменитості від YG Entertainment: Sandara Park з 2NE1, Jennie з BLACKPINK, Lisa з BLACKPINK, Jisoo з BLACKPINK, Jeon Somi";
 
           } else if(langType == "vi") {
           // 베트남어 번역
           resultTitle = "Kiểu Mặt YG";
           resultExplain = "#Khuôn mặt giống mèo, #Visual tinh tế";
-          resultCeleb = "Các nghệ sĩ nổi tiếng thuộc công ty giải trí YG: Sandara Park của 2NE1, Jennie của BLACKPINK, Lisa của BLACKPINK, Jisoo của BLACKPINK, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Các nghệ sĩ nổi tiếng thuộc công ty giải trí YG: Sandara Park của 2NE1, Jennie của BLACKPINK, Lisa của BLACKPINK, Jisoo của BLACKPINK, Jeon Somi";
 
           } else if(langType == "zh") {
           // 중국어 번역
           resultTitle = "YG脸型";
           resultExplain = "#猫状脸型, #高级视觉";
-          resultCeleb = "YG娱乐公司的名人：2NE1的Sandara Park，BLACKPINK的Jennie，BLACKPINK的Lisa，BLACKPINK的Jisoo, 全素美， 韩叶瑟";
+          resultCeleb = "YG娱乐公司的名人：2NE1的Sandara Park，BLACKPINK的Jennie，BLACKPINK的Lisa，BLACKPINK的Jisoo, 全素美";
           } else {
           // 영어 번역
           resultTitle = "YG Face Type";
           resultExplain = "#Cat-like Face, #Sophisticated Visual";
-          resultCeleb = "Celebrities from YG Entertainment: 2NE1's Sandara Park, BLACKPINK's Jennie, BLACKPINK's Lisa, BLACKPINK's Jisoo, Jeon Somi, Han Ye-seul";
+          resultCeleb = "Celebrities from YG Entertainment: 2NE1's Sandara Park, BLACKPINK's Jennie, BLACKPINK's Lisa, BLACKPINK's Jisoo, Jeon Somi";
           }
         } else {
           resultTitle = "YG얼굴상";
           resultExplain = "#고양이상 #고급스러운 비주얼";
-          resultCeleb = "YG출신 연예인: 2NE1 산다라박, 블랙핑크 제니, 블랙핑크 리사, 블랙핑크 지수, 전소미, 한예슬";
+          resultCeleb = "YG출신 연예인: 2NE1 산다라박, 블랙핑크 제니, 블랙핑크 리사, 블랙핑크 지수, 전소미";
         }
         break;
       default:
