@@ -1,9 +1,14 @@
+{% assign kcl_embed_ads = include.ads | default: 'on' %}
+{% if kcl_embed_ads != 'on' %}
+    {% assign kcl_embed_ads = 'off' %}
+{% endif %}
+
 <section class="vote-wrapper kcl-embed-wrapper" data-kcl-embed>
     <iframe
         class="kcl-vote-embed"
         data-kcl-embed-frame
-        data-kcl-embed-src="https://kclhq.com/embed/kpopface-vote/{{ include.locale | default: 'en' }}"
-        data-kcl-embed-local-src="http://localhost:3000/embed/kpopface-vote/{{ include.locale | default: 'en' }}"
+        data-kcl-embed-src="https://kclhq.com/embed/vote-board/{{ include.locale | default: 'en' }}?surface=kpopface&amp;ads={{ kcl_embed_ads }}"
+        data-kcl-embed-local-src="http://localhost:3000/embed/vote-board/{{ include.locale | default: 'en' }}?surface=kpopface&amp;ads={{ kcl_embed_ads }}"
         title="KPOP Company League voting"
         loading="lazy"
         referrerpolicy="strict-origin-when-cross-origin"
