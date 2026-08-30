@@ -9,6 +9,7 @@
     'https://www.mearrow.com': true,
     'http://localhost:3000': true
   };
+  var EMBED_HEIGHT_PADDING = 8;
 
   function isEmbedMessage(event) {
     return KCL_ORIGINS[event.origin] &&
@@ -49,7 +50,8 @@
         if (event.data.type === 'resize') {
           var height = Number(event.data.height);
           if (Number.isFinite(height)) {
-            frame.style.height = Math.max(280, Math.min(height + 2, 900)) + 'px';
+            // Keep the CTA's rounded bottom edge clear of the iframe viewport.
+            frame.style.height = Math.max(280, Math.min(height + EMBED_HEIGHT_PADDING, 900)) + 'px';
           }
         }
       });
