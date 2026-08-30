@@ -31,15 +31,14 @@
     return frame.getAttribute('data-kcl-embed-src');
   }
 
+  function loadFrame(frame) {
+    var embedUrl = getEmbedUrl(frame);
+    if (embedUrl) frame.src = embedUrl;
+  }
+
   function init() {
     var frames = document.querySelectorAll('[data-kcl-embed-frame]');
     if (!frames.length) return;
-
-    Array.prototype.forEach.call(frames, function (frame) {
-      frame.style.height = '340px';
-      var embedUrl = getEmbedUrl(frame);
-      if (embedUrl) frame.src = embedUrl;
-    });
 
     window.addEventListener('message', function (event) {
       if (!isEmbedMessage(event)) return;
@@ -54,6 +53,24 @@
           }
         }
       });
+    });
+
+    Array.prototype.forEach.call(frames, function (frame) {
+      frame.style.height = '340px';
+
+      if (typeof window.IntersectionObserver !== 'function') {
+        loadFrame(frame);
+        return;
+      }
+
+      var observer = new window.IntersectionObserver(function (entries, currentObserver) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          loadFrame(frame);
+          currentObserver.unobserve(frame);
+        });
+      });
+      observer.observe(frame);
     });
   }
 
