@@ -4,6 +4,9 @@
   var KCL_ORIGINS = {
     'https://kclhq.com': true,
     'https://www.kclhq.com': true,
+    // kclhq.com redirects to MEARROW; resize messages use the final origin.
+    'https://mearrow.com': true,
+    'https://www.mearrow.com': true,
     'http://localhost:3000': true
   };
 
