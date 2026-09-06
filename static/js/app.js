@@ -6,7 +6,11 @@ const urlFemale = "https://teachablemachine.withgoogle.com/models/Fq3_K1cua/"; /
 let model, webcam, labelContainer, maxPredictions;
 let langType = "";
 let langYn = "";
-let loc = window.location.href.split("/")[0] + "//" + window.location.href.split("/")[2] + "/" + window.location.href.split("/")[3] + "/";
+var baseUrlMeta = document.querySelector('meta[name="kpopface-base-url"]');
+var kpopfaceBaseUrl = baseUrlMeta ? baseUrlMeta.content.replace(/\/+$/, '') : '/kpopface';
+var siteOrigin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+let loc = siteOrigin + kpopfaceBaseUrl + "/";
+let shareAssetBase = siteOrigin + kpopfaceBaseUrl;
 var deferredPrompt;
 
 // T1.2: 결과 이미지 저장/공유를 위한 전역 변수
@@ -210,6 +214,10 @@ var ALERT_MESSAGES = {
     tr: 'Görüntü oluşturulamadı. Lütfen tekrar deneyin.',
     uk: 'Не вдалося створити зображення. Спробуйте ще раз.',
     vi: 'Tạo ảnh thất bại. Vui lòng thử lại.'
+  },
+  invalidImage: {
+    ko: 'JPG, PNG, WebP 또는 GIF 이미지(10MB 이하)를 선택해주세요.',
+    en: 'Please choose a JPG, PNG, WebP, or GIF image under 10MB.'
   },
   analysisComplete: {
     ko: '분석 완료!',
@@ -423,7 +431,9 @@ document.addEventListener('DOMContentLoaded', function() {
   //   document.getElementsByTagName("html")[0].setAttribute("lang", "ko");
   // }
 
-  Kakao.init('8329cd81f78ef956d4487f90e5a4cd49');
+  if (typeof Kakao !== 'undefined' && typeof Kakao.init === 'function') {
+    Kakao.init('8329cd81f78ef956d4487f90e5a4cd49');
+  }
 
   if (headerIcon) {
     headerIcon.addEventListener('click', function(e) {
@@ -638,6 +648,14 @@ function handleAnalysisFailure(runId, error) {
 
 function readURL(input) {
   if (input.files && input.files[0]) {
+    var file = input.files[0];
+    var allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (allowedImageTypes.indexOf(file.type) === -1 || file.size > 10 * 1024 * 1024) {
+      input.value = '';
+      alert(getAlertMessage('invalidImage'));
+      return;
+    }
+
     var runId = ++activeAnalysisRunId;
     clearAnalysisCompletionTimer();
 
@@ -660,7 +678,7 @@ function readURL(input) {
       // 분석과 결과에 같은 AdSense 슬롯을 노출하고 요청은 한 번만 한다.
       showPersistentAdDuringAnalysis();
 
-      $('.image-title').html(input.files[0].name);
+      $('.image-title').text(file.name);
 
       // 로딩 시작 시간 기록
       loadingStartTime = Date.now();
@@ -773,7 +791,7 @@ function fn_sendFB(sns) {
   langType = location.pathname.split("/")[2];
   if(!langType == "" || !langType == null || !langType == "ko") {
     thisUrl = loc+langType;
-    thumbUrl = "https://moony01.com/kpopface/static/img/share/thumb-en.jpg";
+    thumbUrl = shareAssetBase + "/static/img/share/thumb-en.jpg";
     if(langType == "en") {
       // 영어 번역
       snsTitle = "KPOP Face Test";
@@ -837,7 +855,7 @@ function fn_sendFB(sns) {
     }
   } else {
     thisUrl = loc;
-    thumbUrl = "https://moony01.com/kpopface/static/img/share/thumb.jpg";
+    thumbUrl = shareAssetBase + "/static/img/share/thumb.jpg";
     snsTitle = "케이팝 얼굴상 테스트";
     snsDesc = "내 얼굴은 K-POP 엔터 소속사중 어떤 얼굴상일까?";
   }
@@ -1247,7 +1265,17 @@ function hideRetryButtonForLoading() {
 //이미지 로드 결과
 async function predict() {
   var image = document.getElementById("face-image")
-  const prediction = await model.predict(image, false);
+  var prediction = await model.predict(image, false);
+  prediction = prediction.filter(function (item) {
+    return item && ['sm', 'jyp', 'yg'].indexOf(item.className) !== -1 &&
+      Number.isFinite(Number(item.probability));
+  }).map(function (item) {
+    return {
+      className: item.className,
+      probability: Math.max(0, Math.min(1, Number(item.probability)))
+    };
+  });
+  if (!prediction.length) throw new Error('No supported agency prediction returned');
   prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability))
   console.log(prediction[0].className);
   var resultTitle, resultExplain, resultCeleb;
@@ -2031,7 +2059,9 @@ function fnDisplayDetailResult() {
   var pendingData = sessionStorage.getItem('kpopface_pending_result');
   if (!pendingData) return;
 
-  var resultData = JSON.parse(pendingData);
+  var resultData = window.KpopfaceResultSecurity &&
+    window.KpopfaceResultSecurity.parseStoredResult(pendingData);
+  if (!resultData) return;
 
   // 모달 결과 섹션 표시
   var modalResult = document.getElementById('modal-detail-result');
@@ -2057,12 +2087,12 @@ function fnDisplayDetailResult() {
   // 전체 소속사 순위 표시 (모달 내부)
   var rankingList = document.getElementById('modal-ranking-list');
   if (rankingList && resultData.results) {
-    var agencyNames = { sm: 'SM', jyp: 'JYP', yg: 'YG' };
+    var agencyNames = window.KpopfaceResultSecurity.agencyNames;
     var rankingHtml = '';
 
     resultData.results.forEach(function(item) {
       rankingHtml += '<div class="agency-rank-item">';
-      rankingHtml += '<div class="agency-rank-label">' + (agencyNames[item.agency] || item.agency.toUpperCase()) + '</div>';
+      rankingHtml += '<div class="agency-rank-label">' + agencyNames[item.agency] + '</div>';
       rankingHtml += '<div class="agency-rank-bar-container">';
       rankingHtml += '<div class="agency-rank-bar ' + item.agency + '" style="width: ' + item.percent + '%"></div>';
       rankingHtml += '</div>';
@@ -2076,7 +2106,7 @@ function fnDisplayDetailResult() {
   var reportContainer = document.getElementById('modal-visual-report');
   if (reportContainer && typeof VisualReports !== 'undefined') {
     var topAgency = resultData.results[0].agency;
-    var gender = resultData.gender || 'female';
+    var gender = resultData.gender;
     var reportHtml = VisualReports.getReportHTML(topAgency, gender);
     reportContainer.innerHTML = reportHtml;
   }
