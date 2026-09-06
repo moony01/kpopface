@@ -3,6 +3,7 @@ layout: page-split
 lang: ko
 title: "상세 분석 | K-Pop Face Test"
 description: "당신의 K-POP 소속사 얼굴상 상세 분석 결과입니다."
+robots: "noindex, nofollow"
 ---
 
 <!-- 상단 광고 -->
@@ -58,20 +59,20 @@ description: "당신의 K-POP 소속사 얼굴상 상세 분석 결과입니다.
   <div class="share-section">
     <div class="share-title">📤 결과 공유하기</div>
     <div class="share-buttons">
-      <button class="share-btn instagram" onclick="fnShareInstagram()">
+        <button class="share-btn instagram" type="button" aria-label="Instagram 공유" onclick="fnShareInstagram()">
         <i class="fab fa-instagram"></i>
       </button>
-      <button class="share-btn tiktok" onclick="fnShareTikTok()">
+        <button class="share-btn tiktok" type="button" aria-label="TikTok 공유" onclick="fnShareTikTok()">
         <i class="fab fa-tiktok"></i>
       </button>
-      <button class="share-btn save" onclick="fnSaveImage()">
+        <button class="share-btn save" type="button" aria-label="결과 이미지 저장" onclick="fnSaveImage()">
         <i class="fas fa-download"></i>
       </button>
     </div>
   </div>
 
   <!-- 홈으로 돌아가기 -->
-  <a href="/kpopface/" class="back-home-btn">
+  <a href="{{ site.url }}{{ site.baseurl }}/" class="back-home-btn">
     <i class="fas fa-home"></i> 다시 테스트하기
   </a>
 </div>
@@ -93,18 +94,14 @@ description: "당신의 K-POP 소속사 얼굴상 상세 분석 결과입니다.
   var result = PageRouter.loadResult();
 
   if (!result) {
-    window.location.href = '/kpopface/';
+    window.location.href = '{{ site.baseurl }}/';
     return;
   }
 
   // 상세 페이지 조회 표시
   PageRouter.updateResult({ viewedDetail: true });
 
-  var agencyNames = {
-    sm: 'SM',
-    jyp: 'JYP',
-    yg: 'YG'
-  };
+  var agencyNames = window.KpopfaceResultSecurity.agencyNames;
 
   // 전체 소속사 순위 표시
   var rankingHtml = '';
