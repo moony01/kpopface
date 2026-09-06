@@ -6,23 +6,6 @@ title: "페이지를 찾을 수 없습니다 | K-Pop Face Test"
 robots: noindex
 ---
 
-<!-- noindex 메타 태그 (Jekyll default 레이아웃에서 처리하지 않으므로 인라인 추가) -->
-<script>
-  // 동적으로 noindex 메타 태그 추가
-  (function() {
-    var meta = document.createElement('meta');
-    meta.name = 'robots';
-    meta.content = 'noindex, nofollow';
-    document.head.appendChild(meta);
-    
-    // og:url을 메인 페이지로 수정
-    var ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://moony01.com/kpopface/');
-    }
-  })();
-</script>
-
 <style type="text/css" media="screen">
   .container {
     margin: 10px auto;
@@ -67,5 +50,5 @@ robots: noindex
   <p class="error-message">요청하신 페이지가 존재하지 않거나 이동되었습니다.</p>
   <p class="error-message" style="font-size: 0.95rem; color: #888;">Page not found. The requested page does not exist.</p>
   
-  <a href="https://moony01.com/kpopface/" class="home-button">🏠 메인 페이지로 돌아가기</a>
+  <a href="{{ site.url }}{{ site.baseurl }}/" class="home-button">🏠 메인 페이지로 돌아가기</a>
 </div>

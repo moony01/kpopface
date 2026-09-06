@@ -5,21 +5,39 @@
 var PageRouter = (function() {
   var STORAGE_PREFIX = 'kpopface_result_';
 
+  function getBasePath() {
+    var meta = document.querySelector('meta[name="kpopface-base-url"]');
+    if (meta) return meta.content.replace(/\/+$/, '');
+    return '/kpopface';
+  }
+
+  function getResultBasePath(langPath) {
+    var basePath = getBasePath();
+    return langPath ? basePath + '/' + langPath + '/' : basePath + '/';
+  }
+
   /**
    * 결과 데이터 저장 및 다음 페이지로 이동
    * @param {Object} resultData - 분석 결과 데이터
    * @param {string} targetPage - 이동할 페이지 (analyzing, result, detail)
    */
   function saveAndNavigate(resultData, targetPage) {
-    var resultId = Date.now().toString();
-    resultData.id = resultId;
-    resultData.timestamp = Date.now();
+    var allowedPages = ['analyzing', 'result', 'detail'];
+    if (allowedPages.indexOf(targetPage) === -1) return;
 
-    sessionStorage.setItem(STORAGE_PREFIX + resultId, JSON.stringify(resultData));
+    var safeResult = window.KpopfaceResultSecurity &&
+      window.KpopfaceResultSecurity.normalizeResult(resultData);
+    if (!safeResult) return;
+
+    var resultId = Date.now().toString();
+    safeResult.id = resultId;
+    safeResult.timestamp = Date.now();
+
+    sessionStorage.setItem(STORAGE_PREFIX + resultId, JSON.stringify(safeResult));
 
     // 언어별 경로 처리 (kpopface 베이스 경로 포함)
     var langPath = getLangPath();
-    var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
+    var basePath = getResultBasePath(langPath);
 
     window.location.href = basePath + targetPage + '.html?id=' + resultId;
   }
@@ -33,7 +51,8 @@ var PageRouter = (function() {
     if (!resultId) return null;
 
     var data = sessionStorage.getItem(STORAGE_PREFIX + resultId);
-    return data ? JSON.parse(data) : null;
+    if (!data || !window.KpopfaceResultSecurity) return null;
+    return window.KpopfaceResultSecurity.parseStoredResult(data);
   }
 
   /**
@@ -49,11 +68,14 @@ var PageRouter = (function() {
    * @returns {string} 언어 코드 (ko의 경우 빈 문자열)
    */
   function getLangPath() {
-    var pathParts = window.location.pathname.split('/');
+    var pathParts = window.location.pathname.split('/').filter(Boolean);
+    var baseSegments = getBasePath().split('/').filter(Boolean);
+    var possibleLang = baseSegments.length
+      ? pathParts[pathParts.indexOf(baseSegments[baseSegments.length - 1]) + 1]
+      : pathParts[0];
+
     // /kpopface/en/analyzing.html -> en
     // /kpopface/analyzing.html -> ''
-    var langIndex = pathParts.indexOf('kpopface') + 1;
-    var possibleLang = pathParts[langIndex];
 
     var supportedLangs = ['en', 'de', 'es', 'fr', 'id', 'ja', 'nl', 'pl', 'pt', 'ru', 'tr', 'uk', 'vi', 'zh'];
 
@@ -71,7 +93,7 @@ var PageRouter = (function() {
     var result = loadResult();
     if (!result) {
       var langPath = getLangPath();
-      var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
+      var basePath = getResultBasePath(langPath);
       window.location.href = basePath;
       return null;
     }
@@ -84,7 +106,8 @@ var PageRouter = (function() {
    */
   function updateResult(updates) {
     var result = loadResult();
-    if (!result) return;
+    var resultId = getResultId();
+    if (!result || !resultId) return;
 
     for (var key in updates) {
       if (updates.hasOwnProperty(key)) {
@@ -92,7 +115,11 @@ var PageRouter = (function() {
       }
     }
 
-    sessionStorage.setItem(STORAGE_PREFIX + result.id, JSON.stringify(result));
+    var safeResult = window.KpopfaceResultSecurity &&
+      window.KpopfaceResultSecurity.normalizeResult(result);
+    if (safeResult) {
+      sessionStorage.setItem(STORAGE_PREFIX + resultId, JSON.stringify(safeResult));
+    }
   }
 
   /**
@@ -100,9 +127,11 @@ var PageRouter = (function() {
    * @param {string} targetPage - 이동할 페이지
    */
   function navigateTo(targetPage) {
+    if (['analyzing', 'result', 'detail'].indexOf(targetPage) === -1) return;
+
     var resultId = getResultId();
     var langPath = getLangPath();
-    var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
+    var basePath = getResultBasePath(langPath);
 
     window.location.href = basePath + targetPage + '.html?id=' + resultId;
   }

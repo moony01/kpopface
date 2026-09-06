@@ -515,7 +515,9 @@ async function renderComments(comments) {
     }
 
     // 원댓글 ID 목록
-    const parentIds = comments.map(c => c.id);
+    const parentIds = comments
+        .map(c => Number(c.id))
+        .filter(id => Number.isSafeInteger(id) && id > 0);
 
     // 대댓글 조회
     let replies = [];
@@ -549,6 +551,9 @@ async function renderComments(comments) {
  * 단일 댓글 렌더링
  */
 function renderSingleComment(comment, isReply = false) {
+    const commentId = Number(comment.id);
+    if (!Number.isSafeInteger(commentId) || commentId < 1) return '';
+
     const dateObj = new Date(comment.created_at);
     const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}`;
 
@@ -563,14 +568,14 @@ function renderSingleComment(comment, isReply = false) {
     }
 
     const replyBtn = !isReply ? `
-        <button class="btn-reply" onclick="startReply(${comment.id}, ${escapeForOnclick(comment.nickname)})">
+        <button class="btn-reply" onclick="startReply(${commentId}, ${escapeForOnclick(comment.nickname)})">
             <i class="fa-solid fa-reply"></i> ${t('reply')}
         </button>` : '';
 
     const itemClass = isReply ? 'comment-item comment-reply' : 'comment-item';
 
     return `
-    <div class="${itemClass}" id="comment-${comment.id}">
+    <div class="${itemClass}" id="comment-${commentId}">
         <div class="cmt-top">
             <div class="cmt-info">
                 <span class="cmt-user">${escapeHtml(comment.nickname)}</span>
@@ -579,14 +584,14 @@ function renderSingleComment(comment, isReply = false) {
             <div class="cmt-right-group">
                 <span class="cmt-date">${dateStr}</span>
                 <div class="more-menu-container">
-                    <button class="btn-more" onclick="toggleMenu(${comment.id}, event)" aria-label="댓글 옵션 더보기">
+                    <button class="btn-more" onclick="toggleMenu(${commentId}, event)" aria-label="댓글 옵션 더보기">
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
-                    <div id="menu-${comment.id}" class="more-dropdown">
-                        <button onclick="handleEdit(${comment.id}, ${escapeForOnclick(comment.content)})">
+                    <div id="menu-${commentId}" class="more-dropdown">
+                        <button onclick="handleEdit(${commentId}, ${escapeForOnclick(comment.content)})">
                             <i class="fa-solid fa-pen"></i> 수정
                         </button>
-                        <button onclick="handleDelete(${comment.id})">
+                        <button onclick="handleDelete(${commentId})">
                             <i class="fa-solid fa-trash"></i> 삭제
                         </button>
                     </div>
@@ -618,11 +623,20 @@ function startReply(parentId, nickname) {
     // 답글 표시 UI 업데이트
     const replyIndicator = document.getElementById('reply-indicator');
     if (replyIndicator) {
-        replyIndicator.innerHTML = `
-            <span>${t('reply_to', {nickname: nickname})}</span>
-            <button onclick="cancelReply()" class="btn-cancel-reply">
-                <i class="fa-solid fa-xmark"></i> ${t('cancel_reply')}
-            </button>`;
+        const replyText = document.createElement('span');
+        replyText.textContent = t('reply_to', {nickname: nickname});
+
+        const cancelButton = document.createElement('button');
+        cancelButton.type = 'button';
+        cancelButton.className = 'btn-cancel-reply';
+        cancelButton.addEventListener('click', cancelReply);
+
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-xmark';
+        cancelButton.appendChild(icon);
+        cancelButton.appendChild(document.createTextNode(' ' + t('cancel_reply')));
+
+        replyIndicator.replaceChildren(replyText, cancelButton);
         replyIndicator.style.display = 'flex';
     }
 
@@ -725,12 +739,18 @@ async function postComment() {
         return;
     }
 
-    const facetype = document.getElementById('cmt-facetype').value;
+    const requestedFaceType = document.getElementById('cmt-facetype').value;
+    const facetype = ['SM', 'JYP', 'YG'].includes(requestedFaceType) ? requestedFaceType : 'unknown';
     const nickname = document.getElementById('cmt-nickname').value.trim();
     const password = document.getElementById('cmt-password').value.trim();
     const content = document.getElementById('cmt-content').value.trim();
 
     if (!nickname) {
+        alert(t('nickname_empty'));
+        document.getElementById('cmt-nickname').focus();
+        return;
+    }
+    if (nickname.length > 50) {
         alert(t('nickname_empty'));
         document.getElementById('cmt-nickname').focus();
         return;
@@ -786,8 +806,8 @@ async function postComment() {
 }
 
 function escapeHtml(text) {
-    if (!text) return '';
-    return text
+    if (text === null || text === undefined) return '';
+    return String(text)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -800,8 +820,19 @@ function escapeHtml(text) {
  * JSON.stringify 후 HTML 엔티티 변환
  */
 function escapeForOnclick(text) {
-    if (!text) return '""';
-    return JSON.stringify(text).replace(/"/g, '&quot;');
+    if (text === null || text === undefined) return '""';
+    return JSON.stringify(String(text))
+        .replace(/\u2028/g, '\\u2028')
+        .replace(/\u2029/g, '\\u2029')
+        .replace(/[&<>"']/g, function (character) {
+            return {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[character];
+        });
 }
 
 /**
