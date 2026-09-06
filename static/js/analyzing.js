@@ -4,7 +4,9 @@
  */
 (function() {
   var progress = 0;
-  var resultId = new URLSearchParams(window.location.search).get('id');
+  var result = PageRouter ? PageRouter.requireResult() : null;
+  var resultId = result && result.id;
+  if (!result || !resultId) return;
 
   var steps = [
     "얼굴형 분석 중...",
@@ -23,16 +25,7 @@
     "YG는 자신만의 스타일이 확실한 사람을 선호합니다"
   ];
 
-  // 결과 ID 없으면 메인으로 리다이렉트
-  if (!resultId) {
-    var langPath = PageRouter ? PageRouter.getLangPath() : '';
-    var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
-    window.location.href = basePath;
-    return;
-  }
-
   // 결과 데이터 로드하여 사용자 이미지 표시
-  var result = PageRouter ? PageRouter.loadResult() : null;
   if (result && result.image) {
     var userImageEl = document.getElementById('user-image');
     if (userImageEl) {
@@ -64,10 +57,7 @@
     // 완료 시 결과 페이지로 이동
     if (progress >= 100) {
       clearInterval(interval);
-
-      var langPath = PageRouter ? PageRouter.getLangPath() : '';
-      var basePath = langPath ? '/kpopface/' + langPath + '/' : '/kpopface/';
-      window.location.href = basePath + 'result.html?id=' + resultId;
+      if (PageRouter) PageRouter.navigateTo('result');
     }
   }, 100); // 5초 동안 진행 (100ms × 50회)
 })();
