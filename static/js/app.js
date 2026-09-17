@@ -52,6 +52,26 @@ function reserveLocalAdSlot(container, placement) {
   return true;
 }
 
+function initializeInlineAdSlots() {
+  document.querySelectorAll('.ad-inline-slot').forEach(function(container) {
+    var ad = container.querySelector('.adsbygoogle');
+    if (!ad) return;
+
+    var placement = container.getAttribute('data-ad-placement') || '인라인 광고 슬롯';
+    if (reserveLocalAdSlot(container, placement)) return;
+    if (ad.dataset.adsenseInitialized === 'true') return;
+
+    ad.dataset.adsenseInitialized = 'true';
+    requestAnimationFrame(function() {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.log('Inline ad load error:', e);
+      }
+    });
+  });
+}
+
 function reserveLocalPersistentAdSlots() {
   if (!isLocalAdTestEnvironment()) return;
   document.querySelectorAll('.result-ad-slot').forEach(function(container) {
@@ -545,6 +565,7 @@ function fnLoadLeagueRanking() {
 function initializePageEnhancements() {
   fnLoadLeagueRanking();
   reserveLocalPersistentAdSlots();
+  initializeInlineAdSlots();
 }
 
 if (document.readyState === 'loading') {

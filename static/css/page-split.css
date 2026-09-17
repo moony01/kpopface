@@ -688,6 +688,53 @@
   overflow: hidden;
 }
 
+/* 결과/프로모션/댓글 사이에 사용하는 반응형 인라인 광고 슬롯 */
+.ad-inline-slot {
+  width: 100%;
+  min-height: 100px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.ad-inline-slot .adsbygoogle {
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
+.ad-inline-slot.adsense-dev-slot {
+  min-height: 104px;
+}
+
+.ad-inline-slot.adsense-dev-slot > .adsbygoogle {
+  display: none !important;
+}
+
+.comment-ad-slot {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 10px 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.comment-ad-slot .adsense-dev-placeholder,
+.comment-ad-slot .adsbygoogle {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto;
+}
+
 /* 한국어 결과 화면 전용 상견례 얼굴상 테스트 추천 배너 */
 .sanggyeonrye-promo {
   width: 100%;
