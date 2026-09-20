@@ -367,7 +367,24 @@ async function handleReaction(agency) {
  * - 비밀번호 제외하고 조회
  */
 const ITEMS_PER_PAGE = 10;
+const COMMENT_AD_ANCHOR_ID = 1752;
 let currentPage = 1;
+
+function renderCommentAdSlot() {
+    const placement = document.documentElement.lang === 'ko'
+        ? '댓글 목록 중간 광고 슬롯'
+        : 'Comment list inline ad slot';
+
+    return `
+    <div class="ad-inline-slot comment-ad-slot" data-ad-placement="${escapeHtml(placement)}" aria-label="${escapeHtml(placement)}">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8955182453510440"
+             data-ad-slot="3138863990"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>`;
+}
 
 /**
  * [Async] 댓글 목록 조회
@@ -539,12 +556,18 @@ async function renderComments(comments) {
         repliesByParent[reply.parent_id].push(reply);
     });
 
-    const html = comments.map(comment => {
+    const anchorIndex = comments.findIndex(comment => Number(comment.id) === COMMENT_AD_ANCHOR_ID);
+    const adInsertIndex = anchorIndex >= 0 ? anchorIndex : Math.floor(comments.length / 2);
+    const html = comments.map((comment, index) => {
         const commentReplies = repliesByParent[comment.id] || [];
-        return renderSingleComment(comment, false) + renderReplies(commentReplies);
+        const commentHtml = renderSingleComment(comment, false) + renderReplies(commentReplies);
+        return (index === adInsertIndex ? renderCommentAdSlot() : '') + commentHtml;
     }).join('');
 
-    if(listEl) listEl.innerHTML = html;
+    if(listEl) {
+        listEl.innerHTML = html;
+        if (typeof initializeInlineAdSlots === 'function') initializeInlineAdSlots();
+    }
 }
 
 /**

@@ -52,6 +52,73 @@ function reserveLocalAdSlot(container, placement) {
   return true;
 }
 
+var INLINE_AD_RETRY_DELAY_MS = 250;
+var INLINE_AD_MAX_RETRIES = 8;
+
+function getInlineAdAvailableWidth(container, ad) {
+  var containerWidth = Math.floor(container.getBoundingClientRect().width || 0);
+  var adWidth = Math.floor(ad.getBoundingClientRect().width || 0);
+  return Math.min(containerWidth, adWidth);
+}
+
+function retryInlineAdInitialization(container, ad, placement, attempt) {
+  if (attempt >= INLINE_AD_MAX_RETRIES) {
+    console.warn('Inline ad slot did not receive a usable width:', placement);
+    return;
+  }
+
+  ad.dataset.adsenseRetryCount = String(attempt + 1);
+  window.setTimeout(function() {
+    scheduleInlineAdInitialization(container, ad, placement, attempt + 1);
+  }, INLINE_AD_RETRY_DELAY_MS);
+}
+
+function scheduleInlineAdInitialization(container, ad, placement, attempt) {
+  if (ad.dataset.adsenseInitialized === 'true' || ad.dataset.adsensePending === 'true') return;
+
+  ad.dataset.adsensePending = 'true';
+
+  // 댓글 목록이 비동기로 만들어진 직후에는 AdSense가 너비를 0으로 읽을 수 있다.
+  // 두 프레임 뒤 실제 레이아웃 폭을 확인하고, 실패한 경우에만 제한적으로 재시도한다.
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      delete ad.dataset.adsensePending;
+
+      if (ad.dataset.adsenseInitialized === 'true') return;
+
+      if (getInlineAdAvailableWidth(container, ad) <= 0) {
+        retryInlineAdInitialization(container, ad, placement, attempt);
+        return;
+      }
+
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        ad.dataset.adsenseInitialized = 'true';
+        delete ad.dataset.adsenseRetryCount;
+      } catch (error) {
+        if (/No slot size/.test(String(error))) {
+          retryInlineAdInitialization(container, ad, placement, attempt);
+          return;
+        }
+
+        console.warn('Inline ad load error:', error);
+      }
+    });
+  });
+}
+
+function initializeInlineAdSlots() {
+  document.querySelectorAll('.ad-inline-slot').forEach(function(container) {
+    var ad = container.querySelector('.adsbygoogle');
+    if (!ad) return;
+
+    var placement = container.getAttribute('data-ad-placement') || '인라인 광고 슬롯';
+    if (reserveLocalAdSlot(container, placement)) return;
+
+    scheduleInlineAdInitialization(container, ad, placement, 0);
+  });
+}
+
 function reserveLocalPersistentAdSlots() {
   if (!isLocalAdTestEnvironment()) return;
   document.querySelectorAll('.result-ad-slot').forEach(function(container) {
@@ -545,6 +612,7 @@ function fnLoadLeagueRanking() {
 function initializePageEnhancements() {
   fnLoadLeagueRanking();
   reserveLocalPersistentAdSlots();
+  initializeInlineAdSlots();
 }
 
 if (document.readyState === 'loading') {
