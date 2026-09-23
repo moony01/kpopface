@@ -382,7 +382,7 @@ function renderCommentAdSlot() {
              data-ad-client="ca-pub-8955182453510440"
              data-ad-slot="3138863990"
              data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+             data-full-width-responsive="false"></ins>
     </div>`;
 }
 
