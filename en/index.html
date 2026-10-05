@@ -72,9 +72,9 @@ lang: en
                 <div class="tip-box">
                     <div class="tip-box-title">💡 Did you know?</div>
                     <div class="tip-box-text" id="tip-text">SM prefers cool eyes and a chic image</div>
-                                <!-- AI 분석 중 광고 슬롯 -->
-                <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
-            </div>
+                </div>
+                <!-- AI 분석 중 광고 슬롯 -->
+                {% include analysis-result-ad.html placement="loading" %}
             </div>
 
             <!-- Result Area (Primary: small image + 1st place only) -->
@@ -91,15 +91,6 @@ lang: en
 
                 {% include kpopface-report-cta.html %}
 
-                <!-- Result Ad Slot -->
-                <div class="result-ad-slot">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-8955182453510440"
-                         data-ad-slot="3138863990"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
                 {% include sns_promotion.html %}
             </div>
 

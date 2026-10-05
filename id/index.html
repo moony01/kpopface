@@ -75,7 +75,7 @@ lang: id
                     <div class="tip-box-text" id="tip-text">SM lebih menyukai mata dingin dan citra yang chic</div>
                 </div>
                 <!-- AI 분석 중 광고 슬롯 -->
-                <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
+                {% include analysis-result-ad.html placement="loading" %}
             </div>
 
             <!-- 결과 표시 영역 -->
@@ -89,15 +89,6 @@ lang: id
 
                 {% include kpopface-report-cta.html %}
 
-                <!-- 결과 화면 광고 슬롯 -->
-                <div class="result-ad-slot">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-8955182453510440"
-                         data-ad-slot="3138863990"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
                 {% include sns_promotion.html %}
             </div>
 

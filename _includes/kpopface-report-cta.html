@@ -7,7 +7,7 @@
   {% assign ranking_title = "전체 소속사 매칭률" %}
 {% endif %}
 
-<!-- Free scores stay on Kpopface; the new KCL flow re-authenticates and re-uploads. -->
+<!-- Free agency match rates are available here while the AI report is being prepared. -->
 <!-- Result-dependent artists are rendered immediately below the top score. -->
 <p id="result-explain" class="result-explain" aria-live="polite" hidden></p>
 
@@ -16,15 +16,17 @@
     <ul id="result-artists-list" class="result-artists-list" role="list"></ul>
 </section>
 
+{% include analysis-result-ad.html placement="result" %}
+
 <div class="agency-ranking result-agency-ranking" style="margin: 16px 0; text-align: left;">
     <div class="agency-ranking-title">{{ ranking_title }}</div>
     <div id="agency-ranking-list" aria-live="polite"></div>
 </div>
 
-<!-- Hide the KCL report CTA until its onboarding flow is live. -->
+<!-- Keep the report CTA hidden until the report destination is deployed. -->
 <div id="detail-cta-wrap" class="detail-cta-wrap" hidden>
     <p class="detail-cta-text">📊 {{ report_text }}</p>
-    <!-- KCL report onboarding is not live yet, so this is intentionally non-interactive. -->
+    <!-- The report is not live yet, so this is intentionally non-interactive. -->
     <button id="detail-analysis-btn" class="detail-cta-btn-main detail-cta-btn-disabled" type="button" disabled aria-disabled="true" data-report-status="coming-soon">
         <i class="fas fa-file-invoice"></i>
         <span>{{ report_label }}</span>

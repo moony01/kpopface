@@ -72,9 +72,9 @@ lang: de
                 <div class="tip-box">
                     <div class="tip-box-title">💡 Wussten Sie schon?</div>
                     <div class="tip-box-text" id="tip-text">SM bevorzugt kühle Augen und ein schickes Image</div>
-                                <!-- AI 분석 중 광고 슬롯 -->
-                <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
-            </div>
+                </div>
+                <!-- AI 분석 중 광고 슬롯 -->
+                {% include analysis-result-ad.html placement="loading" %}
             </div>
 
             <!-- Ergebnisbereich (1. Ergebnis: kleines Bild + nur 1. Platz) -->
@@ -90,15 +90,6 @@ lang: de
 
                 {% include kpopface-report-cta.html %}
 
-                <!-- Ergebnis-Anzeigenplatz -->
-                <div class="result-ad-slot">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-8955182453510440"
-                         data-ad-slot="3138863990"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
                 {% include sns_promotion.html %}
             </div>
 

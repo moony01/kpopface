@@ -76,7 +76,7 @@ description: "사진을 업로드하면 AI가 SM, JYP, YG 스타일 중 나와 �
                     <div class="tip-box-text" id="tip-text">SM은 시원한 눈매와 차가운 이미지를 선호합니다</div>
                 </div>
                 <!-- AI 분석 중 광고 슬롯 -->
-                <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
+                {% include analysis-result-ad.html placement="loading" %}
             </div>
 
             <!-- 결과 표시 영역 (1차 결과: 작은 이미지 + 1위 결과만) -->
@@ -95,15 +95,6 @@ description: "사진을 업로드하면 AI가 SM, JYP, YG 스타일 중 나와 �
 
                 {% include kpopface-report-cta.html %}
 
-                <!-- 결과 화면 광고 슬롯 -->
-                <div class="result-ad-slot">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-8955182453510440"
-                         data-ad-slot="3138863990"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
                 {% include sns_promotion.html %}
             </div>
 
