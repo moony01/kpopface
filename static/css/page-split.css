@@ -136,11 +136,14 @@
 
 /* 광고가 채워지지 않아도 분석 흐름에 큰 빈 영역을 만들지 않는다. */
 #ad-loading-slot {
+  width: 100%;
   min-height: 0 !important;
   margin-top: 8px !important;
 }
 
-#ad-loading-slot .adsbygoogle {
+#ad-loading-slot .adsbygoogle,
+.result-ad-slot .adsbygoogle {
+  width: 100%;
   min-height: 0 !important;
 }
 

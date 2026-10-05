@@ -119,66 +119,38 @@ function initializeInlineAdSlots() {
   });
 }
 
-function reserveLocalPersistentAdSlots() {
+function reserveLocalAnalysisResultAdSlots() {
   if (!isLocalAdTestEnvironment()) return;
-  document.querySelectorAll('.result-ad-slot').forEach(function(container) {
-    reserveLocalAdSlot(container, '분석·결과 공통 광고 슬롯');
+  document.querySelectorAll('#ad-loading-slot, .result-ad-slot').forEach(function(container) {
+    reserveLocalAdSlot(container, container.getAttribute('data-ad-placement'));
   });
 }
 
 /**
- * 메인 분석과 결과는 한 개의 AdSense 요소를 공유한다.
- * 분석 화면에서 먼저 요청한 뒤 같은 DOM 노드를 결과 위치로 되돌리므로,
- * 상태 전환만으로 새 광고 요청이나 자동 새로고침이 일어나지 않는다.
+ * 로딩과 결과 광고를 원래 위치에 각각 유지한다.
+ * 숨겨진 화면의 ins를 다른 광고 요청이 먼저 처리하지 않도록 표시 시점에
+ * 생성하고, 실제 레이아웃 폭을 확인한 뒤 각 요소를 한 번만 초기화한다.
  */
-var persistentAnalysisResultAd = {
-  slot: null,
-  anchor: null,
-  requestStarted: false
-};
+function initializeAnalysisResultAd(container) {
+  if (!container) return;
 
-function getPersistentAnalysisResultAdSlot() {
-  var state = persistentAnalysisResultAd;
-  if (state.slot) return state.slot;
+  var placement = container.getAttribute('data-ad-placement');
+  if (reserveLocalAdSlot(container, placement)) return;
 
-  var slot = document.querySelector('#result-area .result-ad-slot');
-  if (!slot || !slot.parentNode) return null;
+  var ad = container.querySelector('.adsbygoogle');
+  if (!ad) {
+    ad = document.createElement('ins');
+    ad.className = 'adsbygoogle';
+    ad.style.display = 'block';
+    ad.style.width = '100%';
+    ad.setAttribute('data-ad-client', 'ca-pub-8955182453510440');
+    ad.setAttribute('data-ad-slot', container.getAttribute('data-ad-slot'));
+    ad.setAttribute('data-ad-format', 'auto');
+    ad.setAttribute('data-full-width-responsive', 'true');
+    container.appendChild(ad);
+  }
 
-  state.slot = slot;
-  state.anchor = document.createComment('persistent-analysis-result-ad-anchor');
-  slot.parentNode.insertBefore(state.anchor, slot);
-  return slot;
-}
-
-function requestPersistentAnalysisResultAd(slot) {
-  if (!slot || persistentAnalysisResultAd.requestStarted) return;
-  persistentAnalysisResultAd.requestStarted = true;
-
-  if (reserveLocalAdSlot(slot, '분석·결과 공통 광고 슬롯')) return;
-
-  requestAnimationFrame(function() {
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.log('Persistent ad load error:', e);
-    }
-  });
-}
-
-function showPersistentAdDuringAnalysis() {
-  var slot = getPersistentAnalysisResultAdSlot();
-  var loadingSlot = document.getElementById('ad-loading-slot');
-  if (!slot || !loadingSlot) return;
-
-  loadingSlot.appendChild(slot);
-  requestPersistentAnalysisResultAd(slot);
-}
-
-function restorePersistentAdForResult() {
-  var state = persistentAnalysisResultAd;
-  if (!state.slot || !state.anchor || !state.anchor.parentNode) return;
-
-  state.anchor.parentNode.insertBefore(state.slot, state.anchor.nextSibling);
+  scheduleInlineAdInitialization(container, ad, placement, 0);
 }
 
 /**
@@ -515,8 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // The result CTA is now a normal link to KCL. Keep the legacy modal
-  // functions below dormant so old session data cannot intercept navigation.
+  // Keep the legacy report modal dormant while the report is being prepared.
 });
 
 window.addEventListener('beforeinstallprompt', function(e) {
@@ -611,7 +582,7 @@ function fnLoadLeagueRanking() {
 // 페이지 로드 시 리그 순위 및 로컬 광고 테스트 영역 초기화
 function initializePageEnhancements() {
   fnLoadLeagueRanking();
-  reserveLocalPersistentAdSlots();
+  reserveLocalAnalysisResultAdSlots();
   initializeInlineAdSlots();
 }
 
@@ -743,8 +714,8 @@ function readURL(input) {
       $('#loading').show();
       resetResultStateForAnalysis();
 
-      // 분석과 결과에 같은 AdSense 슬롯을 노출하고 요청은 한 번만 한다.
-      showPersistentAdDuringAnalysis();
+      // 팁 박스 아래의 로딩 광고를 화면 표시 후 초기화한다.
+      initializeAnalysisResultAd(document.getElementById('ad-loading-slot'));
 
       $('.image-title').text(file.name);
 
@@ -838,8 +809,8 @@ function fnCompleteLoading(runId) {
   analysisCompletionTimer = setTimeout(function() {
     if (!isActiveAnalysisRun(completedRunId)) return;
     $('#result-area').show();
-    restorePersistentAdForResult();
     $('#loading').hide();
+    initializeAnalysisResultAd(document.querySelector('#result-area .result-ad-slot'));
     analysisCompletionTimer = null;
   }, 500);
 }

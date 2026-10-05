@@ -72,9 +72,9 @@ lang: ja
                 <div class="tip-box">
                     <div class="tip-box-title">💡 ご存知でしたか？</div>
                     <div class="tip-box-text" id="tip-text">SMはクールな目元とシックなイメージを好みます</div>
-                                <!-- AI 분석 중 광고 슬롯 -->
-                <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
-            </div>
+                </div>
+                <!-- AI 분석 중 광고 슬롯 -->
+                {% include analysis-result-ad.html placement="loading" %}
             </div>
 
             <!-- 結果表示エリア（1次結果：小さい画像＋1位のみ） -->
@@ -92,15 +92,6 @@ lang: ja
                 <!-- 詳細分析ボタン -->
                 {% include kpopface-report-cta.html %}
 
-                <!-- 結果画面の広告枠 -->
-                <div class="result-ad-slot">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-8955182453510440"
-                         data-ad-slot="3138863990"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
                 {% include sns_promotion.html %}
             </div>
 

@@ -19,16 +19,16 @@
 
     {% if page.lang != "ko" %}
     <link rel="icon" href="../favicon.png" type="image/x-icon" />
-    <link rel="stylesheet" href="../static/css/common.css" />
-    <link rel="stylesheet" href="../static/css/loading.css" />
-    <link rel="stylesheet" href="../static/css/main.css" />
-    <link rel="stylesheet" href="../static/css/page-split.css?v=20260203d" />
+    <link rel="stylesheet" href="../static/css/common.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+    <link rel="stylesheet" href="../static/css/loading.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+    <link rel="stylesheet" href="../static/css/main.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+    <link rel="stylesheet" href="../static/css/page-split.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
     {% else %}
     <link rel="icon" href="favicon.png" type="image/x-icon" />
-    <link rel="stylesheet" href="static/css/common.css" />
-    <link rel="stylesheet" href="static/css/loading.css" />
-    <link rel="stylesheet" href="static/css/main.css" />
-    <link rel="stylesheet" href="static/css/page-split.css?v=20260203d" />
+    <link rel="stylesheet" href="static/css/common.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+    <link rel="stylesheet" href="static/css/loading.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+    <link rel="stylesheet" href="static/css/main.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+    <link rel="stylesheet" href="static/css/page-split.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
     {% endif %}
 
     <link
@@ -72,13 +72,13 @@
 
     <!-- 페이지 분리용 스크립트 -->
     {% if page.lang != "ko" %}
-    <script src="../static/js/result-security.js"></script>
-    <script src="../static/js/page-router.js"></script>
-    <script src="../static/js/visual-reports.js"></script>
+    <script src="../static/js/result-security.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
+    <script src="../static/js/page-router.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
+    <script src="../static/js/visual-reports.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
     {% else %}
-    <script src="static/js/result-security.js"></script>
-    <script src="static/js/page-router.js"></script>
-    <script src="static/js/visual-reports.js"></script>
+    <script src="static/js/result-security.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
+    <script src="static/js/page-router.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
+    <script src="static/js/visual-reports.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
     {% endif %}
 
     <title>
