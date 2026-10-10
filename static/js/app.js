@@ -833,71 +833,60 @@ function fn_sendFB(sns) {
     thumbUrl = shareAssetBase + "/static/img/share/thumb-en.jpg";
     if(langType == "en") {
       // 영어 번역
-      snsTitle = "KPOP Face Test";
       snsDesc = "What is my facial resemblance to K-POP entertainment agencies?";
     } else if(langType == "de") {
       // 독일어 번역
-      snsTitle = "KPOP Gesichtstest";
       snsDesc = "Wie ähnlich sieht mein Gesicht den K-POP Unterhaltungsagenturen aus?";
     } else if(langType == "es") {
       // 스페인어 번역
-      snsTitle = "Prueba de Rostro KPOP";
       snsDesc = "¿A qué agencia de entretenimiento de K-POP se parece mi rostro?";
     } else if(langType == "fr") {
       // 프랑스어 번역
-      snsTitle = "Test du Visage KPOP";
       snsDesc = "À quelle agence de divertissement K-POP ressemble mon visage ?";
     } else if(langType == "id") {
       // 인도네시아어 번역
-      snsTitle = "Tes Wajah KPOP";
       snsDesc = "Wajah saya menyerupai agensi hiburan K-POP yang mana?";
     } else if(langType == "ja") {
       // 일본어 번역
-      snsTitle = "KPOP顔診断テスト";
       snsDesc = "私の顔はK-POPエンターテインメント事務所にどれくらい似ているでしょうか？";
     } else if(langType == "nl") {
       // 네덜란드어 번역
-      snsTitle = "KPOP Gezichtstest";
       snsDesc = "Hoe lijkt mijn gezicht op K-POP entertainmentbureaus?";
     } else if(langType == "pl") {
       // 폴란드어 번역
-      snsTitle = "Test twarzy KPOP";
       snsDesc = "Jakie są podobieństwa mojej twarzy do agencji rozrywkowych K-POP?";
     } else if(langType == "pt") {
       // 포르투갈어 번역
-      snsTitle = "Teste de Rosto KPOP";
       snsDesc = "Qual é a semelhança do meu rosto com as agências de entretenimento K-POP?";
     } else if(langType == "ru") {
       // 러시아어 번역
-      snsTitle = "Тест на лицо KPOP";
       snsDesc = "Какое сходство моего лица с агентствами развлечений K-POP?";
     } else if(langType == "tr") {
       // 터키어 번역
-      snsTitle = "KPOP Yüz Testi";
       snsDesc = "Yüzüm K-POP eğlence ajanslarına ne kadar benziyor?";
     } else if(langType == "uk") {
       // 우크라이나어 번역
-      snsTitle = "Тест на обличчя KPOP";
       snsDesc = "До яких агентств розваг K-POP схоже моє обличчя?";
     } else if(langType == "vi") {
       // 베트남어 번역
-      snsTitle = "Kiểm Tra Khuôn Mặt KPOP";
       snsDesc = "Gương mặt của tôi giống với công ty giải trí K-POP nào?";
     } else if(langType == "zh") {
       // 중국어 번역
-      snsTitle = "KPOP脸部测试";
       snsDesc = "我的脸与K-POP娱乐公司相似吗？";
     } else {
       // 영어 번역
-      snsTitle = "KPOP Face Test";
       snsDesc = "What is my facial resemblance to K-POP entertainment agencies?";
     }
   } else {
     thisUrl = loc;
     thumbUrl = shareAssetBase + "/static/img/share/thumb.jpg";
-    snsTitle = "케이팝 얼굴상 테스트";
     snsDesc = "내 얼굴은 K-POP 엔터 소속사중 어떤 얼굴상일까?";
   }
+
+  // Use the rendered page metadata so every locale shares the same app title.
+  snsTitle = document.title.trim();
+  var shareDescription = document.querySelector('meta[name="description"]');
+  if (shareDescription) snsDesc = shareDescription.content;
 
   if( sns == 'facebook' ) {
     var url = "http://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(thisUrl);
@@ -994,7 +983,7 @@ async function fnSaveResultImage() {
     if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
       await navigator.share({
         files: [imageFile],
-        title: 'K-POP Face Test Result',
+        title: document.title.trim(),
         text: currentResultTitle
       });
       console.log('Image shared successfully');

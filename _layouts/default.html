@@ -31,7 +31,7 @@
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="K-Pop Face Test feed"
+      title="{{ site.english_title | escape }} feed"
       href="{{ site.url }}{{ site.baseurl }}/feed.xml"
     />
 
@@ -148,7 +148,7 @@
     />
 
     <!-- OG 보완 -->
-    <meta property="og:site_name" content="K-Pop Face Test">
+    <meta property="og:site_name" content="{{ page.app_name | default: site.title | escape }}">
     {% if page.lang == "ko" %}
     <meta property="og:locale" content="ko_KR">
     {% elsif page.lang == "en" %}
@@ -224,8 +224,8 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "K-Pop Face Test",
-      "alternateName": {% if page.title %}{{ page.title | jsonify }}{% else %}{{ site.title | jsonify }}{% endif %},
+      "name": {{ page.app_name | default: site.title | jsonify }},
+      "alternateName": [{{ site.title | jsonify }}, {{ site.english_title | jsonify }}, "케이팝얼굴상테스트"],
       "description": {% if page.description %}{{ page.description | jsonify }}{% else %}{{ site.description | jsonify }}{% endif %},
       "url": {{ site.url | append: site.baseurl | append: page.url | jsonify }},
       "applicationCategory": "Entertainment",

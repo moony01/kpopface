@@ -1,12 +1,13 @@
 ---
 layout: default
-title: KPOP Gezichtstest
-description: KPOP Entertainment Company Gezichtstest met behulp van Kunstmatige Intelligentie
+title: "K-pop-gezichtstest | Vind jouw bureau met AI"
+app_name: "K-pop-gezichtstest"
+description: "Ontdek welk K-pop-bureau bij je gezicht past. Upload een foto en vergelijk je uitstraling gratis met SM, JYP en YG via AI."
 lang: nl
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>Welk K-POP-bureau past bij mijn visual? Visual Match Test</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

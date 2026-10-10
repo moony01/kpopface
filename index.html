@@ -1,13 +1,14 @@
 ---
 layout: default
+app_name: "케이팝 얼굴상 테스트"
+description: "사진으로 SM·JYP·YG 소속사 비주얼과 얼마나 닮았는지 AI로 확인하는 무료 케이팝 얼굴상 테스트입니다."
 lang: ko
-title: "K-POP 얼굴상 테스트 | AI 소속사 비주얼 매칭"
-description: "사진을 업로드하면 AI가 SM, JYP, YG 스타일 중 나와 잘 맞는 K-POP 소속사 얼굴상을 무료로 분석합니다."
+title: "케이팝 얼굴상 테스트 | AI 소속사 비주얼 매칭"
 ---
 
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>"나와 찰떡인 소속사는? K-POP 비주얼 매칭 테스트"</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

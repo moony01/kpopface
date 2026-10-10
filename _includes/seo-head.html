@@ -39,7 +39,7 @@
 <meta property="og:type" content="{{ page.og_type | default: 'website' | escape }}" />
 <meta property="og:url" content="{{ seo_canonical | escape }}" />
 <meta property="og:image" content="{{ seo_image | escape }}" />
-<meta property="og:site_name" content="K-Pop Face Test" />
+<meta property="og:site_name" content="{{ page.app_name | default: site.title | escape }}" />
 <meta property="og:locale" content="{{ seo_locale }}" />
 
 <meta name="twitter:card" content="summary_large_image" />

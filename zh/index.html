@@ -1,12 +1,13 @@
 ---
 layout: default
-title: KPOP脸部测试
-description: 使用人工智能的KPOP娱乐公司脸部测试
+title: "K-POP脸型测试 | AI经纪公司颜相匹配"
+app_name: "K-POP脸型测试"
+description: "你的脸更符合哪家K-POP经纪公司的风格？上传照片，免费用AI匹配SM、JYP、YG的颜相风格。"
 lang: zh
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>我适合哪家K-POP经纪公司？K-POP颜相匹配测试</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

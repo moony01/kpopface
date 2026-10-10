@@ -1,12 +1,13 @@
 ---
 layout: default
-title: Test Twarzy KPOP
-description: Test Twarzy KPOP z wykorzystaniem Sztucznej Inteligencji
+title: "Test twarzy K-pop | Dopasowanie do agencji przez AI"
+app_name: "Test twarzy K-pop"
+description: "Sprawdź, do której agencji K-pop pasuje Twoja twarz. Prześlij zdjęcie i bezpłatnie porównaj swój wygląd ze stylem SM, JYP i YG za pomocą AI."
 lang: pl
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>Która agencja K-POP pasuje do mojego wyglądu? Test dopasowania wizualnego</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

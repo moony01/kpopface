@@ -1,12 +1,13 @@
 ---
 layout: default
-title: Kiểm tra Khuôn mặt KPOP
-description: Kiểm tra Khuôn mặt KPOP Entertainment Company bằng Trí tuệ Nhân tạo
+title: "Trắc nghiệm khuôn mặt K-pop | AI ghép visual với công ty giải trí"
+app_name: "Trắc nghiệm khuôn mặt K-pop"
+description: "Khám phá công ty K-pop nào phù hợp với khuôn mặt bạn. Tải ảnh lên để AI so khớp visual của bạn với SM, JYP và YG miễn phí."
 lang: vi
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>Công ty K-POP nào hợp với visual của tôi? K-POP Visual Match Test</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

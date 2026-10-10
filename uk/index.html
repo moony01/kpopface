@@ -1,12 +1,13 @@
 ---
 layout: default
-title: Тест обличчя KPOP
-description: Тест обличчя KPOP Entertainment Company з використанням штучного інтелекту
+title: "Тест обличчя K-pop | Підбір агенції за допомогою ШІ"
+app_name: "Тест обличчя K-pop"
+description: "Дізнайтеся, стиль якої K-pop агенції пасує вашому обличчю. Завантажте фото та безкоштовно порівняйте свій образ зі стилем SM, JYP і YG за допомогою ШІ."
 lang: uk
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>Яке K-POP агентство підходить моїй зовнішності? Тест на візуальну відповідність</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

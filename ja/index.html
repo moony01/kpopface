@@ -1,12 +1,13 @@
 ---
 layout: default
-title: KPOP顔テスト
-description: 人工知能を使用したKPOPエンターテインメント会社の顔テスト
+title: "K-POP顔タイプ診断 | AIで事務所のビジュアルとマッチング"
+app_name: "K-POP顔タイプ診断"
+description: "あなたの顔はどのK-POP事務所の雰囲気に近い？写真をアップロードして、SM・JYP・YGのビジュアルとの相性をAIで無料診断。"
 lang: ja
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>私にぴったりの事務所は？K-POPビジュアルマッチングテスト</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

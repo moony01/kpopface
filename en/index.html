@@ -1,12 +1,13 @@
 ---
 layout: default
-title: "K-Pop Idol Face Test — Which Idol Do I Look Like? Free AI | Kpopface"
-description: "Upload your photo and find your K-Pop idol look-alike with AI. Match BTS, BLACKPINK, NewJeans, aespa & 500+ idols. Free, instant, no signup required."
+title: "Kpop Face Test | AI K-pop Agency Match"
+app_name: "Kpop Face Test"
+description: "Discover which K-pop agency’s visual style matches your face. Upload a photo for a free AI match with SM, JYP and YG."
 lang: en
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>My Idol Face: Which K-Pop Idol Do I Look Like?</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

@@ -1,12 +1,13 @@
 ---
 layout: default
-title: Тест лица KPOP
-description: Тест лица KPOP Entertainment Company с использованием искусственного интеллекта
+title: "Тест лица K-pop | Подбор агентства с помощью ИИ"
+app_name: "Тест лица K-pop"
+description: "Узнайте, какой стиль K-pop агентства подходит вашему лицу. Загрузите фото и бесплатно сравните свой образ со стилем SM, JYP и YG с помощью ИИ."
 lang: ru
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>Какое K-POP агентство подходит моей внешности? Тест на визуальное совпадение</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

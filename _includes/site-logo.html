@@ -4,11 +4,11 @@
       src="{{ site.baseurl }}/static/img/kft-logo.svg"
       width="40"
       height="40"
-      alt="K-Pop Face Test"
+      alt="{% if page.lang == 'ko' %}{{ site.title | escape }}{% else %}{{ site.english_title | escape }}{% endif %}"
       class="site-logo-icon"
     />
     <span class="site-logo-text"
-      >{% if page.lang == "ko" %}케이팝 얼굴상 테스트{% else %}KPOP FACE TEST{%
+      >{% if page.lang == "ko" %}{{ site.title | escape }}{% else %}{{ site.english_title | escape }}{%
       endif %}</span
     >
   </a>

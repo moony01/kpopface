@@ -1,12 +1,13 @@
 ---
 layout: default
-title: Prueba Facial KPOP
-description: Prueba Facial de Compañía de Entretenimiento KPOP utilizando Inteligencia Artificial
+title: "Test facial de K-pop | Encuentra tu agencia con IA"
+app_name: "Test facial de K-pop"
+description: "Descubre qué agencia de K-pop encaja con tu rostro. Sube una foto y compara tu estilo visual con SM, JYP y YG gratis mediante IA."
 lang: es
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>¿Qué agencia de K-POP encaja con mi visual? Test de Coincidencia Visual</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">

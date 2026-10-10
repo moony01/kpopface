@@ -1,12 +1,13 @@
 ---
 layout: default
-title: KPOP Yüz Testi
-description: Yapay Zeka ile KPOP Eğlence Şirketi Yüz Testi
+title: "K-pop Yüz Testi | Yapay Zekâyla Ajans Eşleştirme"
+app_name: "K-pop Yüz Testi"
+description: "Yüzünüze hangi K-pop ajansının tarzının uyduğunu keşfedin. Bir fotoğraf yükleyin ve görünümünüzü yapay zekâyla SM, JYP ve YG ile ücretsiz karşılaştırın."
 lang: tr
 ---
 <div class="container content-wrapper">
     {% include site-logo.html %}
-    <h1>Hangi K-POP Ajansı Görünümüme Uygun? Görsel Eşleşme Testi</h1>
+    <h1>{{ page.app_name | escape }}</h1>
     <div class="language">
         <span>language:</span>
         <select name="lang" id="lang" onchange="fnChangeLang(this)">
