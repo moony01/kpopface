@@ -36,8 +36,6 @@ let replyingToNickname = null; // 현재 답글 대상 닉네임
 // 다국어 메시지 사전
 const MESSAGES = {
     ko: {
-        vote_success: "{agency}에 소중한 한 표 꾹! 투표가 완료되었습니다.",
-        vote_duplicate: "이미 투표하셨습니다!",
         comment_empty: "내용을 입력해주세요.",
         nickname_empty: "닉네임을 입력해주세요.",
         content_empty: "댓글 내용을 입력해주세요.",
@@ -50,15 +48,11 @@ const MESSAGES = {
         update_success: "댓글이 수정되었습니다.",
         post_success: "댓글이 등록되었습니다!",
         fail: "오류가 발생했습니다.",
-        vote_limit: "오늘은 이미 3번 투표하셨어요! 내일 다시 투표해주세요.",
-        vote_remain: "투표 완료! (오늘 남은 횟수: {count}회)",
         reply: "답글",
         reply_to: "{nickname}님에게 답글",
         cancel_reply: "취소"
     },
     en: {
-        vote_success: "Voted for {agency}! Thank you.",
-        vote_duplicate: "You have already voted!",
         comment_empty: "Please enter content.",
         nickname_empty: "Please enter nickname.",
         content_empty: "Please enter comment content.",
@@ -71,15 +65,11 @@ const MESSAGES = {
         update_success: "Comment updated.",
         post_success: "Comment posted!",
         fail: "An error occurred.",
-        vote_limit: "You've already voted 3 times today! Please come back tomorrow.",
-        vote_remain: "Voted! ({count} votes remaining today)",
         reply: "Reply",
         reply_to: "Reply to {nickname}",
         cancel_reply: "Cancel"
     },
     ja: {
-        vote_success: "{agency}に投票しました！ありがとうございます。",
-        vote_duplicate: "すでに投票済みです！",
         comment_empty: "内容を入力してください。",
         nickname_empty: "ニックネームを入力してください。",
         content_empty: "コメント内容を入力してください。",
@@ -92,15 +82,11 @@ const MESSAGES = {
         update_success: "コメントが修正されました。",
         post_success: "コメントが登録されました！",
         fail: "エラーが発生しました。",
-        vote_limit: "本日はすでに3回投票しました！明日またお願いします。",
-        vote_remain: "投票しました！（本日残り{count}回）",
         reply: "返信",
         reply_to: "{nickname}さんに返信",
         cancel_reply: "キャンセル"
     },
     zh: {
-        vote_success: "已给{agency}投票！谢谢。",
-        vote_duplicate: "您已经投过票了！",
         comment_empty: "请输入内容。",
         nickname_empty: "请输入昵称。",
         content_empty: "请输入评论内容。",
@@ -113,15 +99,11 @@ const MESSAGES = {
         update_success: "评论已修改。",
         post_success: "评论已发布！",
         fail: "发生错误。",
-        vote_limit: "您今天已经投票3次了！请明天再来。",
-        vote_remain: "投票成功！（今天还剩{count}次）",
         reply: "回复",
         reply_to: "回复 {nickname}",
         cancel_reply: "取消"
     },
     es: {
-        vote_success: "¡Votado por {agency}! Gracias.",
-        vote_duplicate: "¡Ya has votado!",
         comment_empty: "Por favor ingresa contenido.",
         nickname_empty: "Por favor ingresa apodo.",
         content_empty: "Por favor ingresa contenido.",
@@ -134,15 +116,11 @@ const MESSAGES = {
         update_success: "Actualizado.",
         post_success: "¡Publicado!",
         fail: "Error.",
-        vote_limit: "¡Ya has votado 3 veces hoy! Vuelve mañana.",
-        vote_remain: "¡Votado! (Quedan {count} votos hoy)",
         reply: "Responder",
         reply_to: "Responder a {nickname}",
         cancel_reply: "Cancelar"
     },
     fr: {
-        vote_success: "A voté pour {agency} !",
-        vote_duplicate: "Déjà voté !",
         comment_empty: "Entrez du contenu.",
         nickname_empty: "Entrez un pseudo.",
         content_empty: "Entrez un commentaire.",
@@ -155,15 +133,11 @@ const MESSAGES = {
         update_success: "Mis à jour.",
         post_success: "Publié !",
         fail: "Erreur.",
-        vote_limit: "Vous avez déjà voté 3 fois aujourd'hui ! Revenez demain.",
-        vote_remain: "Voté ! (Il reste {count} votes aujourd'hui)",
         reply: "Répondre",
         reply_to: "Répondre à {nickname}",
         cancel_reply: "Annuler"
     },
     de: {
-        vote_success: "Für {agency} gestimmt!",
-        vote_duplicate: "Bereits abgestimmt!",
         comment_empty: "Inhalt eingeben.",
         nickname_empty: "Nickname eingeben.",
         content_empty: "Kommentar eingeben.",
@@ -176,15 +150,11 @@ const MESSAGES = {
         update_success: "Aktualisiert.",
         post_success: "Veröffentlicht!",
         fail: "Fehler.",
-        vote_limit: "Sie haben heute bereits 3 Mal abgestimmt! Kommen Sie morgen wieder.",
-        vote_remain: "Abgestimmt! (Noch {count} Stimmen heute)",
         reply: "Antworten",
         reply_to: "Antwort an {nickname}",
         cancel_reply: "Abbrechen"
     },
     id: {
-        vote_success: "Memilih {agency}!",
-        vote_duplicate: "Sudah memilih!",
         comment_empty: "Masukkan konten.",
         nickname_empty: "Masukkan nama panggilan.",
         content_empty: "Masukkan komentar.",
@@ -197,15 +167,11 @@ const MESSAGES = {
         update_success: "Diperbarui.",
         post_success: "Terposting!",
         fail: "Kesalahan.",
-        vote_limit: "Anda sudah memilih 3 kali hari ini! Silakan kembali besok.",
-        vote_remain: "Sudah memilih! (Tersisa {count} suara hari ini)",
         reply: "Balas",
         reply_to: "Balas {nickname}",
         cancel_reply: "Batal"
     },
     vi: {
-        vote_success: "Đã chọn {agency}!",
-        vote_duplicate: "Đã chọn rồi!",
         comment_empty: "Nhập nội dung.",
         nickname_empty: "Nhập biệt danh.",
         content_empty: "Nhập bình luận.",
@@ -218,19 +184,17 @@ const MESSAGES = {
         update_success: "Đã cập nhật.",
         post_success: "Đã đăng!",
         fail: "Lỗi.",
-        vote_limit: "Bạn đã bình chọn 3 lần hôm nay! Hãy quay lại vào ngày mai.",
-        vote_remain: "Đã bình chọn! (Còn lại {count} lần hôm nay)",
         reply: "Trả lời",
         reply_to: "Trả lời {nickname}",
         cancel_reply: "Hủy"
     },
     // Fallback for others (simple English map)
-    pl: { vote_success: "Zagłosowano na {agency}!", vote_duplicate: "Już głosowałeś!", comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd.", vote_limit: "Głosowałeś już 3 razy dzisiaj! Wróć jutro.", vote_remain: "Zagłosowano! (Pozostało {count})", reply: "Odpowiedz", reply_to: "Odpowiedź do {nickname}", cancel_reply: "Anuluj" },
-    nl: { vote_success: "Gestemd op {agency}!", vote_duplicate: "Al gestemd!", comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout.", vote_limit: "Je hebt vandaag al 3 keer gestemd! Kom morgen terug.", vote_remain: "Gestemd! (Nog {count} vandaag)", reply: "Reageren", reply_to: "Reageren op {nickname}", cancel_reply: "Annuleren" },
-    pt: { vote_success: "Votou na {agency}!", vote_duplicate: "Já votou!", comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro.", vote_limit: "Você já votou 3 vezes hoje! Volte amanhã.", vote_remain: "Votado! (Restam {count} votos hoje)", reply: "Responder", reply_to: "Responder a {nickname}", cancel_reply: "Cancelar" },
-    ru: { vote_success: "Голос за {agency}!", vote_duplicate: "Уже голосовали!", comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка.", vote_limit: "Вы уже проголосовали 3 раза сегодня! Приходите завтра.", vote_remain: "Проголосовано! (Осталось {count})", reply: "Ответить", reply_to: "Ответ {nickname}", cancel_reply: "Отмена" },
-    tr: { vote_success: "{agency} oylandı!", vote_duplicate: "Zaten oy verdiniz!", comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata.", vote_limit: "Bugün zaten 3 kez oy verdiniz! Yarın tekrar gelin.", vote_remain: "Oy verildi! (Bugün kalan {count})", reply: "Yanıtla", reply_to: "{nickname} kişisine yanıt", cancel_reply: "İptal" },
-    uk: { vote_success: "Голос за {agency}!", vote_duplicate: "Вже голосували!", comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка.", vote_limit: "Ви вже проголосували 3 рази сьогодні! Приходьте завтра.", vote_remain: "Проголосовано! (Залишилось {count})", reply: "Відповісти", reply_to: "Відповідь для {nickname}", cancel_reply: "Скасувати" }
+    pl: { comment_empty: "Wpisz treść.", nickname_empty: "Wpisz nick.", content_empty: "Wpisz komentarz.", comment_too_long: "Maks 500 znaków.", password_prompt: "Hasło:", edit_prompt: "Nowa treść:", password_empty: "Podaj hasło.", password_wrong: "Złe hasło.", delete_success: "Usunięto.", update_success: "Zaktualizowano.", post_success: "Opublikowano!", fail: "Błąd.", reply: "Odpowiedz", reply_to: "Odpowiedź do {nickname}", cancel_reply: "Anuluj" },
+    nl: { comment_empty: "Inhoud invullen.", nickname_empty: "Naam invullen.", content_empty: "Reactie invullen.", comment_too_long: "Max 500 tekens.", password_prompt: "Wachtwoord:", edit_prompt: "Nieuwe inhoud:", password_empty: "Wachtwoord invullen.", password_wrong: "Fout wachtwoord.", delete_success: "Verwijderd.", update_success: "Aangepast.", post_success: "Geplaatst!", fail: "Fout.", reply: "Reageren", reply_to: "Reageren op {nickname}", cancel_reply: "Annuleren" },
+    pt: { comment_empty: "Insira conteúdo.", nickname_empty: "Insira apelido.", content_empty: "Insira comentário.", comment_too_long: "Máx 500 caracteres.", password_prompt: "Senha:", edit_prompt: "Novo conteúdo:", password_empty: "Insira a senha.", password_wrong: "Senha incorreta.", delete_success: "Removido.", update_success: "Atualizado.", post_success: "Publicado!", fail: "Erro.", reply: "Responder", reply_to: "Responder a {nickname}", cancel_reply: "Cancelar" },
+    ru: { comment_empty: "Введите текст.", nickname_empty: "Введите ник.", content_empty: "Введите комментарий.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новый текст:", password_empty: "Введите пароль.", password_wrong: "Неверный пароль.", delete_success: "Удалено.", update_success: "Обновлено.", post_success: "Опубликовано!", fail: "Ошибка.", reply: "Ответить", reply_to: "Ответ {nickname}", cancel_reply: "Отмена" },
+    tr: { comment_empty: "İçerik girin.", nickname_empty: "Takma ad girin.", content_empty: "Yorum girin.", comment_too_long: "Maks 500.", password_prompt: "Şifre:", edit_prompt: "Yeni içerik:", password_empty: "Şifre girin.", password_wrong: "Yanlış şifre.", delete_success: "Silindi.", update_success: "Güncellendi.", post_success: "Yayınlandı!", fail: "Hata.", reply: "Yanıtla", reply_to: "{nickname} kişisine yanıt", cancel_reply: "İptal" },
+    uk: { comment_empty: "Введіть текст.", nickname_empty: "Введіть нік.", content_empty: "Введіть коментар.", comment_too_long: "Макс 500.", password_prompt: "Пароль:", edit_prompt: "Новий текст:", password_empty: "Введіть пароль.", password_wrong: "Невірний пароль.", delete_success: "Видалено.", update_success: "Оновлено.", post_success: "Опубліковано!", fail: "Помилка.", reply: "Відповісти", reply_to: "Відповідь для {nickname}", cancel_reply: "Скасувати" }
 };
 
 // 현재 언어 감지 및 메시지 반환 함수
@@ -242,124 +206,6 @@ function t(key, params = {}) {
         msg = msg.replace(`{${param}}`, params[param]);
     });
     return msg;
-}
-
-/**
- * [Async] 소속사 투표 통계 불러오기
- * - 'kft_vote_counts' 테이블 조회 (Single Row: id=1)
- */
-
-async function fetchVoteCounts() {
-    getSupabase();
-    if (!supabaseClient) return;
-
-    try {
-        const { data, error } = await supabaseClient
-            .from('kft_vote_counts')
-            .select('*')
-            .eq('id', 1)
-            .single();
-
-        if (error) throw error;
-        if (data) {
-            updateVoteUI(data);
-        }
-    } catch (err) {
-        console.error('❌ 투표 통계 불러오기 실패:', err);
-    }
-}
-
-/**
- * 투표 UI 업데이트
- */
-function updateVoteUI(counts) {
-    const agencies = ['SM', 'JYP', 'YG'];
-    
-    agencies.forEach(Key => {
-        // DB 컬럼은 소문자(sm, jyp, yg), HTML ID는 대문자(cnt-SM)
-        const countValue = counts[Key.toLowerCase()] || 0;
-        
-        // 숫자 애니메이션 적용
-        const el = document.getElementById(`cnt-${Key}`);
-        if (el) el.innerText = countValue.toLocaleString();
-    });
-}
-
-/**
- * [Async] 투표 핸들러
- * - 1. 중복 투표 방지 (LocalStorage 체크)
- * - 2. 낙관적 업데이트 (Optimistic UI) - 즉시 반영
- * - 3. 디바운싱 (클릭 방지)
- * - 4. 서버 RPC 호출
- */
-async function handleReaction(agency) {
-    // 1. 일일 투표 제한 체크 (하루 3회)
-    const today = new Date().toDateString();
-    const lastVoteDate = localStorage.getItem('kft_last_vote_date');
-    let dailyVoteCount = parseInt(localStorage.getItem('kft_daily_vote_count') || '0');
-
-    // 날짜가 바뀌었으면 카운트 초기화
-    if (lastVoteDate !== today) {
-        dailyVoteCount = 0;
-        localStorage.setItem('kft_last_vote_date', today);
-        localStorage.setItem('kft_daily_vote_count', '0');
-    }
-
-    if (dailyVoteCount >= 3) {
-        alert(t('vote_limit'));
-        return;
-    }
-    
-    // 2. 버튼 비활성화 (일시적)
-    const btn = document.querySelector(`.vote-item.vote-${agency.toLowerCase()}`);
-    if(btn) btn.style.pointerEvents = 'none';
-
-    // 3. 낙관적 업데이트 (Optimistic UI)
-    const countEl = document.getElementById(`cnt-${agency}`);
-    let prevCount = 0;
-    if (countEl) {
-        prevCount = parseInt(countEl.innerText.replace(/,/g, ''), 10) || 0;
-        countEl.innerText = (prevCount + 1).toLocaleString();
-        
-        // 클릭 효과 (Bounce)
-        if(btn) {
-            btn.classList.add('animate-vote');
-            setTimeout(() => btn.classList.remove('animate-vote'), 500);
-        }
-    }
-
-    getSupabase();
-    if (!supabaseClient) {
-        if(btn) btn.style.pointerEvents = 'auto';
-        return;
-    }
-
-    try {
-        // 4. 서버 RPC 호출
-        const { error } = await supabaseClient.rpc('increment_vote', { agency_key: agency });
-        
-        if (error) throw error;
-        
-        // 5. 투표 완료 처리 (LocalStorage 저장)
-        dailyVoteCount++;
-        localStorage.setItem('kft_daily_vote_count', dailyVoteCount.toString());
-        localStorage.setItem('kft_last_vote_date', today);
-        
-        alert(t('vote_remain', {count: 3 - dailyVoteCount}));
-
-    } catch (err) {
-        console.error(`${agency} 투표 중 오류:`, err);
-        
-        // ❌ 실패 시 롤백
-        if (countEl) countEl.innerText = prevCount.toLocaleString();
-        alert(t('fail'));
-        
-        // LocalStorage에서도 삭제 (다시 시도 가능하게)
-        localStorage.removeItem('kft_voted_' + agency);
-    } finally {
-        // 버튼 다시 활성화
-        if(btn) btn.style.pointerEvents = 'auto';
-    }
 }
 
 /**
@@ -889,7 +735,6 @@ document.addEventListener('click', (e) => {
 window.toggleMenu = toggleMenu;
 window.postComment = postComment;
 window.fetchComments = fetchComments;
-window.handleReaction = handleReaction;
 window.handleEdit = handleEdit;
 window.handleDelete = handleDelete;
 window.startReply = startReply;
@@ -904,19 +749,6 @@ function loadInitialData() {
     // 댓글 섹션 로드
     if (document.getElementById('comment-list')) {
         fetchComments();
-    }
-
-    // 투표 섹션 로드
-    if (document.getElementById('vote-container')) {
-        console.log('투표 섹션 발견, 통계 로딩...');
-        fetchVoteCounts();
-        
-        // 내 투표 이력 체크
-        ['SM', 'JYP', 'YG'].forEach(agency => {
-            if (localStorage.getItem('kft_voted_' + agency)) {
-                // 이미 투표했다면 스타일 변경 등 처리 가능
-            }
-        });
     }
 }
 
