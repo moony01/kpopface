@@ -524,64 +524,8 @@ function fnChangeLang(lang) {
   }
 }
 
-// KCL 리그 순위 데이터 로드
-function fnLoadLeagueRanking() {
-  // KCL 순위는 전용 iframe이 소유한다.
-  if (!document.getElementById('league-banner-link')) return;
-  var SUPABASE_URL = "https://eevckvdicfhqxywixznt.supabase.co";
-  var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVldmNrdmRpY2ZocXh5d2l4em50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4NjQwMjQsImV4cCI6MjA4MjQ0MDAyNH0.idh6w8dJ-8Rjdh9aB3DuaYofnO78fNBPuSOG8QoqKqM";
-
-  // 현재 페이지 언어 감지 및 KCL 링크 설정
-  var pathParts = window.location.pathname.split('/').filter(function(p) { return p; });
-  var currentLang = 'ko'; // 기본값: 한국어
-  var supportedLangs = ['en', 'ja', 'zh', 'de', 'es', 'fr', 'id', 'nl', 'pl', 'pt', 'ru', 'tr', 'uk', 'vi'];
-
-  // URL 경로에서 언어 코드 추출 (예: /kpopface/en/ -> en)
-  for (var i = 0; i < pathParts.length; i++) {
-    if (supportedLangs.indexOf(pathParts[i]) !== -1) {
-      currentLang = pathParts[i];
-      break;
-    }
-  }
-
-  // KCL 링크 동적 설정
-  var kclLink = document.getElementById('league-banner-link');
-  if (kclLink) {
-    kclLink.href = 'https://kclhq.com/' + currentLang;
-  }
-
-  fetch(SUPABASE_URL + '/rest/v1/kcl_companies?select=name_ko,name_en,firepower&order=firepower.desc&limit=4', {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY
-    }
-  })
-  .then(function(response) { return response.json(); })
-  .then(function(data) {
-    console.log('KCL Ranking data:', data);
-    if (data && data.length > 0) {
-      for (var i = 0; i < data.length && i < 4; i++) {
-        var nameEl = document.getElementById('rank-name-' + (i + 1));
-        var scoreEl = document.getElementById('rank-score-' + (i + 1));
-        if (nameEl) {
-          // 항상 영어 이름 표시 (SM, JYP, YG)
-          nameEl.textContent = data[i].name_en;
-        }
-        if (scoreEl && data[i].firepower != null) {
-          // 점수 표시 (천 단위 포맷)
-          scoreEl.textContent = Number(data[i].firepower).toLocaleString() + 'pt';
-        }
-      }
-    }
-  })
-  .catch(function(err) {
-    console.log('League ranking load error:', err);
-  });
-}
-
 // 페이지 로드 시 리그 순위 및 로컬 광고 테스트 영역 초기화
 function initializePageEnhancements() {
-  fnLoadLeagueRanking();
   reserveLocalAnalysisResultAdSlots();
   initializeInlineAdSlots();
 }
@@ -1086,7 +1030,7 @@ async function init() {
 
 /**
  * 무료 결과 화면에 전체 소속사 매칭률을 표시한다.
- * 상세 분석 모달은 KCL의 회원가입·재업로드·AI 리포트 흐름으로 대체되었다.
+ * 상세 분석 모달은 AI 리포트 기능이 제공될 때까지 비활성 상태다.
  */
 function renderFreeAgencyRanking(predictions) {
   var list = document.getElementById('agency-ranking-list');

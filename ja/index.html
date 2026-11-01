@@ -47,7 +47,7 @@ lang: ja
     </div>
     <div class="file-upload">
         <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
             <div class="drag-text">
                 <img class="baseline_upload" src="../static/img/ico-upload.png">
                 <h3>3. 画像をドラッグまたは押してアップロードしてください。</h3>
@@ -111,8 +111,6 @@ lang: ja
 
         </div>
     </div>
-
-    {% include vote_section_ja.html %}
     
     {% include comment_section_ja.html %}
     

@@ -49,7 +49,7 @@ description: "사진을 업로드하면 AI가 SM, JYP, YG 스타일 중 나와 �
     <div class="file-upload">
         <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
         <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
             <div class="drag-text">
                 <img class="baseline_upload" src="static/img/ico-upload.png">
                 <h3>3. 이미지를 올려놓거나 눌러서 업로드 ㄱㄱ</h3>
@@ -99,8 +99,7 @@ description: "사진을 업로드하면 AI가 SM, JYP, YG 스타일 중 나와 �
             </div>
 
             {% comment %}
-            Legacy result image save and donation actions are intentionally disabled
-            while the report funnel is being moved to KCL.
+            Legacy result image save and donation actions are intentionally disabled.
             <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
                 <i class="fas fa-camera"></i>
                 <span class="save-image-text">결과 이미지 저장하기</span>
@@ -116,8 +115,6 @@ description: "사진을 업로드하면 AI가 SM, JYP, YG 스타일 중 나와 �
     </div>
 
     {% include sanggyeonrye-promo.html %}
-
-    {% include vote_section_ko.html %}
 
     {% include comment_section_ko.html %}
 </div>
