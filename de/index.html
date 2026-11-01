@@ -48,7 +48,7 @@ lang: de
     </div>
     <div class="file-upload">
         <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
             <div class="drag-text">
                 <img class="baseline_upload" src="../static/img/ico-upload.png">
                 <h3>3. Ziehen oder drücken Sie, um ein Bild hochzuladen.</h3>
@@ -110,8 +110,6 @@ lang: de
 
         </div>
     </div>
-
-    {% include vote_section_de.html %}
     
     {% include comment_section_de.html %}
     

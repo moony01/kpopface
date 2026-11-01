@@ -49,7 +49,7 @@ lang: vi
     <div class="file-upload">
         <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
         <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
             <div class="drag-text">
                 <img class="baseline_upload" src="../static/img/ico-upload.png">
                 <h3>3. Kéo hoặc nhấn để tải lên hình ảnh.</h3>
@@ -109,8 +109,6 @@ lang: vi
 
         </div>
     </div>
-
-    {% include vote_section_vi.html %}
     
     {% include comment_section_vi.html %}
     
